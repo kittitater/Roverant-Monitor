@@ -1,2 +1,5 @@
 # Environment variables
-.env
+
+# Local .env files
+# db-config.env
+# .gitignore
