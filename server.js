@@ -19,16 +19,13 @@ const pool = new Pool({
 app.use(cors());
 app.use(express.json());
 
-// Route to get items from database
-app.get('/api/items', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM items');
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error fetching items:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
+
+
+// path to file route
+const itemsRoute = require('./routes/items')
+
+// path to API
+app.use('/api/itmes',itemsRoute)
 
 // Start the server
 app.listen(port, () => {
