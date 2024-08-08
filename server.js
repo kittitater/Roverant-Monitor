@@ -17,6 +17,12 @@ const authRoute = require('./routes/auth-routes');
 app.use('/api/items', itemsRoute);
 app.use('/api/auth', authRoute);
 
+// Error handling middleware
+app.use((err, _req, res, _next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
