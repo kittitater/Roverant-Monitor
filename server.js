@@ -11,20 +11,36 @@ app.use(cors());
 app.use(express.json());
 
 // Path to file routes
-const itemsRoute = require('./routes/items');
-const authRoute = require('./routes/auth-routes');
-const categoriesRoute = require('./routes/category');
-const suppliersRoute = require('./routes/suppliers');
-const productsRoute = require('./routes/products');
-const inventoryRoute = require('./routes/inventory');
+const authRoute = require('./routes/auth-routes.js');
+const categoryRoute = require('./routes/category.js');
+const productRoute = require('./routes/product.js');
+const inventoryRoute = require('./routes/inventory.js');
+const warehouseRoute = require('./routes/warehouse.js');
+const locationRoute = require('./routes/location.js');
+const itemRoute = require('./routes/item.js');
+const supplierRoute = require('./routes/supplier.js');
+const itemSupplierRoute = require('./routes/item_supplier.js');
+const customerRoute = require('./routes/customer');
+const orderRoute = require('./routes/order');
+const orderItemRoute = require('./routes/order_item');
+const shipmentRoute = require('./routes/shipment');
+const userRoute = require('./routes/user');
 
 // Path to API
-app.use('/api/items', itemsRoute);
+app.use('/api/item', itemRoute);
 app.use('/api/auth', authRoute);
-app.use('/api/categories', categoriesRoute);
-app.use('/api/suppliers', suppliersRoute);
-app.use('/api/products', productsRoute);
+app.use('/api/category', categoryRoute); 
+app.use('/api/supplier', supplierRoute);
+    app.use('/api/product', productRoute); 
 app.use('/api/inventory', inventoryRoute);
+app.use('/api/warehouse', warehouseRoute);
+app.use('/api/location', locationRoute);
+app.use('/api/item_supplier', itemSupplierRoute);
+app.use('/api/customer', customerRoute);
+app.use('/api/order', orderRoute);
+app.use('/api/order_item', orderItemRoute);
+app.use('/api/shipment', shipmentRoute);
+app.use('/api/user', userRoute);
 
 // Error handling middleware
 app.use((err, _req, res, _next) => {

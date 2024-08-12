@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db-connection'); // Import the pool
 
-// GET /api/inventory
+// GET /api/suppliers
 router.get('/', async (_req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM inventory');
+    const result = await pool.query('SELECT * FROM supplier');
     res.json(result.rows);
   } catch (err) {
     console.error('Database query error:', err.message);
@@ -13,10 +13,10 @@ router.get('/', async (_req, res) => {
   }
 });
 
-// GET /api/inventory/:id
+// GET /api/suppliers/:id
 router.get('/:id', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM inventory WHERE inventory_id = $1', [req.params.id]);
+    const result = await pool.query('SELECT * FROM supplier WHERE supplier_id = $1', [req.params.id]);
     res.json(result.rows[0]);
   } catch (err) {
     console.error('Database query error:', err.message);
@@ -24,13 +24,13 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /api/inventory
+// POST /api/suppliers
 router.post('/', async (req, res) => {
-  const { item_id, warehouse_id, quantity } = req.body;
+  const { supplier_name, supplier_contact } = req.body;
   try {
     const result = await pool.query(
-      'INSERT INTO inventory (item_id, warehouse_id, quantity) VALUES ($1, $2, $3) RETURNING *',
-      [item_id, warehouse_id, quantity]
+      'INSERT INTO supplier (supplier_name, supplier_contact) VALUES ($1, $2) RETURNING *',
+      [supplier_name, supplier_contact]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -39,13 +39,13 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PUT /api/inventory/:id
+// PUT /api/suppliers/:id
 router.put('/:id', async (req, res) => {
-  const { item_id, warehouse_id, quantity } = req.body;
+  const { supplier_name, supplier_contact } = req.body;
   try {
     const result = await pool.query(
-      'UPDATE inventory SET item_id = $1, warehouse_id = $2, quantity = $3, updated_at = NOW() WHERE inventory_id = $4 RETURNING *',
-      [item_id, warehouse_id, quantity, req.params.id]
+      'UPDATE supplier SET supplier_name = $1, supplier_contact = $2, updated_at = NOW() WHERE supplier_id = $3 RETURNING *',
+      [supplier_name, supplier_contact, req.params.id]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -54,10 +54,10 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DELETE /api/inventory/:id
+// DELETE /api/suppliers/:id
 router.delete('/:id', async (req, res) => {
   try {
-    await pool.query('DELETE FROM inventory WHERE inventory_id = $1', [req.params.id]);
+    await pool.query('DELETE FROM supplier WHERE supplier_id = $1', [req.params.id]);
     res.status(204).send();
   } catch (err) {
     console.error('Database query error:', err.message);
