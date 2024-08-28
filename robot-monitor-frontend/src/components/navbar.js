@@ -59,7 +59,7 @@ export default function Navbar() {
                                                 href={item.href}
                                                 aria-current={item.current ? 'page' : undefined}
                                                 className={classNames(
-                                                    item.current ? 'bg-black text-white' : 'text-black ring-black ring-1 hover:bg-gray-200 hover:text-black',
+                                                    item.current ? 'bg-black text-white ring-black ring-2' : 'text-black ring-black ring-2 hover:bg-gray-200 hover:text-black',
                                                     'rounded-xl px-3 py-2 text-sm font-medium',
                                                 )}
                                             >
@@ -73,7 +73,7 @@ export default function Navbar() {
                                 <div className="ml-4 flex items-center md:ml-6">
                                     <button
                                         type="button"
-                                        className="relative rounded-full ring-black ring-1 bg-white p-1 text-black hover:text-white hover:bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                        className="relative rounded-full ring-black ring-2 bg-white p-1 text-black hover:text-white hover:bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                     >
                                         <span className="absolute -inset-1.5" />
                                         <span className="sr-only">View notifications</span>
@@ -91,7 +91,7 @@ export default function Navbar() {
                                         </div>
                                         <MenuItems
                                             transition
-                                            className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                                            className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-2 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                                         >
                                             {userNavigation.map((item) => (
                                                 <MenuItem key={item.name}>
