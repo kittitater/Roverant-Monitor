@@ -133,6 +133,7 @@
 // ]
 
 import Link from "next/link"
+import Footer from "../components/footer"
 
 // export default function Home() {
 //   //const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -289,33 +290,33 @@ import Link from "next/link"
 const people = [
   {
     name: 'Phithatsanan Lertthanasiriwat', // Home
-    role: 'Project Co-Founder',
+    role: 'Project Founder & ChatGPT Specialist',
     imageUrl:
       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   },
   {
-    name: 'Leslie Alexander', // Aj.Prapong
+    name: 'Dr.Prapong Prechaprapranwong', // Aj.Prapong
     role: 'Project Advisor',
     imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      'https://www.cpe.kmutt.ac.th/media/staff/ad30341f-05af-4e85-aa37-9a60759b09ed.jpg',
   },
   {
     name: 'Woradon Sampanpaisarn', // Pond
-    role: 'Project Co-Founder',
+    role: 'Project Founder',
     imageUrl:
       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   },
   {
-    name: 'Leslie Alexander', // Aj.Karitta
+    name: 'Dr.Kharittha Jangsamsi', // Aj.Karitta
     role: 'Project Co-Advisor',
     imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      'https://www.cpe.kmutt.ac.th/media/staff/8305a7ae-fab3-4422-910a-e04ac25182d4.jpg',
   },
   {
     name: 'Kittitat Songsakseree', // Giang
-    role: 'Project Co-Founder',
+    role: 'Project Founder',
     imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      'https://lh3.googleusercontent.com/a/ACg8ocJ9CEYpO1-B5vISQtzKzCFgQFJWw1hjBF_KCXYa58hExES1hbrT=s576-c-no',
   },
   // More people...
 ]
@@ -323,82 +324,81 @@ const people = [
 
 export default function Home() {
   return (
-    <div className="overflow-hidden bg-white py-24 sm:py-22">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-          <div className=" place-items-center">
-            <div className="lg:max-w-lg">
+    <>
+      <div className="overflow-hidden bg-white py-24 sm:py-22">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 pb-32">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+            <div className=" place-items-center ">
+              <div className="lg:max-w-lg ">
 
-              <div className="">
-                <div className="hidden sm:mb-8 sm:flex sm:justify-left">
-                  <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                    Announcing our Project proposal.{' '}
-                    <a href="#" className="font-semibold text-black">
-                      <span aria-hidden="true" className="absolute inset-0" />
-                      Read more <span aria-hidden="true">&rarr;</span>
-                    </a>
+                <div className="">
+                  <div className="hidden sm:mb-8 sm:flex sm:justify-left ">
+                    <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                      Announcing our Project proposal.{' '}
+                      <a href="#" className="font-semibold text-black">
+                        <span aria-hidden="true" className="absolute inset-0" />
+                        Read more <span aria-hidden="true">&rarr;</span>
+                      </a>
+                    </div>
+                  </div>
+                  <div className="text-left">
+                    <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                      Welcome to the Robot Monitoring System
+                    </h1>
+                    <p className="mt-6 text-lg leading-8 text-gray-600">
+                      Our Security Guard Assistance Robot Monitoring Web Application. Curious with our project ? Hit the learn more to read our project idea proposal.
+                    </p>
+                    <div className="mt-10 flex items-center justify-left gap-x-6">
+                      <Link
+                        href="/Dashboard"
+                        className="rounded-xl bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        Try an amazing things now!!!
+                      </Link>
+                      <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+                        Learn more <span aria-hidden="true">→</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
-                <div className="text-left">
-                  <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                    Welcome to our Robot Monitoring System
-                  </h1>
-                  <p className="mt-6 text-lg leading-8 text-gray-600">
-                    Our Security Guard Assistance Robot Monitoring Web Application. Curious with our project ? Hit the learn more to read our project idea proposal.
-                  </p>
-                  <div className="mt-10 flex items-center justify-left gap-x-6">
-                    <Link
-                      href="/Dashboard"
-                      className="rounded-xl bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Try an amazing things now!!!
-                    </Link>
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                      Learn more <span aria-hidden="true">→</span>
-                    </a>
-                  </div>
-                </div>
+
               </div>
-
             </div>
+            <img
+              alt="Product screenshot"
+              src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
+              width={2432}
+              height={1442}
+              className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0" />
           </div>
-          <img
-            alt="Product screenshot"
-            src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
-            width={2432}
-            height={1442}
-            className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
-          />
         </div>
-      </div>
-      
-      <div className="bg-white py-24 sm:py-32">
-        <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Meet our Innovator</h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Libero fames augue nisl porttitor nisi, quis. Id ac elit odio vitae elementum enim vitae ullamcorper
-              suspendisse.
-            </p>
-          </div>
-          <ul role="list" className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2">
-            {people.map((person) => (
-              <li key={person.name}>
-                <div className="flex items-center gap-x-6">
-                  <img alt="" src={person.imageUrl} className="h-16 w-16 rounded-full" />
-                  <div>
-                    <h3 className="text-base font-semibold leading-7 tracking-tight text-gray-900">{person.name}</h3>
-                    <p className="text-sm font-semibold leading-6 text-indigo-600">{person.role}</p>
+
+        <div className="bg-white  sm:pb-32 ">
+          <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Meet our Innovator</h2>
+              <p className="mt-6 text-lg leading-8 text-gray-600">
+                Libero fames augue nisl porttitor nisi, quis. Id ac elit odio vitae elementum enim vitae ullamcorper
+                suspendisse.
+              </p>
+            </div>
+            <ul role="list" className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2">
+              {people.map((person) => (
+                <li key={person.name}>
+                  <div className="flex items-center gap-x-6">
+                    <img alt="" src={person.imageUrl} className="h-16 w-16 rounded-full" />
+                    <div>
+                      <h3 className="text-base font-semibold leading-7 tracking-tight text-gray-900">{person.name}</h3>
+                      <p className="text-sm font-semibold leading-6 text-indigo-600">{person.role}</p>
+                    </div>
                   </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-
-
-
+      <Footer />
+    </>
   )
 }
