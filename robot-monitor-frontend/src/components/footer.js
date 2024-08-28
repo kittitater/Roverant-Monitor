@@ -25,7 +25,7 @@ export default function Footer() {
                     </ul>
                 </div>
                 <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-5" />
-                <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="#" class="hover:underline">Kittitat x Phithatsanan x Woradon Senior project™</a>. All Rights Reserved.</span>
+                <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="#" class="hover:underline">Kittitat x Phithatsanan x Woradon's Senior project™</a>. All Rights Reserved.</span>
             </div>
         </footer>
     );
