@@ -303,7 +303,7 @@ const people = [
     name: 'Woradon Samphanphaisarn', // Pond
     role: 'Project Founder',
     imageUrl:
-      '../profile_image/pond.jpg',
+      '../profile_image/Pond.jpg',
   },
   {
     name: 'Dr.Kharittha Jangsamsi', // Aj.Karitta
