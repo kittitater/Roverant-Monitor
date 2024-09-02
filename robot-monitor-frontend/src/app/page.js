@@ -4,8 +4,6 @@
 //   return (
 
 
-
-
 //     <main className="flex min-h-screen flex-col items-center justify-between p-24">
 //       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
 //         <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
@@ -132,8 +130,6 @@
 //   { name: 'Company', href: '#' },
 // ]
 
-import Link from "next/link"
-import Footer from "../components/footer"
 
 // export default function Home() {
 //   //const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -287,12 +283,15 @@ import Footer from "../components/footer"
 
 //import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid'
 
+import Link from "next/link"
+import Footer from "../components/footer"
+
 const people = [
   {
     name: 'Phithatsanan Lertthanasiriwat', // Home
-    role: 'Project Founder & ChatGPT Specialist',
+    role: 'Project Founder',
     imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      '../profile_image/Home.jpg',
   },
   {
     name: 'Dr.Prapong Prechaprapranwong', // Aj.Prapong
@@ -304,7 +303,7 @@ const people = [
     name: 'Woradon Samphanphaisarn', // Pond
     role: 'Project Founder',
     imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      '../profile_image/pond.jpg',
   },
   {
     name: 'Dr.Kharittha Jangsamsi', // Aj.Karitta
@@ -316,7 +315,7 @@ const people = [
     name: 'Kittitat Songsakseree', // Giang
     role: 'Project Founder',
     imageUrl:
-      'https://lh3.googleusercontent.com/a/ACg8ocJ9CEYpO1-B5vISQtzKzCFgQFJWw1hjBF_KCXYa58hExES1hbrT=s576-c-no',
+      '../profile_image/Giang.jpg',
   },
   // More people...
 ]
@@ -378,8 +377,7 @@ export default function Home() {
             <div className="max-w-2xl">
               <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Meet our Innovator</h2>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                Libero fames augue nisl porttitor nisi, quis. Id ac elit odio vitae elementum enim vitae ullamcorper
-                suspendisse.
+                Our team is made up of highly skilled and experienced individuals who are passionate about the project. We are committed to providing the best service to our users.
               </p>
             </div>
             <ul role="list" className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2">

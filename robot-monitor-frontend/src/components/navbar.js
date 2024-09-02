@@ -11,11 +11,11 @@ const user = {
 }
 const navigation = [
     { name: 'Dashboard', href: '#', current: true },
-    { name: 'Tracking Maps', href: '#', current: false },
+    { name: 'Tracking Map', href: '#', current: false },
     { name: 'Live Camera', href: '#', current: false },
-    { name: 'Detection Logs', href: '#', current: false },
-    { name: 'Alerts', href: '#', current: false },
-    { name: 'Reports', href: '#', current: false },
+    { name: 'Detection Log', href: '#', current: false },
+    { name: 'Alert', href: '#', current: false },
+    { name: 'Summary Report', href: '#', current: false },
 ]
 const userNavigation = [
     { name: 'Your Profile', href: '#' },
