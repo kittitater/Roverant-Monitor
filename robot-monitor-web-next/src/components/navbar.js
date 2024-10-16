@@ -49,7 +49,7 @@ export default function Navbar() {
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                     className="h-8 w-8"
                   /> */}
-                                    <Link href="/"><span className=' text-black font-semibold text-xl'>Robot Monitoring System</span></Link>
+                                    <Link href="/"><span className=' text-black font-semibold text-xl'>Roverant Monitor</span></Link>
                                 </div>
                                 <div className="hidden md:block">
                                     <div className="ml-10 flex items-baseline space-x-4">

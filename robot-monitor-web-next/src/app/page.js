@@ -342,7 +342,7 @@ export default function Home() {
                   </div>
                   <div className="text-left">
                     <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                      Welcome to the Robot Monitoring System
+                      Welcome to the Roverant Monitor
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-gray-600">
                       Our Security Guard Assistance Robot Monitoring Web Application. Curious with our project ? Hit the learn more to read our project idea proposal.
