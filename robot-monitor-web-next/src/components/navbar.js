@@ -10,9 +10,9 @@ const user = {
         'https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg',
 }
 const navigation = [
-    { name: 'Dashboard', href: '#', current: true },
+    { name: 'Dashboard', href: 'Dashboard', current: false },
     { name: 'Tracking Map', href: '#', current: false },
-    { name: 'Live Camera', href: '#', current: false },
+    { name: 'Live Camera', href: 'LiveCamera', current: false },
     { name: 'Detection Log', href: '#', current: false },
     { name: 'Alert', href: '#', current: false },
     { name: 'Summary Report', href: '#', current: false },
@@ -54,17 +54,17 @@ export default function Navbar() {
                                 <div className="hidden md:block">
                                     <div className="ml-10 flex items-baseline space-x-4">
                                         {navigation.map((item) => (
-                                            <a
+                                            <Link
                                                 key={item.name}
                                                 href={item.href}
                                                 aria-current={item.current ? 'page' : undefined}
                                                 className={classNames(
-                                                    item.current ? 'bg-black text-white ring-black ring-2' : 'text-black ring-black ring-2 hover:bg-gray-200 hover:text-black',
+                                                    item.current ? 'bg-black text-white ring-black ring-2' : 'text-black ring-black ring-2 hover:bg-black hover:text-white',
                                                     'rounded-xl px-3 py-2 text-sm font-medium',
                                                 )}
                                             >
                                                 {item.name}
-                                            </a>
+                                            </Link>
                                         ))}
                                     </div>
                                 </div>
