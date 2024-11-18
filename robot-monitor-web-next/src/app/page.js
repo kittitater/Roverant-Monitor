@@ -3,7 +3,6 @@
 // export default function Home() {
 //   return (
 
-
 //     <main className="flex min-h-screen flex-col items-center justify-between p-24">
 //       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
 //         <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
@@ -115,10 +114,6 @@
 //   );
 // }
 
-
-
-
-
 //import { useState } from 'react'
 //import { Dialog, DialogPanel } from '@headlessui/react'
 //import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
@@ -129,7 +124,6 @@
 //   { name: 'Marketplace', href: '#' },
 //   { name: 'Company', href: '#' },
 // ]
-
 
 // export default function Home() {
 //   //const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -254,7 +248,7 @@
 //                 href="/Dashboard"
 //                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 //               >
-//                 Try the amazing things now!!! 
+//                 Try the amazing things now!!!
 //               </Link>
 //               <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
 //               Learn more <span aria-hidden="true">→</span>
@@ -279,115 +273,122 @@
 //   )
 // }
 
-
-
 //import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid'
 
-import Link from "next/link"
-import Footer from "../components/footer"
+import Link from "next/link";
+import Footer from "../components/footer";
 
 const people = [
   {
-    name: 'Phithatsanan Lertthanasiriwat', // Home
-    role: 'Project Founder',
-    imageUrl:
-      '../profile_image/Home.jpg',
+    name: "Phithatsanan Lertthanasiriwat", // Home
+    role: "Project Founder",
+    imageUrl: "../profile_image/Home.jpg",
   },
   {
-    name: 'Dr.Prapong Prechaprapranwong', // Aj.Prapong
-    role: 'Project Advisor',
+    name: "Dr.Prapong Prechaprapranwong", // Aj.Prapong
+    role: "Project Advisor",
     imageUrl:
-      'https://www.cpe.kmutt.ac.th/media/staff/ad30341f-05af-4e85-aa37-9a60759b09ed.jpg',
+      "https://www.cpe.kmutt.ac.th/media/staff/ad30341f-05af-4e85-aa37-9a60759b09ed.jpg",
   },
   {
-    name: 'Woradon Samphanphaisarn', // Pond
-    role: 'Project Founder',
-    imageUrl:
-      '../profile_image/Pond.jpg',
+    name: "Woradon Samphanphaisarn", // Pond
+    role: "Project Founder",
+    imageUrl: "../profile_image/Pond.jpg",
   },
   {
-    name: 'Dr.Kharittha Jangsamsi', // Aj.Karitta
-    role: 'Project Co-Advisor',
+    name: "Dr.Kharittha Jangsamsi", // Aj.Karitta
+    role: "Project Co-Advisor",
     imageUrl:
-      'https://www.cpe.kmutt.ac.th/media/staff/8305a7ae-fab3-4422-910a-e04ac25182d4.jpg',
+      "https://www.cpe.kmutt.ac.th/media/staff/8305a7ae-fab3-4422-910a-e04ac25182d4.jpg",
   },
   {
-    name: 'Kittitat Songsakseree', // Giang
-    role: 'Project Founder',
-    imageUrl:
-      '../profile_image/Giang.jpg',
+    name: "Kittitat Songsakseree", // Giang
+    role: "Project Founder",
+    imageUrl: "../profile_image/Giang.jpg",
   },
   // More people...
-]
-
+];
 
 export default function Home() {
   return (
     <>
-      <div className="overflow-hidden bg-white py-24 sm:py-22">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 pb-32">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-            <div className=" place-items-center ">
-              <div className="lg:max-w-lg ">
-
-                <div className="">
+      <div className="overflow-hidden bg-white py-0 sm:py-22">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-32">
+          <div className="mx-auto  max-w-2xl  gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+            <div className="grid justify-items-center ">
+              <div className="lg:max-w-xl ">
+                <div className="grid justify-items-center">
                   <div className="hidden sm:mb-8 sm:flex sm:justify-left ">
                     <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                      Announcing our Project proposal.{' '}
-                      <a href="#" className="font-semibold text-black">
+                      Announcing our Project proposal.{" "}
+                      <Link href="https://mailkmuttacth-my.sharepoint.com/:b:/g/personal/kittitat_song_kmutt_ac_th/EVFX1ffhVFJHqYvAZC0ModcBbCdn_f80wSfjWVH4OL1UjA?e=PTjsUP" target="_blank" className="font-semibold text-black">
                         <span aria-hidden="true" className="absolute inset-0" />
                         Read more <span aria-hidden="true">&rarr;</span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
-                  <div className="text-left">
+                  <div className="text-center">
                     <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                       Welcome to the Roverant Monitor
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-gray-600">
-                      Our Security Guard Assistance Robot Monitoring Web Application. Curious with our project ? Hit the learn more to read our project idea proposal.
+                      Our Security Guard Rover Monitoring Web Application.
+                      Curious with our project ? Hit the learn more to read our
+                      project idea proposal.
                     </p>
-                    <div className="mt-10 flex items-center justify-left gap-x-6">
+                    <div className="mt-10 flex items-center justify-center gap-x-6">
                       <Link
                         href="/Dashboard"
                         className="rounded-xl bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Try an amazing things now!!!
                       </Link>
-                      <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+                      <Link
+                        href="https://mailkmuttacth-my.sharepoint.com/:b:/g/personal/kittitat_song_kmutt_ac_th/EVFX1ffhVFJHqYvAZC0ModcBbCdn_f80wSfjWVH4OL1UjA?e=PTjsUP"
+                        target="_blank"
+                        className="text-sm font-semibold leading-6 text-gray-900"
+                      >
                         Learn more <span aria-hidden="true">→</span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
-            <img
-              alt="Product screenshot"
-              src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
-              width={2432}
-              height={1442}
-              className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0" />
           </div>
         </div>
 
-        <div className="bg-white  sm:pb-32 ">
+        <div className="bg-white  sm:pt-16 sm:pb-32">
           <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
             <div className="max-w-2xl">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Meet our Innovator</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Meet our Innovator
+              </h2>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                Our team is made up of highly skilled and experienced individuals who are passionate about the project. We are committed to providing the best service to our users.
+                Our team is made up of highly skilled and experienced
+                individuals who are passionate about the project. We are
+                committed to providing the best service to our users.
               </p>
             </div>
-            <ul role="list" className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2">
+            <ul
+              role="list"
+              className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2"
+            >
               {people.map((person) => (
                 <li key={person.name}>
                   <div className="flex items-center gap-x-6">
-                    <img alt="" src={person.imageUrl} className="h-16 w-16 rounded-full" />
+                    <img
+                      alt=""
+                      src={person.imageUrl}
+                      className="h-16 w-16 rounded-full"
+                    />
                     <div>
-                      <h3 className="text-base font-semibold leading-7 tracking-tight text-gray-900">{person.name}</h3>
-                      <p className="text-sm font-semibold leading-6 text-indigo-600">{person.role}</p>
+                      <h3 className="text-base font-semibold leading-7 tracking-tight text-gray-900">
+                        {person.name}
+                      </h3>
+                      <p className="text-sm font-semibold leading-6 text-indigo-600">
+                        {person.role}
+                      </p>
                     </div>
                   </div>
                 </li>
@@ -398,5 +399,5 @@ export default function Home() {
       </div>
       <Footer />
     </>
-  )
+  );
 }
