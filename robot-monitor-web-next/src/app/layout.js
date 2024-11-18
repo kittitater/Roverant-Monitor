@@ -4,8 +4,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Robot Monitor",
-  description: "Web application for monitoring Security Guard Assistance Robot",
+  title: "Roverant Monitor",
+  description: "A Web application for monitoring Security Guard Rover",
 };
 
 export default function RootLayout({ children }) {
