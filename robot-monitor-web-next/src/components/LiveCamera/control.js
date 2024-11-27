@@ -8,7 +8,11 @@ const MotorControl = () => {
     const [wsStatus, setWsStatus] = useState("Connecting...");
     const motorSocket = useRef(null);
 
-    const wsUrl = "ws://kittitat.trueddns.com:45133/ws/motor"; // Replace with your server's WebSocket URL
+    const wsUrl = "ws://kittitat.trueddns.com:45137/ws/control"; // Replace with your server's WebSocket URL
+
+    // Local WebSocket connection for video stream : ws://192.168.1.84:8000/ws/control
+    // Public WebSocket connection for video stream : ws://kittitat.trueddns.com:45133/ws/control
+
 
     useEffect(() => {
         motorSocket.current = new WebSocket(wsUrl);
@@ -30,7 +34,7 @@ const MotorControl = () => {
 
         motorSocket.current.onclose = () => {
             console.log("WebSocket connection closed.");
-            setWsStatus("Disconnected");
+            setWsStatus("Unavailable");
         };
 
         // Clean up WebSocket connection on component unmount
@@ -51,44 +55,60 @@ const MotorControl = () => {
 
     // Keyboard event handler
     const handleKeyDown = (event) => {
-        switch (event.key.toLowerCase()) { // Convert key to lowercase for case-insensitive matching
+        switch (event.key.toLowerCase()) {
             case "w":
-                sendCommand("forward");
+                sendCommand("press_forward");
                 break;
             case "s":
-                sendCommand("backward");
+                sendCommand("press_backward");
                 break;
             case "a":
-                sendCommand("left");
+                sendCommand("press_left");
                 break;
             case "d":
-                sendCommand("right");
-                break;
-            case " ":
-                sendCommand("stop");
+                sendCommand("press_right");
                 break;
             default:
                 break;
         }
     };
 
+    const handleKeyUp = (event) => {
+        switch (event.key.toLowerCase()) {
+            case "w":
+                sendCommand("release_forward");
+                break;
+            case "s":
+                sendCommand("release_backward");
+                break;
+            case "a":
+                sendCommand("release_left");
+                break;
+            case "d":
+                sendCommand("release_right");
+                break;
+            default:
+                break;
+        }
+    };
 
     useEffect(() => {
-        // Add event listener for keyboard events
         window.addEventListener("keydown", handleKeyDown);
+        window.addEventListener("keyup", handleKeyUp);
 
-        // Clean up event listener on component unmount
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
+            window.removeEventListener("keyup", handleKeyUp);
         };
     }, []);
 
     return (
-        <div className="grid justify-items-center py-5 space-y-5">
+        <div className="grid justify-items-center py-5 space-y-1">
             {/* <h1 className="text-2xl font-semibold">Motor Control</h1> */}
 
             {/* WebSocket connection status */}
-            <div className="mb-3">
+            <div className="mb-3 flex flex-row space-x-5">
+                <h1 className="text-lg font-semibold">Controlling connection status :</h1>
                 <span
                     className={`font-semibold text-lg ${wsStatus === "Connected"
                         ? "text-green-500"
@@ -102,7 +122,7 @@ const MotorControl = () => {
             </div>
 
             {/* Motor Control Buttons */}
-            <div className="flex flex-col space-y-3">
+            {/* <div className="flex flex-col space-y-3">
                 <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     onClick={() => sendCommand("forward")}
@@ -135,10 +155,10 @@ const MotorControl = () => {
                 >
                     Backward (↓)
                 </button>
-            </div>
+            </div> */}
 
             <p className="mt-5 text-sm text-gray-500">
-                Use <strong>Arrow Keys</strong> to control the robot. Press <strong>Space</strong> to stop.
+                Using <strong>W A S D Keys</strong> to control the security guard rover.
             </p>
         </div>
     );
