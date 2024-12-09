@@ -8,11 +8,11 @@ const MotorControl = () => {
     const [wsStatus, setWsStatus] = useState("Connecting...");
     const motorSocket = useRef(null);
 
-    const wsUrl = "ws://kittitat.trueddns.com:45137/ws/control"; // Replace with your server's WebSocket URL
+    const wsUrl = "ws://192.168.1.84:8000/ws/control"; // Replace with your server's WebSocket URL
 
-    // Local WebSocket connection for video stream : ws://192.168.1.84:8000/ws/control
-    // Public WebSocket connection for video stream : ws://kittitat.trueddns.com:45133/ws/control
-
+    // Local WebSocket connection for rover control : ws://192.168.1.84:8000/ws/control
+    // Public WebSocket connection for rover control : ws://kittitat.trueddns.com:45133/ws/control
+    // Gateway WebSocket connection for rover control : ws://47.236.37.29:8000/ws/client
 
     useEffect(() => {
         motorSocket.current = new WebSocket(wsUrl);
@@ -103,12 +103,12 @@ const MotorControl = () => {
     }, []);
 
     return (
-        <div className="grid justify-items-center py-5 space-y-1">
+        <div className="grid justify-items-center py-0 space-y-1">
             {/* <h1 className="text-2xl font-semibold">Motor Control</h1> */}
 
             {/* WebSocket connection status */}
-            <div className="mb-3 flex flex-row space-x-5">
-                <h1 className="text-lg font-semibold">Controlling connection status :</h1>
+            <div className="mb-24 flex flex-row space-x-5">
+                <h1 className="text-lg font-semibold">Control connection status :</h1>
                 <span
                     className={`font-semibold text-lg ${wsStatus === "Connected"
                         ? "text-green-500"
@@ -121,43 +121,7 @@ const MotorControl = () => {
                 </span>
             </div>
 
-            {/* Motor Control Buttons */}
-            {/* <div className="flex flex-col space-y-3">
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => sendCommand("forward")}
-                >
-                    Forward (↑)
-                </button>
-                <div className="flex space-x-3">
-                    <button
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => sendCommand("left")}
-                    >
-                        Left (←)
-                    </button>
-                    <button
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => sendCommand("stop")}
-                    >
-                        Stop (Space)
-                    </button>
-                    <button
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => sendCommand("right")}
-                    >
-                        Right (→)
-                    </button>
-                </div>
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => sendCommand("backward")}
-                >
-                    Backward (↓)
-                </button>
-            </div> */}
-
-            <p className="mt-5 text-sm text-gray-500">
+            <p className="mt-10 text-sm text-gray-500">
                 Using <strong>W A S D Keys</strong> to control the security guard rover.
             </p>
         </div>

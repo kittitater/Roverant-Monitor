@@ -2,7 +2,7 @@
 "use client";
 
 import Layout from "@/components/layout";
-import ChatComponent from "@/components/LiveCamera/chat";
+// import ChatComponent from "@/components/LiveCamera/chat";
 import MotorControl from "@/components/LiveCamera/control";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -12,7 +12,7 @@ export default function LiveCamera() {
   const pendingImageBitmap = useRef(null); // Holds the next frame to be drawn
   const isDrawing = useRef(false); // Prevents overlapping draw calls
 
-  const wsUrl = "ws://kittitat.trueddns.com:45137/ws/video"; // WebSocket URL
+  const wsUrl = "ws://47.236.37.29:8000/ws/client"; // WebSocket URL
 
   useEffect(() => {
     const videoSocket = new WebSocket(wsUrl);
@@ -92,24 +92,11 @@ export default function LiveCamera() {
 
   return (
     <Layout>
-      <div className="grid justify-items-center py-5 space-y-5">
-        <h1 className="text-2xl font-semibold">Live Camera</h1>
-        <div className="flex flex-row space-x-10">
-          <div className="flex flex-col items-center">
-            {/* WebSocket connection status */}
-            <div className="mb-3 flex flex-row space-x-5">
-              <h1 className="text-lg font-semibold">Camera connection status :</h1>
-              <span
-                className={`font-semibold text-lg ${wsStatus === "Connected"
-                    ? "text-green-500"
-                    : wsStatus === "Error"
-                      ? "text-red-500"
-                      : "text-yellow-500"
-                  }`}
-              >
-                {wsStatus}
-              </span>
-            </div>
+      <div className="grid justify-items-center py-2 space-y-5">
+        <h1 className="text-2xl mb-3 font-semibold">Live Camera</h1>
+        <div className="flex flex-col space-x-10">
+          <div className="flex flex-row space-x-20 items-center">
+
 
             {/* Canvas for video stream */}
             <canvas
@@ -119,12 +106,30 @@ export default function LiveCamera() {
               style={{ border: "2px solid black" }}
               className="rounded-3xl"
             />
+
+            <div className="flex flex-col">
+              {/* WebSocket connection status */}
+              <div className="mb-3 justify-center flex flex-row space-x-5">
+                <h1 className="text-lg font-semibold">Camera connection status :</h1>
+                <span
+                  className={`font-semibold text-lg ${wsStatus === "Connected"
+                    ? "text-green-500"
+                    : wsStatus === "Error"
+                      ? "text-red-500"
+                      : "text-yellow-500"
+                    }`}
+                >
+                  {wsStatus}
+                </span>
+              </div>
+              <div>
+                <MotorControl />
+              </div>
+            </div>
           </div>
 
+
           {/* <ChatComponent /> */}
-        </div>
-        <div>
-          <MotorControl />
         </div>
       </div>
     </Layout>
