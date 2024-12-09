@@ -12,7 +12,7 @@ const user = {
 const navigation = [
     { name: 'Dashboard', href: 'Dashboard', current: false },
     { name: 'Tracking Map', href: '#', current: false },
-    { name: 'Controller', href: 'Controllerr', current: false },
+    { name: 'Live Camera', href: 'LiveCamera', current: false },
     { name: 'Detection Log', href: '#', current: false },
     { name: 'Alert', href: '#', current: false },
     { name: 'Summary Report', href: '#', current: false },
