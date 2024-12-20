@@ -83,7 +83,7 @@ export default function Navbar() {
                                     {/* Profile dropdown */}
                                     <Menu as="div" className="relative ml-3">
                                         <div>
-                                            <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                            <MenuButton className="relative flex max-w-xs items-center rounded-full  text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                 <span className="absolute -inset-1.5" />
                                                 <span className="sr-only">Open user menu</span>
                                                 <img alt="" src={user.imageUrl} className="h-8 w-8 rounded-full" />
@@ -109,7 +109,7 @@ export default function Navbar() {
                             </div>
                             <div className="-mr-2 flex md:hidden">
                                 {/* Mobile menu button */}
-                                <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md  p-2 ring-2 ring-black text-black hover:bg-black hover:text-white focus:outline-none  ">
                                     <span className="absolute -inset-0.5" />
                                     <span className="sr-only">Open main menu</span>
                                     <Bars3Icon aria-hidden="true" className="block h-6 w-6 group-data-[open]:hidden" />
@@ -120,7 +120,7 @@ export default function Navbar() {
                     </div>
 
                     <DisclosurePanel className="md:hidden">
-                        <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+                        <div className="space-y-2 px-2 pb-3 pt-2 sm:px-3">
                             {navigation.map((item) => (
                                 <DisclosureButton
                                     key={item.name}
@@ -128,7 +128,7 @@ export default function Navbar() {
                                     href={item.href}
                                     aria-current={item.current ? 'page' : undefined}
                                     className={classNames(
-                                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                        item.current ? 'bg-gray-900 text-white' : 'text-black ring-2 ring-black hover:bg-black hover:text-white',
                                         'block rounded-md px-3 py-2 text-base font-medium',
                                     )}
                                 >
@@ -154,13 +154,13 @@ export default function Navbar() {
                                     <BellIcon aria-hidden="true" className="h-6 w-6" />
                                 </button>
                             </div>
-                            <div className="mt-3 space-y-1 px-2">
+                            <div className="mt-3 space-y-2 px-2">
                                 {userNavigation.map((item) => (
                                     <DisclosureButton
                                         key={item.name}
                                         as="a"
                                         href={item.href}
-                                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                                        className="block rounded-md px-3 py-2 text-base ring-2 ring-black font-medium text-black hover:bg-black hover:text-white"
                                     >
                                         {item.name}
                                     </DisclosureButton>
