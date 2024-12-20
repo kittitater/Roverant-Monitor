@@ -12,7 +12,9 @@ export default function LiveCamera() {
   const pendingImageBitmap = useRef(null); // Holds the next frame to be drawn
   const isDrawing = useRef(false); // Prevents overlapping draw calls
 
-  const wsUrl = "ws://47.236.37.29:8000/ws/client"; // WebSocket URL
+  //const wsUrl = "ws://192.168.31.26:8000/ws/video"; // WebSocket URL
+  const wsUrl = "ws://47.236.37.29:8000/ws/client/video?token=32e1ec9d3b16a6867acad889878b8c32d9ff2ae0692a170c9c137fb3cf9c1d11"; // Replace with your server's WebSocket URL
+  //const wsUrl = "ws://192.168.1.84:8000/ws/video"; // WebSocket URL
 
   useEffect(() => {
     const videoSocket = new WebSocket(wsUrl);

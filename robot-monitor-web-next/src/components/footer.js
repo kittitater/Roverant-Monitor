@@ -11,7 +11,7 @@ export default function Footer() {
                     </Link>
                     <ul className="flex flex-wrap items-center mb-3 text-sm font-medium text-black sm:mb-0 dark:text-gray-400">
                         <li>
-                            <a href="#" className="hover:underline me-4 md:me-6">About</a>
+                            <a href="/#About" className="hover:underline me-4 md:me-6">About</a>
                         </li>
                         <li>
                             <a href="#" className="hover:underline me-4 md:me-6">Privacy Policy</a>
@@ -20,12 +20,12 @@ export default function Footer() {
                             <a href="#" className="hover:underline me-4 md:me-6">Licensing</a>
                         </li>
                         <li>
-                            <a href="#" className="hover:underline">Contact</a>
+                            <a href="/#Contact" className="hover:underline">Contact</a>
                         </li>
                     </ul>
                 </div>
                 <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-5" />
-                <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="#" className="hover:underline">Kittitat x Phithatsanan x Woradon's Senior project™</a>. All Rights Reserved.</span>
+                <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="/" className="hover:underline"> Roverant Project™</a>. All Rights Reserved. | Founded by Kittitat x Phithatsanan x Woradon</span>
             </div>
         </footer>
     );
