@@ -58,6 +58,8 @@ export default function Home() {
   return (
     <>
       <div className="overflow-hidden bg-white py-0 sm:py-22">
+
+        {/* Greeting */}
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-32">
           <div className="mx-auto  max-w-2xl  gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
             <div className="grid justify-items-center ">
@@ -78,8 +80,7 @@ export default function Home() {
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-gray-600">
                       Our Security Guard Rover Monitoring Web Application.
-                      Curious with our project ? Hit the learn more to read our
-                      project idea proposal.
+                      Curious with our project ? Hit the "About Roverant" to get to know our project .
                     </p>
                     <div className="mt-10 flex items-center justify-center gap-x-6">
                       <Link
@@ -89,11 +90,10 @@ export default function Home() {
                         Try an amazing things now!!!
                       </Link>
                       <Link
-                        href="https://mailkmuttacth-my.sharepoint.com/:b:/g/personal/kittitat_song_kmutt_ac_th/EVFX1ffhVFJHqYvAZC0ModcBbCdn_f80wSfjWVH4OL1UjA?e=PTjsUP"
-                        target="_blank"
+                        href="/#About"
                         className="text-sm font-semibold leading-6 text-gray-900"
                       >
-                        Learn more <span aria-hidden="true">→</span>
+                       About Roverant <span aria-hidden="true">→</span>
                       </Link>
                     </div>
                   </div>
@@ -104,7 +104,7 @@ export default function Home() {
         </div>
 
 
-
+        {/* Meet our innovator */}
         <div className="bg-white  sm:py-16 ">
           <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
             <div className="max-w-2xl">
@@ -144,7 +144,7 @@ export default function Home() {
           </div>
         </div>
 
-
+        {/* Roverant quote */}
         <section className="relative isolate overflow-hidden bg-white px-6 py-28 ">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.indigo.100),white)] opacity-20" />
           <div className="absolute inset-y-0 right-1/2 -z-10 mr-16 w-[200%] origin-bottom-left skew-x-[-30deg] bg-white shadow-xl shadow-indigo-600/10 ring-1 ring-indigo-50 sm:mr-28 lg:mr-0 xl:mr-16 xl:origin-center" />
@@ -170,7 +170,7 @@ export default function Home() {
           </div>
         </section>
 
-
+        {/* About Roverant */}
         <div id="About" className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32">
           <img
             alt=""
@@ -214,6 +214,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Contact Roverant */}
         <div id="Contact" className="isolate flex flex-row bg-white px-6 py-24 sm:py-32 lg:px-8">
           <div
             aria-hidden="true"
