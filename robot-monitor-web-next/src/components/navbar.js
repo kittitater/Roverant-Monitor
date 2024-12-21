@@ -14,7 +14,7 @@ const navigation = [
     { name: 'Tracking Map', href: '#', current: false },
     { name: 'Live Camera', href: 'LiveCamera', current: false },
     { name: 'Patrol Log', href: '#', current: false },
-    { name: 'Alert', href: '#', current: false },
+    { name: 'Alert History', href: '#', current: false },
     { name: 'Summary Report', href: '#', current: false },
 ]
 const userNavigation = [
