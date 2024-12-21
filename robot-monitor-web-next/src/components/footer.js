@@ -20,6 +20,9 @@ export default function Footer() {
                                 <Link href="/#About" className="hover:underline me-4 md:me-6">About</Link>
                             </li>
                             <li>
+                                <Link href="/#Innovator" className="hover:underline me-4 md:me-6">Innovator</Link>
+                            </li>
+                            <li>
                                 <button onClick={() => setOpenPolicy(true)} className="hover:underline me-4 md:me-6">Privacy Policy</button>
                             </li>
                             <li>

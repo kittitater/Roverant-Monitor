@@ -105,7 +105,7 @@ export default function Home() {
 
 
         {/* Meet our innovator */}
-        <div className="bg-white  sm:py-16 ">
+        <div id="Innovator" className="bg-white  sm:py-16 ">
           <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
             <div className="max-w-2xl">
               <h2 className="text-4xl font-semibold tracking-tight text-gray-900 ">
