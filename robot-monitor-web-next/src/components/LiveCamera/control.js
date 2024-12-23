@@ -9,7 +9,7 @@ const MotorControl = () => {
     const motorSocket = useRef(null);
 
     //const wsUrl = "ws://192.168.1.84:8000/ws/control"; // Replace with your server's WebSocket URL
-    const wsUrl = "wss://47.236.37.29/ws/client/control?token=e2f4f679d67d61c9b1e9b7a98eb84e4951aa5f76228048d5c9276f27e01579cc"; // Replace with your server's WebSocket URL
+    const wsUrl = "wss://roverant.mooo.com/ws/client/control?token=e2f4f679d67d61c9b1e9b7a98eb84e4951aa5f76228048d5c9276f27e01579cc"; // Replace with your server's WebSocket URL
     //const wsUrl = 'wss://10.35.27.180:443/ws/client/control?token=e2f4f679d67d61c9b1e9b7a98eb84e4951aa5f76228048d5c9276f27e01579cc'; // WebSocket URL from environment
     //const wsUrl = "ws://192.168.31.26:8000/ws/control"; // Replace with your server's WebSocket URL
     //const wsUrl = "ws://47.236.37.29:8000/ws/client?token=32e1ec9d3b16a6867acad889878b8c32d9ff2ae0692a170c9c137fb3cf9c1d11"; // Replace with your server's WebSocket URL
