@@ -1,12 +1,12 @@
-
 'use client'
 
 import Link from "next/link";
 import Footer from "../components/footer";
 
 import { useState } from "react";
-import { Field, Label, Switch } from '@headlessui/react'
+import { Field, Switch, Label } from '@headlessui/react'
 
+import axios from 'axios';
 
 const people = [
   {
@@ -39,21 +39,102 @@ const people = [
   // More people...
 ];
 
-const links = [
-  { name: 'Open roles', href: '#' },
-  { name: 'Internship program', href: '#' },
-  { name: 'Our values', href: '#' },
-  { name: 'Meet our leadership', href: '#' },
-]
-const stats = [
-  { name: 'Offices worldwide', value: '12' },
-  { name: 'Full-time colleagues', value: '300+' },
-  { name: 'Hours per week', value: '40' },
-  { name: 'Paid time off', value: 'Unlimited' },
-]
-
 export default function Home() {
-  const [agreed, setAgreed] = useState(false)
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phoneNumber: '',
+    message: '',
+  });
+
+  const [agreed, setAgreed] = useState(false);
+  const [status, setStatus] = useState({ loading: false, success: null, error: null });
+
+  // New state for validation errors
+  const [errors, setErrors] = useState({});
+
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Clear error for the field as user types
+    setErrors((prev) => ({ ...prev, [name]: '' }));
+  };
+
+  // Validate form fields
+  const validate = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required.';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required.';
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
+    ) {
+      newErrors.email = 'Invalid email address.';
+    }
+
+    if (!formData.phoneNumber.trim()) {
+      newErrors.phoneNumber = 'Phone number is required.';
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required.';
+    }
+
+    if (!agreed) {
+      newErrors.agreed = 'You must agree to the privacy policy.';
+    }
+
+    return newErrors;
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Perform client-side validation
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setStatus({ loading: true, success: null, error: null });
+
+    try {
+      const response = await axios.post('https://api-roverant.mooo.com/contacts/', {
+        name: formData.name,
+        email: formData.email,
+        phone_number: formData.phoneNumber,
+        message: formData.message,
+        agreed_to_policies: agreed, // Ensure this field is sent
+      });
+
+      setStatus({ loading: false, success: 'Your message has been submitted!', error: null });
+      setFormData({ name: '', email: '', phoneNumber: '', message: '' });
+      setAgreed(false);
+      setErrors({});
+    } catch (error) {
+      if (error.response && error.response.data && Array.isArray(error.response.data.detail)) {
+        const serverErrors = {};
+        error.response.data.detail.forEach((err) => {
+          const field = err.loc[err.loc.length - 1]; // Assumes the last item in loc is the field name
+          serverErrors[field] = err.msg;
+        });
+        setErrors(serverErrors);
+        setStatus({ loading: false, success: null, error: 'Please fix the errors below.' });
+      } else {
+        setStatus({ loading: false, success: null, error: error.message || 'Something went wrong!' });
+      }
+    }
+  };
+
 
   return (
     <>
@@ -93,7 +174,7 @@ export default function Home() {
                         href="/#About"
                         className="text-sm font-semibold leading-6 text-gray-900"
                       >
-                       About Roverant <span aria-hidden="true">→</span>
+                        About Roverant <span aria-hidden="true">→</span>
                       </Link>
                     </div>
                   </div>
@@ -125,7 +206,7 @@ export default function Home() {
                 <li key={person.name}>
                   <div className="flex items-center gap-x-6">
                     <img
-                      alt=""
+                      alt={person.name}
                       src={person.imageUrl}
                       className="h-16 w-16 rounded-full"
                     />
@@ -173,7 +254,7 @@ export default function Home() {
         {/* About Roverant */}
         <div id="About" className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32">
           <img
-            alt=""
+            alt="Background"
             src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
             className="absolute inset-0 -z-10 size-full object-cover object-right md:object-center"
           />
@@ -232,84 +313,142 @@ export default function Home() {
             <h2 className="text-left text-5xl font-semibold tracking-tight text-gray-900">Contact Roverant</h2>
             <p className="mt-6 text-lg text-gray-600">You can either get in touch with us via information or fill in the form </p>
           </div>
-          <form action="#" method="POST" className="mx-auto max-w-xl ">
+
+          {/* Updated Form with Validation */}
+          <form onSubmit={handleSubmit} className="mx-auto max-w-xl p-6 bg-gray-50 rounded-xl">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+              {/* Name Field */}
               <div className="sm:col-span-2">
-                <label htmlFor="first-name" className="block text-sm/6 font-semibold text-gray-900">
-                  How can we called you
+                <label htmlFor="name" className="block text-sm font-semibold text-gray-900">
+                  How can we call you <span className="text-red-500">*</span>
                 </label>
                 <div className="mt-2.5">
                   <input
                     id="name"
                     name="name"
                     type="text"
+                    placeholder="Home"
                     autoComplete="name"
-                    className="block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-black"
+                    value={formData.name}
+                    onChange={handleChange}
+
+                    className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.name
+                      ? 'outline-red-500 ring-2 ring-red-500'
+                      : 'outline-gray-300 focus:outline-2 focus:outline-offset-2 focus:outline-black'
+                      } placeholder:text-gray-400`}
                   />
+                  {errors.name && (
+                    <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+                  )}
                 </div>
               </div>
-              <div >
-                <label htmlFor="email" className="block text-sm/6 font-semibold text-gray-900">
-                  Email
+
+              {/* Email Field */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-900">
+                  Email <span className="text-red-500">*</span>
                 </label>
                 <div className="mt-2.5">
                   <input
                     id="email"
                     name="email"
                     type="email"
+                    placeholder="example@mail.com"
                     autoComplete="email"
-                    className="block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-black"
+                    value={formData.email}
+                    onChange={handleChange}
+
+                    className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.email
+                      ? 'outline-red-500 ring-2 ring-red-500'
+                      : 'outline-gray-300 focus:outline-2 focus:outline-offset-2 focus:outline-black'
+                      } placeholder:text-gray-400`}
                   />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                  )}
                 </div>
               </div>
+
+              {/* Phone Number Field */}
               <div>
-                <label htmlFor="phone-number" className="block text-sm/6 font-semibold text-gray-900">
-                  Phone number
+                <label htmlFor="phone-number" className="block text-sm font-semibold text-gray-900">
+                  Phone number <span className="text-red-500">*</span>
                 </label>
                 <div className="mt-2.5">
-                  <div className="flex rounded-xl bg-white outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-black">
-
+                  <div className={`flex rounded-xl bg-white outline ${errors.phoneNumber
+                    ? 'outline-red-500 ring-2 ring-red-500'
+                    : 'outline-gray-300 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-black'
+                    }`}>
                     <input
                       id="phone-number"
-                      name="phone-number"
+                      name="phoneNumber"
                       type="text"
                       maxLength={10}
                       placeholder="123-456-7890"
                       autoComplete="tel"
-                      className="block min-w-0 grow py-2 px-3.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
+                      value={formData.phoneNumber}
+                      onChange={handleChange}
+
+                      className="block min-w-0 grow py-2 px-3.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm"
                     />
                   </div>
+                  {errors.phoneNumber && (
+                    <p className="mt-1 text-sm text-red-600">{errors.phoneNumber}</p>
+                  )}
                 </div>
               </div>
+
+              {/* Message Field */}
               <div className="sm:col-span-2">
-                <label htmlFor="message" className="block text-sm/6 font-semibold text-gray-900">
-                  Message
+                <label htmlFor="message" className="block text-sm font-semibold text-gray-900">
+                  Message <span className="text-red-500">*</span>
                 </label>
                 <div className="mt-2.5">
                   <textarea
                     id="message"
                     name="message"
-                    rows={4}
-                    className="block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-black"
-                    defaultValue={''}
+                    placeholder="Anything you want to tell us"
+                    rows={3}
+                    value={formData.message}
+                    onChange={handleChange}
+
+                    className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.message
+                      ? 'outline-red-500 ring-2 ring-red-500'
+                      : 'outline-gray-300 focus:outline-2 focus:outline-offset-2 focus:outline-black'
+                      } placeholder:text-gray-400`}
                   />
+                  {errors.message && (
+                    <p className="mt-1 text-sm text-red-600">{errors.message}</p>
+                  )}
                 </div>
               </div>
+
+              {/* Agreement Switch */}
               <Field className="flex gap-x-4 sm:col-span-2">
                 <div className="flex h-6 items-center">
                   <Switch
                     checked={agreed}
-                    onChange={setAgreed}
-                    className="group flex w-8 flex-none cursor-pointer rounded-full bg-gray-200 p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black data-[checked]:bg-black"
+                    onChange={(value) => {
+                      setAgreed(value);
+                      // Clear the error for the "agreed" field when toggled
+                      setErrors((prev) => ({ ...prev, agreed: '' }));
+                    }}
+                    className={`${agreed
+                        ? 'bg-black'
+                        : errors.agreed
+                          ? 'bg-gray-200 ring-2 ring-red-500'
+                          : 'bg-gray-200'
+                      } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${errors.agreed ? 'ring-2 ring-offset-2 ring-red-500' : 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black'
+                      }`}
                   >
                     <span className="sr-only">Agree to policies</span>
                     <span
-                      aria-hidden="true"
-                      className="size-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out group-data-[checked]:translate-x-3.5"
+                      className={`${agreed ? 'translate-x-6' : 'translate-x-1'
+                        } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
                     />
                   </Switch>
                 </div>
-                <Label className="text-sm/6 text-gray-600">
+                <Label className="text-sm text-gray-600">
                   By selecting this, you agree to our{' '}
                   <a href="#" className="font-semibold text-gray-900">
                     privacy&nbsp;policy
@@ -317,15 +456,28 @@ export default function Home() {
                   .
                 </Label>
               </Field>
+              {errors.agreed && (
+                <div className="sm:col-span-2">
+                  <p className="mt-1 text-sm text-red-600">{errors.agreed}</p>
+                </div>
+              )}
             </div>
+
+            {/* Submit Button */}
             <div className="mt-10">
               <button
                 type="submit"
-                className="block w-full rounded-xl bg-black px-3.5 py-2.5 text-center text-sm font-semibold text-white  shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-2 "
+                disabled={status.loading}
+                className={`block w-full rounded-xl bg-black px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-2 ${status.loading ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
               >
-                Submit
+                {status.loading ? 'Submitting...' : 'Submit'}
               </button>
             </div>
+
+            {/* Status Messages */}
+            {status.success && <p className="mt-4 text-green-600">{status.success}</p>}
+            {status.error && <p className="mt-4 text-red-600">{status.error}</p>}
           </form>
         </div>
 
