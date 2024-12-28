@@ -296,7 +296,7 @@ export default function Home() {
         </div>
 
         {/* Contact Roverant */}
-        <div id="Contact" className="isolate flex flex-row bg-white px-6 py-24 sm:py-32 lg:px-8">
+        <div id="Contact" className="isolate grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2 bg-white px-6 py-24 sm:py-32 lg:px-8">
           <div
             aria-hidden="true"
             className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
@@ -310,8 +310,8 @@ export default function Home() {
             />
           </div>
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-left text-5xl font-semibold tracking-tight text-gray-900">Contact Roverant</h2>
-            <p className="mt-6 text-lg text-gray-600">You can either get in touch with us via information or fill in the form </p>
+            <h2 className="text-center md:text-left text-4xl sm:text-5xl font-semibold tracking-tight text-gray-900">Contact Roverant</h2>
+            <p className=" text-center md:text-left mt-6 text-lg text-gray-600">You can either get in touch with us via information or fill in the form </p>
           </div>
 
           {/* Updated Form with Validation */}
@@ -434,10 +434,10 @@ export default function Home() {
                       setErrors((prev) => ({ ...prev, agreed: '' }));
                     }}
                     className={`${agreed
-                        ? 'bg-black'
-                        : errors.agreed
-                          ? 'bg-gray-200 ring-2 ring-red-500'
-                          : 'bg-gray-200'
+                      ? 'bg-black'
+                      : errors.agreed
+                        ? 'bg-gray-200 ring-2 ring-red-500'
+                        : 'bg-gray-200'
                       } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${errors.agreed ? 'ring-2 ring-offset-2 ring-red-500' : 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black'
                       }`}
                   >
