@@ -15,10 +15,9 @@ const people = [
     imageUrl: "../profile_image/Home.jpg",
   },
   {
-    name: "Dr.Prapong Prechaprapranwong", // Aj.Prapong
-    role: "Project Advisor",
-    imageUrl:
-      "https://www.cpe.kmutt.ac.th/media/staff/ad30341f-05af-4e85-aa37-9a60759b09ed.jpg",
+    name: "Kittitat Songsakseree", // Giang
+    role: "Project Founder",
+    imageUrl: "../profile_image/Giang.jpg",
   },
   {
     name: "Woradon Samphanphaisarn", // Pond
@@ -26,15 +25,16 @@ const people = [
     imageUrl: "../profile_image/Pond.jpg",
   },
   {
+    name: "Dr.Prapong Prechaprapranwong", // Aj.Prapong
+    role: "Project Advisor",
+    imageUrl:
+      "https://www.cpe.kmutt.ac.th/media/staff/ad30341f-05af-4e85-aa37-9a60759b09ed.jpg",
+  },
+  {
     name: "Dr.Kharittha Jangsamsi", // Aj.Karitta
     role: "Project Co-Advisor",
     imageUrl:
       "https://www.cpe.kmutt.ac.th/media/staff/8305a7ae-fab3-4422-910a-e04ac25182d4.jpg",
-  },
-  {
-    name: "Kittitat Songsakseree", // Giang
-    role: "Project Founder",
-    imageUrl: "../profile_image/Giang.jpg",
   },
   // More people...
 ];
@@ -360,7 +360,7 @@ export default function Home() {
 
                     className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.email
                       ? 'outline-red-500 ring-2 ring-red-500'
-                      : 'outline-gray-300 focus:outline-2 focus:outline-offset-2 focus:outline-black'
+                      : 'outline-gray-300 outline-2 focus:outline-2 focus:outline-offset-2 focus:outline-black'
                       } placeholder:text-gray-400`}
                   />
                   {errors.email && (
