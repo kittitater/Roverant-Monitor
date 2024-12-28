@@ -327,7 +327,7 @@ export default function Home() {
                     id="name"
                     name="name"
                     type="text"
-                    placeholder="Home"
+                    placeholder="Your preffered name"
                     autoComplete="name"
                     value={formData.name}
                     onChange={handleChange}
@@ -407,7 +407,7 @@ export default function Home() {
                   <textarea
                     id="message"
                     name="message"
-                    placeholder="Anything you want to tell us"
+                    placeholder="Anything you want to tell us..."
                     rows={3}
                     value={formData.message}
                     onChange={handleChange}
