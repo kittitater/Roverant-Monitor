@@ -142,7 +142,7 @@ export default function Footer() {
                                             For any questions, concerns, or requests regarding this Privacy Policy or your data, please contact us at:
                                         </p>
                                         <ul className="mb-1 list-disc list-inside">
-                                            <li><strong>Email:</strong> roverant.development@gmail.com</li>
+                                            <li><strong>Email:</strong> roverantdevelopmentgroup@gmail.com</li>
                                             <li><strong>Address:</strong> Computer engineering department, KMUTT </li>
                                         </ul>
 
@@ -235,7 +235,7 @@ export default function Footer() {
                                             For questions regarding this License Agreement, please contact us at:
                                         </p>
                                         <ul>
-                                            <li><strong>Email:</strong> roverant.development@gmail.com</li>
+                                            <li><strong>Email:</strong> roverantdevelopmentgroup@gmail.com</li>
                                             <li><strong>Address:</strong> Computer engineering department, KMUTT</li>
                                         </ul>
                                     </div>
