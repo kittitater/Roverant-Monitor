@@ -334,7 +334,7 @@ export default function Home() {
 
                     className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.name
                       ? 'outline-red-500 ring-2 ring-red-500'
-                      : 'outline-gray-300 focus:outline-2 focus:outline-offset-2 focus:outline-black'
+                      : 'outline-gray-300 outline-2 focus:outline-2 focus:outline-black'
                       } placeholder:text-gray-400`}
                   />
                   {errors.name && (
@@ -360,7 +360,7 @@ export default function Home() {
 
                     className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.email
                       ? 'outline-red-500 ring-2 ring-red-500'
-                      : 'outline-gray-300 outline-2 focus:outline-2 focus:outline-offset-2 focus:outline-black'
+                      : 'outline-gray-300 outline-2 focus:outline-2  focus:outline-black'
                       } placeholder:text-gray-400`}
                   />
                   {errors.email && (
@@ -375,10 +375,6 @@ export default function Home() {
                   Phone number <span className="text-red-500">*</span>
                 </label>
                 <div className="mt-2.5">
-                  <div className={`flex rounded-xl bg-white outline ${errors.phoneNumber
-                    ? 'outline-red-500 ring-2 ring-red-500'
-                    : 'outline-gray-300 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-black'
-                    }`}>
                     <input
                       id="phone-number"
                       name="phoneNumber"
@@ -389,9 +385,12 @@ export default function Home() {
                       value={formData.phoneNumber}
                       onChange={handleChange}
 
-                      className="block min-w-0 grow py-2 px-3.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm"
+                      className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.phoneNumber
+                        ? 'outline-red-500 ring-2 ring-red-500'
+                        : 'outline-gray-300 outline-2 focus:outline-2  focus:outline-black'
+                        } placeholder:text-gray-400`}
                     />
-                  </div>
+
                   {errors.phoneNumber && (
                     <p className="mt-1 text-sm text-red-600">{errors.phoneNumber}</p>
                   )}
@@ -414,7 +413,7 @@ export default function Home() {
 
                     className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.message
                       ? 'outline-red-500 ring-2 ring-red-500'
-                      : 'outline-gray-300 focus:outline-2 focus:outline-offset-2 focus:outline-black'
+                      : 'outline-gray-300 outline-2 focus:outline-2 focus:outline-black'
                       } placeholder:text-gray-400`}
                   />
                   {errors.message && (
