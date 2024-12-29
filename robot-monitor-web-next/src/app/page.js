@@ -190,7 +190,7 @@ export default function Home() {
 
 
         {/* Meet our innovator */}
-        <div id="Innovator" className="bg-white  sm:py-16 ">
+        <div id="Innovator" className="bg-white  sm:py-32 ">
           <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
             <div className="max-w-2xl">
               <h2 className="text-4xl font-semibold tracking-tight text-gray-900 ">
@@ -286,21 +286,25 @@ export default function Home() {
               className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20"
             />
           </div>
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl lg:mx-0">
-              <h2 className="text-5xl font-semibold tracking-tight text-white ">About Roverant</h2>
-              <p className="mt-8 text-pretty text-lg font-medium text-white ">
-                Roverant is an innovative security solution designed to enhance safety and efficiency in indoor environments. This mobile robot autonomously patrols designated areas, leveraging advanced technologies like Simultaneous Localization and Mapping (SLAM), YOLO-based object detection, and integrated sensors. Its primary objective is to detect unauthorized individuals, suspicious objects, and abnormal activities while providing real-time video feeds and alerts to security personnel via a web application.
-              </p>
-              <p className="mt-8 text-pretty text-lg font-medium text-white ">
-                The project combines robust hardware, including the NVIDIA Jetson TX2 and LIDAR, with cutting-edge software technologies such as FastAPI and Next.js. The web-based interface enables live monitoring, control, and reporting, ensuring seamless communication between the robot and human operators. Designed for facilities like offices, campuses, medical department, and co-working spaces, Roverant aims to improve security coverage, reduce human error, and streamline security operations.
-              </p>
-            </div>
+          <div className="mx-auto grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2 max-w-7xl px-6 lg:px-24">
+            {/* <div className="mx-auto grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2"> */}
+              <div className="my-auto max-w-2xl text-left">
+                <h2 className="text-center md:text-left text-4xl sm:text-5xl font-semibold tracking-tight text-white ">About Roverant</h2>
+              </div>
+              <div className="mx-auto max-w-2xl text-left">
+                <p className=" text-pretty text-lg font-medium text-white ">
+                  Roverant is an innovative security solution designed to enhance safety and efficiency in indoor environments. This mobile robot autonomously patrols designated areas, leveraging advanced technologies like Simultaneous Localization and Mapping (SLAM), YOLO-based object detection, and integrated sensors. Its primary objective is to detect unauthorized individuals, suspicious objects, and abnormal activities while providing real-time video feeds and alerts to security personnel via a web application.
+                </p>
+                <p className="mt-8 text-pretty text-lg font-medium text-white ">
+                  The project combines robust hardware, including the NVIDIA Jetson TX2 and LIDAR, with cutting-edge software technologies such as FastAPI and Next.js. The web-based interface enables live monitoring, control, and reporting, ensuring seamless communication between the robot and human operators. Designed for facilities like offices, campuses, medical department, and co-working spaces, Roverant aims to improve security coverage, reduce human error, and streamline security operations.
+                </p>
+              </div>
+            {/* </div> */}
           </div>
         </div>
 
         {/* Contact Roverant */}
-        <div id="Contact" className="isolate grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2 bg-white px-6 py-24 sm:py-32 lg:px-8">
+        <div id="Contact" className="isolate grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2 bg-white px-6 py-24 sm:py-32 lg:px-24">
           <div
             aria-hidden="true"
             className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
@@ -313,7 +317,7 @@ export default function Home() {
               className="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
             />
           </div>
-          <div className="mx-auto max-w-2xl text-center">
+          <div className="mx-auto max-w-2xl text-left">
             <h2 className="text-center md:text-left text-4xl sm:text-5xl font-semibold tracking-tight text-gray-900">Contact Roverant</h2>
             <p className=" text-center md:text-left mt-6 text-lg text-gray-600">You can either get in touch with us via information or fill in the form </p>
           </div>
