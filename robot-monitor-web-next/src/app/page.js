@@ -333,7 +333,7 @@ export default function Home() {
                     onChange={handleChange}
 
                     className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.name
-                      ? 'outline-red-500 ring-2 ring-red-500'
+                      ? 'outline-red-500 outline-2 outline-2-red-500'
                       : 'outline-gray-300 outline-2 focus:outline-2 focus:outline-black'
                       } placeholder:text-gray-400`}
                   />
@@ -359,7 +359,7 @@ export default function Home() {
                     onChange={handleChange}
 
                     className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.email
-                      ? 'outline-red-500 ring-2 ring-red-500'
+                      ? 'outline-red-500 outline-2 outline-2-red-500'
                       : 'outline-gray-300 outline-2 focus:outline-2  focus:outline-black'
                       } placeholder:text-gray-400`}
                   />
@@ -386,7 +386,7 @@ export default function Home() {
                       onChange={handleChange}
 
                       className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.phoneNumber
-                        ? 'outline-red-500 ring-2 ring-red-500'
+                        ? 'outline-red-500 outline-2 outline-2-red-500'
                         : 'outline-gray-300 outline-2 focus:outline-2  focus:outline-black'
                         } placeholder:text-gray-400`}
                     />
@@ -412,7 +412,7 @@ export default function Home() {
                     onChange={handleChange}
 
                     className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.message
-                      ? 'outline-red-500 ring-2 ring-red-500'
+                      ? 'outline-red-500 outline-2 outline-2-red-500'
                       : 'outline-gray-300 outline-2 focus:outline-2 focus:outline-black'
                       } placeholder:text-gray-400`}
                   />
@@ -435,7 +435,7 @@ export default function Home() {
                     className={`${agreed
                       ? 'bg-black'
                       : errors.agreed
-                        ? 'bg-gray-200 ring-2 ring-red-500'
+                        ? 'bg-gray-200 outline-2 outline-2-red-500'
                         : 'bg-gray-200'
                       } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${errors.agreed ? 'ring-2 ring-offset-2 ring-red-500' : 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black'
                       }`}
