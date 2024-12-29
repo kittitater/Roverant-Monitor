@@ -83,6 +83,8 @@ export default function Home() {
 
     if (!formData.phoneNumber.trim()) {
       newErrors.phoneNumber = 'Phone number is required.';
+    } else if (!/^0\d{8,}$/.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = 'Invalid phone number.';
     }
 
     if (!formData.message.trim()) {
