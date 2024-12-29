@@ -4,7 +4,7 @@ import Link from "next/link";
 import Footer from "../components/footer";
 
 import { useState } from "react";
-import { Field, Switch, Label } from '@headlessui/react'
+import { Field, Switch, Label, Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
 
 import axios from 'axios';
 
@@ -40,6 +40,8 @@ const people = [
 ];
 
 export default function Home() {
+
+  const [openPolicy, setOpenPolicy] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -315,7 +317,7 @@ export default function Home() {
           </div>
 
           {/* Updated Form with Validation */}
-          <form onSubmit={handleSubmit} className="mx-auto max-w-xl p-6 bg-gray-50 rounded-xl">
+          <form onSubmit={handleSubmit} className="mx-auto max-w-xl p-6 bg-gray-50 rounded-2xl">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
               {/* Name Field */}
               <div className="sm:col-span-2">
@@ -375,21 +377,21 @@ export default function Home() {
                   Phone number <span className="text-red-500">*</span>
                 </label>
                 <div className="mt-2.5">
-                    <input
-                      id="phone-number"
-                      name="phoneNumber"
-                      type="text"
-                      maxLength={10}
-                      placeholder="123-456-7890"
-                      autoComplete="tel"
-                      value={formData.phoneNumber}
-                      onChange={handleChange}
+                  <input
+                    id="phone-number"
+                    name="phoneNumber"
+                    type="text"
+                    maxLength={10}
+                    placeholder="123-456-7890"
+                    autoComplete="tel"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
 
-                      className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.phoneNumber
-                        ? 'outline-red-500 outline-2 outline-2-red-500'
-                        : 'outline-gray-300 outline-2 focus:outline-2  focus:outline-black'
-                        } placeholder:text-gray-400`}
-                    />
+                    className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.phoneNumber
+                      ? 'outline-red-500 outline-2 outline-2-red-500'
+                      : 'outline-gray-300 outline-2 focus:outline-2  focus:outline-black'
+                      } placeholder:text-gray-400`}
+                  />
 
                   {errors.phoneNumber && (
                     <p className="mt-1 text-sm text-red-600">{errors.phoneNumber}</p>
@@ -449,9 +451,9 @@ export default function Home() {
                 </div>
                 <Label className="text-sm text-gray-600">
                   By selecting this, you agree to our{' '}
-                  <a href="#" className="font-semibold text-gray-900">
+                  <button onClick={() => setOpenPolicy(true)} className="font-semibold text-gray-900">
                     privacy&nbsp;policy
-                  </a>
+                  </button>
                   .
                 </Label>
               </Field>
@@ -480,6 +482,133 @@ export default function Home() {
           </form>
         </div>
 
+        {/* Privacy Policy Modal */}
+        <Dialog open={openPolicy} onClose={() => setOpenPolicy(false)} className="relative z-10">
+          <DialogBackdrop
+            transition
+            className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+          />
+
+          <div className="fixed inset-0 z-10 overflow-y-auto">
+            <div className="flex min-h-20 items-end justify-center p-4 text-center sm:items-center sm:p-0 ">
+              <DialogPanel
+                transition
+                className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-10 sm:w-full sm:max-w-5xl data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
+              >
+                <div className="bg-white px-4 pb-4 pt-5 sm:p-10 sm:pb-4 ">
+                  <div className="sm:flex sm:items-start">
+
+                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                      <h1 className="text-5xl font-medium mb-8">Roverant - Privacy Policy</h1>
+                      <p className="text-xl mb-2"><strong>Effective Date:</strong> 1 January 2025 </p>
+                      <p className="mb-2">
+                        This Privacy Policy explains how data is collected, used, and protected by the Roverant Monitoring Web Application (the “Application”). By using the Application, you agree to the terms of this Privacy Policy.
+                      </p>
+
+                      <h2 className="text-lg font-semibold mt-5 mb-3">1. Data Collection</h2>
+                      <p className="mb-1">We collect and process the following types of data:</p>
+                      <h3 className="font-semibold">1.1 Personal Information</h3>
+                      <p>
+                        Information such as your name, email address, and login credentials required for user authentication and account management.
+                      </p>
+                      <h3 className="font-semibold">1.2 Operational Data</h3>
+                      <p>
+                        Data generated by the Roverant robot, including patrol routes, real-time video feeds, object detection alerts, and incident logs.
+                      </p>
+                      <h3 className="font-semibold">1.3 Usage Data</h3>
+                      <p>
+                        Information regarding your interactions with the Application, such as access times, navigation behavior, and system performance metrics, to enhance user experience.
+                      </p>
+
+                      <h2 className="text-lg font-semibold mt-5 mb-3">2. Purpose of Data Use</h2>
+                      <p className="mb-1">The collected data is used for the following purposes:</p>
+                      <ul class="list-disc list-inside">
+                        <li>To facilitate real-time monitoring and control of the Roverant robot.</li>
+                        <li>To ensure the safety and security of monitored areas.</li>
+                        <li>To log and analyze patrol data for incident review and auditing.</li>
+                        <li>To enhance and improve the functionality, reliability, and security of the Application.</li>
+                      </ul>
+
+                      <h2 className="text-lg font-semibold mt-5 mb-3">3. Data Sharing and Disclosure</h2>
+                      <p className="mb-1">
+                        We value your privacy and ensure that your data is shared only under the following conditions:
+                      </p>
+                      <ul className="mb-1 list-disc list-inside">
+                        <li>
+                          <strong>With Trusted Service Providers:</strong> Engaged to assist in the operation and maintenance of the Application under strict confidentiality obligations.
+                        </li>
+                        <li>
+                          <strong>When Required by Law:</strong> To comply with applicable legal obligations or government requests.
+                        </li>
+                        <li>
+                          <strong>In Emergency Situations:</strong> When necessary to protect the safety and security of individuals or property.
+                        </li>
+                      </ul>
+                      <p>We do not sell or rent your personal data to third parties.</p>
+
+                      <h2 className="text-lg font-semibold mt-5 mb-3">4. Data Security</h2>
+                      <p>
+                        We are committed to safeguarding your data through:
+                      </p>
+                      <ul className="mb-1 list-disc list-inside">
+                        <li>Encrypted communication protocols (SSL/TLS) to secure data transmission.</li>
+                        <li>Secure data storage systems with limited access to authorized personnel.</li>
+                        <li>Regular security audits, software updates, and adherence to industry standards for data protection.</li>
+                      </ul>
+                      <p>
+                        Despite our efforts, no system is entirely immune to risks. Users are encouraged to take appropriate security precautions.
+                      </p>
+
+                      <h2 className="text-lg font-semibold mt-5 mb-3">5. Data Retention</h2>
+                      <p>
+                        We retain data only as long as necessary to fulfill the purposes outlined in this policy or comply with legal and operational requirements. Upon the expiration of retention periods, data will be securely deleted or anonymized.
+                      </p>
+
+                      <h2 className="text-lg font-semibold mt-5 mb-3">6. Your Rights</h2>
+                      <p className="mb-1">As a user, you have the following rights regarding your personal data:</p>
+                      <ul className="mb-1 list-disc list-inside">
+                        <li><strong>Access:</strong> You can request details about the data we have collected about you.</li>
+                        <li><strong>Correction:</strong> You may request updates to correct inaccurate or incomplete information.</li>
+                        <li><strong>Deletion:</strong> You can request the deletion of your data, subject to any legal or operational obligations.</li>
+                      </ul>
+                      <p>
+                        To exercise these rights, please contact us using the information in Section 8.
+                      </p>
+
+                      <h2 className="text-lg font-semibold mt-5 mb-3">7. Updates to This Privacy Policy</h2>
+                      <p>
+                        We may periodically update this Privacy Policy to reflect changes in legal requirements, technology, or operational practices. Notifications of significant updates will be provided through the Application or via email.
+                      </p>
+
+                      <h2 className="text-lg font-semibold mt-5 mb-3">8. Contact Information</h2>
+                      <p className="mb-1">
+                        For any questions, concerns, or requests regarding this Privacy Policy or your data, please contact us at:
+                      </p>
+                      <ul className="mb-1 list-disc list-inside">
+                        <li><strong>Email:</strong> roverantdevelopmentgroup@gmail.com</li>
+                        <li><strong>Address:</strong> Computer engineering department, KMUTT </li>
+                      </ul>
+
+                      <p>
+                        This Privacy Policy is governed by the applicable laws of [Insert Jurisdiction]. By using the Application, you consent to the collection, use, and disclosure of your data as described in this Privacy Policy.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                  <button
+                    type="button"
+
+                    onClick={() => setOpenPolicy(false)}
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-5 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                  >
+                    Close
+                  </button>
+                </div>
+              </DialogPanel>
+            </div>
+          </div>
+        </Dialog>
 
       </div>
       <Footer />
