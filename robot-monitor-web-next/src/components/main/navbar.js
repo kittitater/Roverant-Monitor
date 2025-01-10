@@ -10,17 +10,16 @@ const user = {
         'https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg',
 }
 const navigation = [
-    { name: 'Dashboard', href: 'dashboard', current: false },
-    { name: 'My Rover', href: 'my-rover', current: false },
+    { name: 'Dashboard', href: '/dashboard', current: false },
+    { name: 'My Rover', href: '/my-rover', current: false },
     { name: 'Tracking Map', href: '#', current: false },
-    { name: 'Live Camera', href: 'live-camera', current: false },
+    { name: 'Live Camera', href: '/live-camera', current: false },
     { name: 'Patrol Log', href: '#', current: false },
     { name: 'Alert History', href: '#', current: false },
     { name: 'Summary Report', href: '#', current: false },
 ]
 const userNavigation = [
-    { name: 'Your Profile', href: '#' },
-    { name: 'Settings', href: '#' },
+    { name: 'Setting', href: '/setting/my-profile' },
     { name: 'Sign out', href: '#' },
 ]
 
@@ -92,22 +91,23 @@ export default function Navbar() {
                                         </div>
                                         <MenuItems
                                             transition
-                                            className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-2 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                                            className="absolute right-0 z-10 mt-3 w-44 origin-top-right rounded-2xl bg-white shadow-lg ring-2 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                                         >
                                             {userNavigation.map((item) => (
                                                 <MenuItem key={item.name}>
-                                                    <a
+                                                    <Link
                                                         href={item.href}
-                                                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
+                                                        className="block px-3 py-2 text-sm font-medium m-2 ring-2 rounded-xl ring-black text-black hover:bg-black hover:text-white  "
                                                     >
                                                         {item.name}
-                                                    </a>
+                                                    </Link>
                                                 </MenuItem>
                                             ))}
                                         </MenuItems>
                                     </Menu>
                                 </div>
                             </div>
+
                             <div className="-mr-2 flex md:hidden">
                                 {/* Mobile menu button */}
                                 <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md  p-2 ring-2 ring-black text-black hover:bg-black hover:text-white focus:outline-none  ">
