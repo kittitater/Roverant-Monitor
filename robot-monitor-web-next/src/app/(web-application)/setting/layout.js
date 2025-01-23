@@ -1,18 +1,16 @@
 
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from "next/link";
 import Layout from "@/components/main/layout";
 
 
 const navigation = [
     { name: 'My Profile', href: 'my-profile', current: false },
+    { name: 'My Rover ', href: 'my-rover', current: false },
     { name: 'General', href: 'general', current: false },
-    { name: 'N/A', href: '#', current: false },
-    // { name: 'N/A', href: '#', current: false },
-    // { name: 'N/A', href: '#', current: false },
-    // { name: 'N/A', href: '#', current: false },
-    // { name: 'N/A', href: '#', current: false },
+    { name: 'menu 2', href: '#', current: false },
+    { name: 'menu 3', href: '#', current: false },
+    { name: 'menu 4', href: '#', current: false },
+    { name: 'menu 5', href: '#', current: false },
 ]
 
 
@@ -35,7 +33,7 @@ export default function SettingLayout({ children }) {
                                         href={item.href}
                                         aria-current={item.current ? 'page' : undefined}
                                         className={classNames(
-                                            item.current ? 'bg-black text-white ring-black ring-2' : 'text-black ring-black ring-2 hover:bg-black hover:text-white',
+                                            item.current ? 'bg-black text-white ring-black ring-2' : 'text-black  hover:bg-black hover:text-white',
                                             'w-32 rounded-xl px-3 py-2 text-sm font-medium',
                                         )}
                                     >

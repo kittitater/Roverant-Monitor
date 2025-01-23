@@ -90,42 +90,42 @@ export default function LiveCamera() {
   }, [wsUrl]);
 
   return (
-    <Layout>
-      <div className="grid justify-items-center py-2 space-y-5">
-        <h1 className="text-2xl mb-3 font-semibold">Live Camera</h1>
-        <div className="flex flex-col space-x-10">
-          <div className="flex flex-row space-x-20 items-center">
-            {/* Canvas for video stream */}
-            <canvas
-              ref={canvasRef}
-              style={{ border: "2px solid black" }}
-              width="640"
-              height="480"
-              className="rounded-3xl"
-            />
-            <div className="flex flex-col">
-              {/* WebSocket connection status */}
-              <div className="mb-3 justify-center flex flex-row space-x-5">
-                <h1 className="text-lg font-semibold">Camera connection status:</h1>
-                <span
-                  className={`font-semibold text-lg ${wsStatus === "Connected"
-                    ? "text-green-500"
-                    : wsStatus === "Error"
-                      ? "text-red-500"
-                      : "text-yellow-500"
-                    }`}
-                >
-                  {wsStatus}
-                </span>
-              </div>
-              <div>
-                <MotorControl />
+      <Layout>
+        <div className="grid justify-items-center py-2 space-y-5">
+          <h1 className="text-2xl mb-3 font-semibold">Live Camera</h1>
+          <div className="flex flex-col space-x-10">
+            <div className="flex flex-row space-x-20 items-center">
+              {/* Canvas for video stream */}
+              <canvas
+                ref={canvasRef}
+                style={{ border: "2px solid black" }}
+                width="640"
+                height="480"
+                className="rounded-3xl"
+              />
+              <div className="flex flex-col">
+                {/* WebSocket connection status */}
+                <div className="mb-3 justify-center flex flex-row space-x-5">
+                  <h1 className="text-lg font-semibold">Camera connection status:</h1>
+                  <span
+                    className={`font-semibold text-lg ${wsStatus === "Connected"
+                      ? "text-green-500"
+                      : wsStatus === "Error"
+                        ? "text-red-500"
+                        : "text-yellow-500"
+                      }`}
+                  >
+                    {wsStatus}
+                  </span>
+                </div>
+                <div>
+                  <MotorControl />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </Layout>
+      </Layout>
   );
 }
 
