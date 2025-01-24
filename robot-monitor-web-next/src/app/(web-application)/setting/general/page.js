@@ -4,7 +4,7 @@ export default function General() {
     return (
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <section className="bg-white dark:bg-gray-900">
-                <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
+                <div className=" px-4 mx-auto max-w-screen-xl text-center  lg:px-6">
                     <div className="mx-auto max-w-screen-sm">
                         <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
                             This is the General Page in the Setting Section
