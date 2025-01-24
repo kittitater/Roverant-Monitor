@@ -152,9 +152,9 @@ export default function SignInPage() {
           {errorMsg && <p className="mt-10 text-red-600 text-center">Error: {errorMsg}</p>}
           <p className="mt-10 text-center text-sm/6 text-gray-500">
             Problem with Sign In?{' '}
-            <a href="/#Contact" className="font-semibold text-indigo-600 hover:text-indigo-500">
+            <Link href="/#Contact" className="font-semibold text-indigo-600 hover:text-indigo-500">
               Contact Us
-            </a>
+            </Link>
           </p>
         </div>
       </div>
