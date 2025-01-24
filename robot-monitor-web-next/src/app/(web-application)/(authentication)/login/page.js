@@ -97,23 +97,17 @@ export default function SignInPage() {
   // Show loading state if authentication is being checked
   if (loading) {
     return (
-      <>
-        <main className="grid h-screen place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
-          <div className="text-center justify-items-center">
-            <img
-              src="/monitor.png"
-              alt="Loading..."
-              className="w-32 h-32 animate-spin justify-center"
-            />
-            <h1 className="mt-10 text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
-              Hold On
-            </h1>
-            <p className="mt-6 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
-              Let us thinking something for you...
-            </p>
-          </div>
-        </main>
-      </>
+      <main className="flex h-screen items-center justify-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+        <div className="text-center">
+          <img src="/monitor.png" alt="Loading..." className="w-32 h-32 animate-spin mx-auto" />
+          <h1 className="mt-10 text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
+            Hold On
+          </h1>
+          <p className="mt-6 text-lg font-medium text-gray-500 sm:text-xl/8">
+            Let us thinking something for you...
+          </p>
+        </div>
+      </main>
     );
   }
 

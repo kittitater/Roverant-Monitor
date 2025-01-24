@@ -18,7 +18,7 @@ function ProtectedComponent({ children }) {
   const pathname = usePathname();
 
   // Define public routes
-  const publicRoutes = ["/login","/"]; // Add more if needed
+  const publicRoutes = ["/login", "/"]; // Add more if needed
 
   React.useEffect(() => {
     if (!loading && !user && !publicRoutes.includes(pathname)) {
