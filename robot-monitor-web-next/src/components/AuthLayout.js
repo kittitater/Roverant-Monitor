@@ -26,7 +26,7 @@ function ProtectedComponent({ children }) {
     }
   }, [user, loading, router, pathname]);
 
-  if (!loading) {
+  if (loading) {
     return (
       <main className="flex h-screen items-center justify-center bg-white px-6 py-24 sm:py-32 lg:px-8">
         <div className="text-center">
