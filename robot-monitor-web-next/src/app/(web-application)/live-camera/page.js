@@ -1,6 +1,6 @@
 "use client";
 
-import Layout from "@/components/main/layout";
+import Layout from "@/components/main/AppLayout";
 // import ChatComponent from "@/components/LiveCamera/chat";
 import MotorControl from "@/components/live-camera/control";
 import React, { useEffect, useRef, useState } from "react";

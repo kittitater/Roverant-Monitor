@@ -1,6 +1,6 @@
 "use client";
 
-import Layout from "@/components/main/layout";
+import Layout from "@/components/main/AppLayout";
 import { useEffect, useState } from "react";
 import axios from "axios";
 

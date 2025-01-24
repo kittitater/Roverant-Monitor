@@ -73,23 +73,60 @@ export default function SignInPage() {
     }
   }
 
+  // // useEffect to handle redirection if user is already authenticated
+  // useEffect(() => {
+  //   if (!loading && user) {
+  //     router.push("/dashboard");
+  //   }
+  // }, [user, loading, router]);
+
+  // async function handleGoogleSignIn() {
+  //   setErrorMsg("");
+
+  //   try {
+  //     const provider = new GoogleAuthProvider();
+  //     await signInWithPopup(auth, provider);
+  //     // No need to setUser here; AuthContext will handle it
+  //     // The useEffect will redirect once user state is updated
+  //   } catch (err) {
+  //     console.error("Error during sign-in:", err);
+  //     setErrorMsg(err.message);
+  //   }
+  // }
+
+  // Show loading state if authentication is being checked
+  if (loading) {
+    return (
+      <>
+        <main className="grid h-screen place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+          <div className="text-center justify-items-center">
+            <img
+              src="/monitor.png"
+              alt="Loading..."
+              className="w-32 h-32 animate-spin "
+            />
+            <h1 className="mt-10 text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
+              Hold On
+            </h1>
+            <p className="mt-6 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
+              Let us thinking something for you...
+            </p>
+          </div>
+        </main>
+      </>
+    );
+  }
+
   return (
-    // <div style={styles.container}>
-    //   <h1>Sign in</h1>
-    //   <button onClick={handleGoogleSignIn} style={styles.button}>
-    //     Sign in with Google
-    //   </button>
-    //   {errorMsg && <p style={styles.error}>Error: {errorMsg}</p>}
-    // </div>
     <>
-      <div className="flex h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="flex h-screen flex-1 flex-col justify-left px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             alt="Your Company"
             src="/monitor.png"
-            className="mx-auto h-10 w-auto"
+            className="mx-auto h-32 w-auto"
           />
-          <h2 className="text-black mt-5 text-center font-semibold text-2xl">Roverant Monitor</h2>
+          <h2 className="text-black mt-5 text-center font-semibold text-4xl">Roverant Monitor</h2>
           <h2 className="mt-5 text-center text-xl font-bold tracking-tight text-gray-900">
             Sign in to your account
           </h2>

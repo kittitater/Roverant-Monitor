@@ -1,6 +1,6 @@
 "use client";
 
-import Layout from "@/components/main/layout";
+import Layout from "@/components/main/AppLayout";
 // import Navbar from "@/components/navbar";
 // import Footer from "@/components/footer";
 
