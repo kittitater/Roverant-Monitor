@@ -112,7 +112,7 @@ export default function Home() {
     setStatus({ loading: true, success: null, error: null });
 
     try {
-      const response = await axios.post('https://api-roverant.mooo.com/contacts/', {
+      const response = await axios.post('https://api-roverant.mooo.com/contact/', {
         name: formData.name,
         email: formData.email,
         phone_number: formData.phoneNumber,
