@@ -18,7 +18,7 @@ function ProtectedComponent({ children }) {
   const pathname = usePathname();
 
   // Define public routes
-  const publicRoutes = ["/login"]; // Add more if needed
+  const publicRoutes = ["/login","/"]; // Add more if needed
 
   React.useEffect(() => {
     if (!loading && !user && !publicRoutes.includes(pathname)) {
@@ -30,7 +30,7 @@ function ProtectedComponent({ children }) {
     return (
       <main className="grid h-screen place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
         <div className="text-center justify-items-center">
-          <img src="/monitor.png" alt="Loading..." className="w-32 h-32 animate-spin " />
+          <img src="/monitor.png" alt="Loading..." className="w-32 h-32 animate-spin justify-center" />
           <h1 className="mt-10 text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
             Hold On
           </h1>

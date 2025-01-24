@@ -103,7 +103,7 @@ export default function SignInPage() {
             <img
               src="/monitor.png"
               alt="Loading..."
-              className="w-32 h-32 animate-spin "
+              className="w-32 h-32 animate-spin justify-center"
             />
             <h1 className="mt-10 text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
               Hold On
@@ -119,7 +119,7 @@ export default function SignInPage() {
 
   return (
     <>
-      <div className="flex h-screen flex-1 flex-col justify-left px-6 py-12 lg:px-8">
+      <div className="flex h-screen flex-1 flex-col justify-center px-4 py-6 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             alt="Your Company"
