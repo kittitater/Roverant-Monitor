@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react"; // Import useEffect
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/app/(web-application)/(authentication)/firebase/firebase"; // Import the Firebase auth module
@@ -16,10 +16,10 @@ export default function SignInPage() {
 
   useEffect(() => {
     console.log("Auth state changed:", { user, loading }); // Debug log
-    if (user) {
+    if (!loading && user) {
       console.log("User is authenticated. Redirecting to /dashboard.");
       router.push("/dashboard");
-    } else if (!user) {
+    } else if (!loading && !user) {
       console.log("No authenticated user. Staying on sign-in page.");
     }
   }, [user, loading, router]);
@@ -30,10 +30,11 @@ export default function SignInPage() {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+      const firebaseUser = result.user;
 
       // Obtain the Firebase ID token
-      const idToken = await user.getIdToken();
+      const idToken = await firebaseUser.getIdToken();
+      console.log("Firebase ID Token:", idToken); // Debug log
 
       const res = await fetch(`https://api-roverant.mooo.com/user/register`, {
         method: "POST",
@@ -41,19 +42,20 @@ export default function SignInPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: user.displayName,
+          username: firebaseUser.displayName,
           role: "user", // Or any default role
-          id_token: idToken, // Pass the ID token in the request body
+          id_token: idToken, // Ensure backend expects 'id_token'
         }),
       });
 
       if (!res.ok) {
         const errorData = await res.json();
+        console.error("Registration failed:", errorData);
         throw new Error(`Failed to register user: ${errorData.detail || res.status}`);
       }
 
       const data = await res.json();
-      // data should be the registered user information
+      console.log("Registration successful:", data); // Debug log
 
       // Set user info in AuthContext
       setUser({
@@ -65,34 +67,13 @@ export default function SignInPage() {
         created_at: data.created_at,
       });
 
-      // Redirect to the home page or any protected route
+      // Redirect to the dashboard
       router.push("/dashboard");
     } catch (err) {
       console.error("Error during sign-in:", err);
       setErrorMsg(err.message);
     }
   }
-
-  // // useEffect to handle redirection if user is already authenticated
-  // useEffect(() => {
-  //   if (!loading && user) {
-  //     router.push("/dashboard");
-  //   }
-  // }, [user, loading, router]);
-
-  // async function handleGoogleSignIn() {
-  //   setErrorMsg("");
-
-  //   try {
-  //     const provider = new GoogleAuthProvider();
-  //     await signInWithPopup(auth, provider);
-  //     // No need to setUser here; AuthContext will handle it
-  //     // The useEffect will redirect once user state is updated
-  //   } catch (err) {
-  //     console.error("Error during sign-in:", err);
-  //     setErrorMsg(err.message);
-  //   }
-  // }
 
   // Show loading state if authentication is being checked
   if (loading) {
@@ -104,7 +85,7 @@ export default function SignInPage() {
             Hold On
           </h1>
           <p className="mt-6 text-lg font-medium text-gray-500 sm:text-xl/8">
-            Let us thinking something for you...
+            Let us think something for you...
           </p>
         </div>
       </main>
@@ -115,11 +96,7 @@ export default function SignInPage() {
     <>
       <div className="flex h-screen flex-1 flex-col justify-center px-4 py-6 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            alt="Your Company"
-            src="/monitor.png"
-            className="mx-auto h-32 w-auto"
-          />
+          <img alt="Your Company" src="/monitor.png" className="mx-auto h-32 w-auto" />
           <h2 className="text-black mt-5 text-center font-semibold text-4xl">Roverant Monitor</h2>
           <h2 className="mt-5 text-center text-xl font-bold tracking-tight text-gray-900">
             Sign in to your account
@@ -127,25 +104,20 @@ export default function SignInPage() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-
-          <div className=" flex items-center justify-center gap-x-6">
+          <div className="flex items-center justify-center gap-x-6">
             <button
               onClick={handleGoogleSignIn}
               className="rounded-xl bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Sign in with Google
             </button>
-            <Link
-              href="/"
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
+            <Link href="/" className="text-sm font-semibold leading-6 text-gray-900">
               Home Page <span aria-hidden="true">→</span>
             </Link>
-
           </div>
           {errorMsg && <p className="mt-10 text-red-600 text-center">Error: {errorMsg}</p>}
           <p className="mt-10 text-center text-sm/6 text-gray-500">
-            Problem with Sign In?{' '}
+            Problem with Sign In?{" "}
             <Link href="/#Contact" className="font-semibold text-indigo-600 hover:text-indigo-500">
               Contact Us
             </Link>
@@ -153,9 +125,6 @@ export default function SignInPage() {
         </div>
       </div>
     </>
-
-
   );
 }
-
 

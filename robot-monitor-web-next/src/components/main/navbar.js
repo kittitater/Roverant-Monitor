@@ -206,6 +206,7 @@ import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthCo
 import { signOut } from "firebase/auth";
 import { auth } from "@/app/(web-application)/(authentication)/firebase/firebase"; // Adjust the path as needed
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const navigation = [
     { name: "Dashboard", href: "/dashboard", current: false },
@@ -229,21 +230,26 @@ function classNames(...classes) {
 export default function Navbar() {
     const { user, loading, setUser } = useAuth();
     const router = useRouter();
+    const [logoutLoading, setLogoutLoading] = useState(false);
 
     // Handle Logout
     const handleLogout = async () => {
+        setLogoutLoading(true);
         try {
             await signOut(auth);
             setUser(null); // Clear user from context
             router.push("/login"); // Redirect to Sign-In page
         } catch (error) {
             console.error("Error during logout:", error);
-            // Optionally, display an error message to the user
+            // Optionally: display an error message to the user
+        } finally {
+            setLogoutLoading(false);
         }
     };
 
+
     // While loading, you might want to show a loading state or nothing
-    if (loading) {
+    if (loading || logoutLoading) {
         return (
             <main className="flex h-screen items-center justify-center bg-white px-6 py-24 sm:py-32 lg:px-8">
                 <div className="text-center">
