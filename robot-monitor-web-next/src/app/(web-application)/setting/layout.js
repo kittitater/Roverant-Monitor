@@ -7,10 +7,10 @@ const navigation = [
     { name: 'My Profile', href: 'my-profile', current: false },
     { name: 'My Rover ', href: 'my-rover', current: false },
     { name: 'General', href: 'general', current: false },
-    { name: 'menu 2', href: '#', current: false },
-    { name: 'menu 3', href: '#', current: false },
-    { name: 'menu 4', href: '#', current: false },
-    { name: 'menu 5', href: '#', current: false },
+    // { name: 'menu 2', href: '#', current: false },
+    // { name: 'menu 3', href: '#', current: false },
+    // { name: 'menu 4', href: '#', current: false },
+    // { name: 'menu 5', href: '#', current: false },
 ]
 
 
