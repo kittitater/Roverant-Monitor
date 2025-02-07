@@ -1,135 +1,170 @@
+// app/live-camera/page.js
 "use client";
 
-import Layout from "@/components/main/AppLayout";
-// import ChatComponent from "@/components/LiveCamera/chat";
-import MotorControl from "@/components/live-camera/control";
 import React, { useEffect, useRef, useState } from "react";
+import Layout from "@/components/main/AppLayout";
+import MotorControl from "@/components/live-camera/control";
+import { FaVideoSlash, FaVideo } from "react-icons/fa";
+import { useRoverContext } from "@/components/main/RoverContext";
 
-export default function LiveCamera() {
-  const canvasRef = useRef(null);
+export default function LiveCameraPage() {
+  // Retrieve the currently selected rover from context
+  const { selectedRover } = useRoverContext();
+  // e.g. selectedRover = { id: "rover1", name: "Rover #1", wsUrl: "wss://..." }
+
+  const [isStreaming, setIsStreaming] = useState(true);
   const [wsStatus, setWsStatus] = useState("Connecting...");
-  const pendingImageBitmap = useRef(null); // Holds the next frame to be drawn
-  const isDrawing = useRef(false); // Prevents overlapping draw calls
 
-  //const wsUrl = 'wss://10.35.27.180:443/ws/client/video?token=32e1ec9d3b16a6867acad889878b8c32d9ff2ae0692a170c9c137fb3cf9c1d11'; // WebSocket URL from environment
-  const wsUrl = 'wss://api-roverant.mooo.com/ws/client/video?token=32e1ec9d3b16a6867acad889878b8c32d9ff2ae0692a170c9c137fb3cf9c1d11'; // WebSocket URL from environment
-  //const wsUrl = 'ws://192.168.1.84:8000/ws/video'; // WebSocket URL from environment
+  const videoSocketRef = useRef(null);
+  const canvasRef = useRef(null);
+  const pendingImageBitmap = useRef(null);
+  const isDrawing = useRef(false);
 
   useEffect(() => {
+    const wsUrl = selectedRover?.wsUrl;
+    if (!wsUrl) {
+      setWsStatus("Unavailable");
+      return;
+    }
+
+    if (!isStreaming) {
+      videoSocketRef.current?.close();
+      setWsStatus("Unavailable");
+      return;
+    }
+
+    setWsStatus("Connecting...");
     const videoSocket = new WebSocket(wsUrl);
-    videoSocket.binaryType = "arraybuffer"; // Ensure WebSocket receives binary data
+    videoSocketRef.current = videoSocket;
+    videoSocket.binaryType = "arraybuffer";
 
     const canvas = canvasRef.current;
     if (!canvas) {
-      console.error("Canvas element not found.");
+      console.error("Canvas not found.");
       setWsStatus("Error");
       return;
     }
-    const context = canvas.getContext("2d");
-    if (!context) {
-      console.error("Failed to get canvas context.");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      console.error("Failed to get 2D context.");
       setWsStatus("Error");
       return;
     }
 
-    // Rendering Loop: Draw frame onto canvas
+    // Drawing loop
     const drawFrame = () => {
       if (pendingImageBitmap.current && !isDrawing.current) {
         isDrawing.current = true;
         try {
-          const imageBitmap = pendingImageBitmap.current;
+          const img = pendingImageBitmap.current;
           pendingImageBitmap.current = null;
-
-          // Draw the frame on the canvas
-          context.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
-          imageBitmap.close(); // Free resources
-        } catch (error) {
-          console.error("Error drawing frame:", error);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          img.close();
+        } catch (err) {
+          console.error("Error drawing frame:", err);
         } finally {
           isDrawing.current = false;
         }
       }
-      requestAnimationFrame(drawFrame); // Continue rendering loop
+      requestAnimationFrame(drawFrame);
     };
-    requestAnimationFrame(drawFrame); // Start rendering loop
+    requestAnimationFrame(drawFrame);
 
-    // WebSocket Handlers
-    videoSocket.onopen = () => {
-      //console.log("WebSocket connection opened for video.");
-      setWsStatus("Connected");
-    };
-
-    videoSocket.onmessage = async (event) => {
-      if (event.data instanceof ArrayBuffer) {
+    // WebSocket events
+    videoSocket.onopen = () => setWsStatus("Connected");
+    videoSocket.onmessage = async (evt) => {
+      if (evt.data instanceof ArrayBuffer) {
         try {
-          const blob = new Blob([event.data], { type: "image/jpeg" });
+          const blob = new Blob([evt.data], { type: "image/jpeg" });
           const imageBitmap = await createImageBitmap(blob);
-          pendingImageBitmap.current = imageBitmap; // Store the frame for rendering
+          pendingImageBitmap.current = imageBitmap;
         } catch (error) {
-          console.error("Error processing frame:", error);
+          console.error("Error creating imageBitmap:", error);
         }
-      } else {
-        console.error("Unsupported data type received:", typeof event.data);
       }
     };
-
     videoSocket.onerror = (error) => {
       console.error("WebSocket error:", error);
       setWsStatus("Error");
     };
-
     videoSocket.onclose = () => {
-      console.log("WebSocket connection closed.");
-      setWsStatus("Unavailable");
+      setWsStatus(isStreaming ? "Error" : "Unavailable");
     };
 
-    // Clean up WebSocket connection and animation frame on unmount
     return () => {
       videoSocket.close();
     };
-  }, [wsUrl]);
+  }, [selectedRover, isStreaming]);
+
+  function getStatusColor() {
+    switch (wsStatus) {
+      case "Connected":
+        return "text-green-500";
+      case "Error":
+        return "text-red-500";
+      case "Unavailable":
+        return "text-yellow-500";
+      default: // "Connecting..."
+        return "text-yellow-500";
+    }
+  }
 
   return (
-      <Layout>
-        <div className="grid justify-items-center py-2 space-y-5">
-          <h1 className="text-2xl mb-3 font-semibold">Live Camera</h1>
-          <div className="flex flex-col space-x-10">
-            <div className="flex flex-row space-x-20 items-center">
-              {/* Canvas for video stream */}
-              <canvas
-                ref={canvasRef}
-                style={{ border: "2px solid black" }}
-                width="640"
-                height="480"
-                className="rounded-3xl"
-              />
-              <div className="flex flex-col">
-                {/* WebSocket connection status */}
-                <div className="mb-3 justify-center flex flex-row space-x-5">
-                  <h1 className="text-lg font-semibold">Camera connection status:</h1>
-                  <span
-                    className={`font-semibold text-lg ${wsStatus === "Connected"
-                      ? "text-green-500"
-                      : wsStatus === "Error"
-                        ? "text-red-500"
-                        : "text-yellow-500"
-                      }`}
-                  >
-                    {wsStatus}
-                  </span>
-                </div>
-                <div>
-                  <MotorControl />
-                </div>
-              </div>
+    <Layout>
+      <div className="mx-auto max-w-7xl px-4 py-6 space-y-6">
+        <section className="text-center">
+          <h1 className="text-3xl font-extrabold">Live Camera</h1>
+          <p className="mt-2 text-gray-500">
+            Streaming from: <strong>{selectedRover?.name}</strong>
+          </p>
+        </section>
+
+        {/* Toggle streaming */}
+        <div className="flex justify-center">
+          <button
+            onClick={() => setIsStreaming(!isStreaming)}
+            className={`px-4 py-2 rounded-xl font-semibold text-white flex items-center space-x-2 ${
+              isStreaming ? "bg-red-600 hover:bg-red-700" : "bg-green-600 hover:bg-green-700"
+            }`}
+          >
+            {isStreaming ? (
+              <>
+                <FaVideoSlash />
+                <span>Stop Streaming</span>
+              </>
+            ) : (
+              <>
+                <FaVideo />
+                <span>Start Streaming</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Camera + Motor Control */}
+        <section className="flex flex-col lg:flex-row lg:space-x-8 justify-center items-center space-y-6 lg:space-y-0">
+          {/* Canvas */}
+          <div className="relative">
+            <canvas
+              ref={canvasRef}
+              width={640}
+              height={480}
+              style={{ border: "2px solid black" }}
+              className="rounded-3xl"
+            />
+            {/* Status overlay */}
+            <div className="absolute top-2 left-2 bg-white rounded px-2 py-1 shadow">
+              <span className={`font-semibold text-sm ${getStatusColor()}`}>{wsStatus}</span>
             </div>
           </div>
-        </div>
-      </Layout>
+
+          {/* Motor Control */}
+          <div className="flex flex-col items-center bg-white rounded shadow p-4 w-full max-w-sm">
+            <h2 className="text-lg font-semibold mb-2">Rover Control</h2>
+            <MotorControl />
+          </div>
+        </section>
+      </div>
+    </Layout>
   );
 }
-
-
-
-
-
