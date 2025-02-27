@@ -9,7 +9,7 @@ const MotorControl = () => {
     const motorSocket = useRef(null);
 
     //const wsUrl = "ws://192.168.1.84:8000/ws/control"; // Replace with your server's WebSocket URL
-    const wsUrl = "wss://api-roverant.mooo.com/ws/client/control?token=e2f4f679d67d61c9b1e9b7a98eb84e4951aa5f76228048d5c9276f27e01579cc"; // Replace with your server's WebSocket URL
+    const wsUrl = "wss://api-roverant.mooo.com/ws/client/control?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb3Zlcl9pZCI6ImI3NTkzYzJjLTY5M2QtNDNhMS1iMzg5LTQ4ODU0YmE3ZDQ5NSIsImV4cCI6MTc3MDQwMjczMSwiaWF0IjoxNzM4ODY2NzMxLCJ0eXBlIjoicmVnaXN0cmF0aW9uIn0.pxJRBu9xAn9FaF0vynyfKyDceOOgLqFnXvUjHQoVRWs&rover_id=b7593c2c-693d-43a1-b389-48854ba7d495"; // Replace with your server's WebSocket URL
     //const wsUrl = 'wss://10.35.27.180:443/ws/client/control?token=e2f4f679d67d61c9b1e9b7a98eb84e4951aa5f76228048d5c9276f27e01579cc'; // WebSocket URL from environment
     //const wsUrl = "ws://192.168.31.26:8000/ws/control"; // Replace with your server's WebSocket URL
     //const wsUrl = "ws://47.236.37.29:8000/ws/client?token=32e1ec9d3b16a6867acad889878b8c32d9ff2ae0692a170c9c137fb3cf9c1d11"; // Replace with your server's WebSocket URL
@@ -32,7 +32,7 @@ const MotorControl = () => {
         };
 
         motorSocket.current.onerror = (error) => {
-            console.error("WebSocket error:", error);
+            console.log("WebSocket error:", error);
             setWsStatus("Error");
         };
 
@@ -111,8 +111,8 @@ const MotorControl = () => {
             {/* <h1 className="text-2xl font-semibold">Motor Control</h1> */}
 
             {/* WebSocket connection status */}
-            <div className="mb-24 flex flex-row space-x-5">
-                <h1 className="text-lg font-semibold">Control connection status :</h1>
+            <div className="mb-20 flex items-left flex-row space-x-5">
+                <h1 className="text-lg font-semibold">Motion Control :</h1>
                 <span
                     className={`font-semibold text-lg ${wsStatus === "Connected"
                         ? "text-green-500"
@@ -125,7 +125,7 @@ const MotorControl = () => {
                 </span>
             </div>
 
-            <p className="mt-10 text-sm text-gray-500">
+            <p className="mt-5 text-sm text-center text-gray-500">
                 Using <strong>W A S D Keys</strong> to control the security guard rover.
             </p>
         </div>

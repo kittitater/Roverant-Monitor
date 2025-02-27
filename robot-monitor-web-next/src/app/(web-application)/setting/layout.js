@@ -22,29 +22,31 @@ export default function SettingLayout({ children }) {
     return (
         <>
             <Layout>
-                <div className="min-h-full py-5 px-8">
-                    <div className="flex mx-auto justify-left divide-x divide-gray-200">
-                        <div className=" px-14 py-5 ">
-                            <h1 className="text-4xl mb-10 text-left font-semibold">Setting</h1>
-                            <div className="sticky top-10 flex flex-col w-32 items-baseline space-y-3 ">
-                                {navigation.map((item) => (
-                                    <Link
-                                        key={item.name}
-                                        href={item.href}
-                                        aria-current={item.current ? 'page' : undefined}
-                                        className={classNames(
-                                            item.current ? 'bg-black text-white ring-black ring-2' : 'text-black  hover:ring-black hover:ring-2 hover:text-black',
-                                            'w-32 rounded-xl px-3 py-2 text-sm font-medium',
-                                        )}
-                                    >
-                                        {item.name}
-                                    </Link>
-                                ))}
+                <main className="pt-[85px]">
+                    <div className="min-h-full py-5 px-8">
+                        <div className="flex mx-auto justify-left divide-x divide-gray-200">
+                            <div className="fixed px-14 py-5 ">
+                                <h1 className=" text-4xl mb-10 text-left font-semibold">Setting</h1>
+                                <div className=" flex flex-col w-32 items-baseline space-y-3 ">
+                                    {navigation.map((item) => (
+                                        <Link
+                                            key={item.name}
+                                            href={item.href}
+                                            aria-current={item.current ? 'page' : undefined}
+                                            className={classNames(
+                                                item.current ? 'bg-black text-white ring-black ring-2' : 'text-black  hover:ring-black hover:ring-2 hover:text-black',
+                                                'w-32 rounded-xl px-3 py-2 text-sm font-medium',
+                                            )}
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    ))}
+                                </div>
                             </div>
+                            <main className="w-full ml-60">{children}</main>
                         </div>
-                        <main className="w-full ">{children}</main>
                     </div>
-                </div>
+                </main>
             </Layout>
         </>
     )

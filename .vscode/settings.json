@@ -1,0 +1,16 @@
+{
+    "files.autoSaveWhenNoErrors": true,
+    "files.autoSaveWorkspaceFilesOnly": false,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "47.236.37.29",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Roverant Alibaba Cloud",
+            "database": "roverantdb",
+            "username": "admin",
+            "password": "Password123"
+        }
+    ]
+}

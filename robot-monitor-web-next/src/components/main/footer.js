@@ -10,8 +10,8 @@ export default function Footer() {
 
     return (
         <>
-            <footer className="">
-                <div className="w-full  mx-auto px-8 py-4 md:py-6 ">
+            <footer className="bg-white w-full">
+                <div className="  mx-auto px-8 py-4 md:py-6 ">
                     <div className="sm:flex sm:items-center sm:justify-between">
                         <Link href="/" className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
                             {/* <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo" /> */}

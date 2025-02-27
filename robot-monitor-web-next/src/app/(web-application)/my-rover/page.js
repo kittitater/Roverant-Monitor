@@ -3,6 +3,7 @@
 import Layout from "@/components/main/AppLayout";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Link from "next/link";
 
 export default function SelectRover() {
     const [rovers, setRovers] = useState([]);
@@ -34,34 +35,36 @@ export default function SelectRover() {
 
     return (
         <Layout>
-            <div className="max-w-[600px] justify-items-center min-h-screen mx-auto p-5">
-                <h1 className="text-2xl mb-3 font-semibold">My Rover</h1>
-                {error && <p style={{ color: "red" }}>Error: {error}</p>}
-                <ul>
-                    {rovers.map((rover) => (
-                        <li key={rover.robot_id} style={{ marginBottom: 8 }}>
-                            <button onClick={() => handleSelect(rover)}>
-                                {rover.name} ({rover.model}) / {rover.rover_id}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
+            <main className="pt-[85px]">
+                <div className="max-w-[600px] justify-items-center min-h-screen mx-auto p-5">
+                    <h1 className="text-2xl mb-3 font-semibold">My Rover</h1>
+                    {error && <p style={{ color: "red" }}>Error: {error}</p>}
+                    <ul>
+                        {rovers.map((rover) => (
+                            <li key={rover.robot_id} className="mb-2 ">
+                                <button onClick={() => handleSelect(rover)} className="text-left w-full p-2 ring-2 ring-black hover:bg-black hover:text-white rounded-xl">
+                                    {rover.name} ({rover.model}) / {rover.rover_id}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
 
-                {selected && (
-                    <div className="mt-16">
-                        <h3>Selected Rover</h3>
-                        <p>rover_id: {selected.rover_id}</p>
-                        <p>registration_token: {selected.registration_token}</p>
-                        <p>
-                            <a
-                                href={`/live-camera?rover_id=${selected.rover_id}&token=${selected.registration_token}`}
-                            >
-                                Go to live camera
-                            </a>
-                        </p>
-                    </div>
-                )}
-            </div>
+                    {selected && (
+                        <div className="mt-16">
+                            <h3>Selected Rover</h3>
+                            <p>rover_id: {selected.rover_id}</p>
+                            <p>registration_token: {selected.registration_token}</p>
+                            <p>
+                                <a
+                                    href={`/live-camera?rover_id=${selected.rover_id}&token=${selected.registration_token}`}
+                                >
+                                    Go to live camera
+                                </a>
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </main>
         </Layout>
     );
 }

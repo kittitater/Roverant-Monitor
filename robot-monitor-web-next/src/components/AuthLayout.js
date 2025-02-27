@@ -1,13 +1,16 @@
 "use client";
 
 import React from "react";
+import { RoverProvider } from "@/components/context/RoverContext";
 import { AuthProvider, useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
 
 export default function ClientLayout({ children }) {
   return (
     <AuthProvider>
-      <ProtectedComponent>{children}</ProtectedComponent>
+      <RoverProvider>
+        <ProtectedComponent>{children}</ProtectedComponent>
+      </RoverProvider>
     </AuthProvider>
   );
 }

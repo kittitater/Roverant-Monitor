@@ -168,12 +168,12 @@ export default function Home() {
                       Curious with our project ? Hit the "About Roverant" to get to know our project .
                     </p>
                     <div className="mt-10 flex items-center justify-center gap-x-6">
-                      <Link
+                      <a
                         href="/dashboard"
                         className="rounded-xl bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Try an amazing things now!!!
-                      </Link>
+                      </a>
                       <Link
                         href="/#About"
                         className="text-sm font-semibold leading-6 text-gray-900"
@@ -187,7 +187,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
 
         {/* Meet our innovator */}
         <div id="Innovator" className="bg-white  sm:py-32 ">
@@ -340,9 +339,9 @@ export default function Home() {
                     value={formData.name}
                     onChange={handleChange}
 
-                    className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.name
-                      ? 'outline-red-500 outline-2 outline-2-red-500'
-                      : 'outline-gray-300 outline-2 focus:outline-2 focus:outline-black'
+                    className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${errors.name
+                      ? 'ring-2  ring-red-500 focus:ring-red-500'
+                      : 'ring-2  ring-gray-300  focus:ring-black '
                       } placeholder:text-gray-400`}
                   />
                   {errors.name && (
@@ -366,9 +365,9 @@ export default function Home() {
                     value={formData.email}
                     onChange={handleChange}
 
-                    className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.email
-                      ? 'outline-red-500 outline-2 outline-2-red-500'
-                      : 'outline-gray-300 outline-2 focus:outline-2  focus:outline-black'
+                    className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${errors.email
+                      ? 'ring-2  ring-red-500 focus:ring-red-500'
+                      : 'ring-2  ring-gray-300  focus:ring-black '
                       } placeholder:text-gray-400`}
                   />
                   {errors.email && (
@@ -393,9 +392,9 @@ export default function Home() {
                     value={formData.phoneNumber}
                     onChange={handleChange}
 
-                    className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.phoneNumber
-                      ? 'outline-red-500 outline-2 outline-2-red-500'
-                      : 'outline-gray-300 outline-2 focus:outline-2  focus:outline-black'
+                    className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${errors.phoneNumber
+                      ? 'ring-2  ring-red-500 focus:ring-red-500'
+                      : 'ring-2  ring-gray-300  focus:ring-black '
                       } placeholder:text-gray-400`}
                   />
 
@@ -419,9 +418,9 @@ export default function Home() {
                     value={formData.message}
                     onChange={handleChange}
 
-                    className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.message
-                      ? 'outline-red-500 outline-2 outline-2-red-500'
-                      : 'outline-gray-300 outline-2 focus:outline-2 focus:outline-black'
+                    className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${errors.message
+                      ? 'ring-2  ring-red-500 focus:ring-red-500'
+                      : 'ring-2  ring-gray-300  focus:ring-black '
                       } placeholder:text-gray-400`}
                   />
                   {errors.message && (
@@ -445,7 +444,9 @@ export default function Home() {
                       : errors.agreed
                         ? 'bg-gray-200 outline-2 outline-2-red-500'
                         : 'bg-gray-200'
-                      } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${errors.agreed ? 'ring-2 ring-offset-2 ring-red-500' : 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black'
+                      } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${errors.agreed
+                        ? 'ring-2 ring-offset-2 ring-red-500'
+                        : 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black'
                       }`}
                   >
                     <span className="sr-only">Agree to policies</span>
