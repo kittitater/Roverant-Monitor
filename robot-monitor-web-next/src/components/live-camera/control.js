@@ -3,27 +3,37 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { useRover } from "@/components/context/RoverContext";
 
 const MotorControl = () => {
     const [wsStatus, setWsStatus] = useState("Connecting...");
     const motorSocket = useRef(null);
+    const { selectedRover } = useRover();
 
-    //const wsUrl = "ws://192.168.1.84:8000/ws/control"; // Replace with your server's WebSocket URL
-    const wsUrl = "wss://api-roverant.mooo.com/ws/client/control?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb3Zlcl9pZCI6ImI3NTkzYzJjLTY5M2QtNDNhMS1iMzg5LTQ4ODU0YmE3ZDQ5NSIsImV4cCI6MTc3MDQwMjczMSwiaWF0IjoxNzM4ODY2NzMxLCJ0eXBlIjoicmVnaXN0cmF0aW9uIn0.pxJRBu9xAn9FaF0vynyfKyDceOOgLqFnXvUjHQoVRWs&rover_id=b7593c2c-693d-43a1-b389-48854ba7d495"; // Replace with your server's WebSocket URL
-    //const wsUrl = 'wss://10.35.27.180:443/ws/client/control?token=e2f4f679d67d61c9b1e9b7a98eb84e4951aa5f76228048d5c9276f27e01579cc'; // WebSocket URL from environment
-    //const wsUrl = "ws://192.168.31.26:8000/ws/control"; // Replace with your server's WebSocket URL
-    //const wsUrl = "ws://47.236.37.29:8000/ws/client?token=32e1ec9d3b16a6867acad889878b8c32d9ff2ae0692a170c9c137fb3cf9c1d11"; // Replace with your server's WebSocket URL
-
-    // Local WebSocket connection for rover control : ws://192.168.1.84:8000/ws/control
-    // Public WebSocket connection for rover control : ws://kittitat.trueddns.com:45133/ws/control
-    // Gateway WebSocket connection for rover control : ws://47.236.37.29:8000/ws/client?token=32e1ec9d3b16a6867acad889878b8c32d9ff2ae0692a170c9c137fb3cf9c1d11
+    const getWsUrl = () => {
+        return selectedRover
+            ? `wss://api-roverant.mooo.com/ws/client/control?token=${selectedRover.registration_token}&rover_id=${selectedRover.rover_id}`
+            : null;
+    };
 
     useEffect(() => {
+        if (!selectedRover || !selectedRover.rover_id || !selectedRover.registration_token) {
+            setWsStatus("No rover selected");
+            return;
+        }
+
+        // Close the existing WebSocket connection before opening a new one
+        if (motorSocket.current) {
+            motorSocket.current.close();
+        }
+
+        const wsUrl = getWsUrl();
+        if (!wsUrl) return;
+
         motorSocket.current = new WebSocket(wsUrl);
 
         // WebSocket event handlers
         motorSocket.current.onopen = () => {
-            //console.log("WebSocket connection opened for motor control.");
             setWsStatus("Connected");
         };
 
@@ -41,23 +51,24 @@ const MotorControl = () => {
             setWsStatus("Unavailable");
         };
 
-        // Clean up WebSocket connection on component unmount
+        // Clean up WebSocket connection when component unmounts or rover changes
         return () => {
-            motorSocket.current.close();
+            if (motorSocket.current) {
+                motorSocket.current.close();
+            }
         };
-    }, []);
+    }, [selectedRover]); // ✅ Reconnects when `selectedRover` changes
 
     // Function to send commands to the server
     const sendCommand = (command) => {
         if (motorSocket.current && motorSocket.current.readyState === WebSocket.OPEN) {
             motorSocket.current.send(command);
-            //console.log(`Command sent: ${command}`);
         } else {
-            console.error("WebSocket is not connected.");
+            console.log("WebSocket is not connected.");
         }
     };
 
-    // Keyboard event handler
+    // Keyboard event handlers
     const handleKeyDown = (event) => {
         switch (event.key.toLowerCase()) {
             case "w":
@@ -108,18 +119,17 @@ const MotorControl = () => {
 
     return (
         <div className="grid justify-items-center py-0 space-y-1">
-            {/* <h1 className="text-2xl font-semibold">Motor Control</h1> */}
-
             {/* WebSocket connection status */}
             <div className="mb-20 flex items-left flex-row space-x-5">
                 <h1 className="text-lg font-semibold">Motion Control :</h1>
                 <span
-                    className={`font-semibold text-lg ${wsStatus === "Connected"
-                        ? "text-green-500"
-                        : wsStatus === "Error"
+                    className={`font-semibold text-lg ${
+                        wsStatus === "Connected"
+                            ? "text-green-500"
+                            : wsStatus === "Error"
                             ? "text-red-500"
                             : "text-yellow-500"
-                        }`}
+                    }`}
                 >
                     {wsStatus}
                 </span>
@@ -133,4 +143,3 @@ const MotorControl = () => {
 };
 
 export default MotorControl;
-

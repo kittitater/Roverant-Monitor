@@ -22,7 +22,7 @@ const navigation = [
     { name: "Live Camera", href: "/live-camera" },
     { name: "Patrol Log", href: "/patrol-log" },
     { name: "Alert History", href: "/alert-history" },
-    { name: "Summary Report", href: "#" },
+    { name: "Summary Report", href: "/summary-report" },
 ];
 
 const userNavigation = [
