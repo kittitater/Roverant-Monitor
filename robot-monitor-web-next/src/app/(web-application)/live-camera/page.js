@@ -284,7 +284,7 @@ export default function LiveCamera() {
           {/* Close Button */}
           <button
             onClick={closeModal}
-            className="absolute top-5 right-5 text-black bg-white p-3 rounded-xl hover:bg-gray-400"
+            className="absolute top-5 right-5 text-black bg-white p-2 rounded-xl hover:bg-gray-400"
           >
             <FaTimes size={24} />
           </button>
