@@ -47,37 +47,46 @@ export default function Home() {
   const [authToken, setAuthToken] = useState(null);
 
   // Fetch rovers data
-  useEffect(() => {
-    async function fetchRovers() {
-      try {
+  async function fetchRovers() {
+    try {
         const token = localStorage.getItem("auth_token");
         setAuthToken(token);
 
-        const response = await fetch(`${API_BASE_URL}/rover/my-rovers`, {
-          headers: {
-            "Authorization": token ? `Bearer ${token}` : "",
-            "Content-Type": "application/json"
-          }
+        const response = await fetch("https://api-roverant.mooo.com/rover/my-rovers", {
+            headers: {
+                "Authorization": token ? `Bearer ${token}` : "",
+                "Content-Type": "application/json"
+            }
         });
 
+        // Check if response is OK
         if (!response.ok) {
-          if (response.status === 403) {
-            console.error("Token expired or unauthorized.");
-            window.location.href = "/login";
-          }
-          throw new Error(`HTTP error! Status: ${response.status}`);
+            if (response.status === 403) {
+                console.error("Token expired or unauthorized. Redirecting...");
+                window.location.href = "/login"; // Redirect to login page
+                return;
+            }
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const data = await response.json();
-        setRovers(data.rovers || []); // Ensure data exists
-      } catch (error) {
-        console.error("Failed to fetch rovers:", error);
-        setRovers([]);
-      }
-    }
+        // Check if response is empty before parsing
+        const textResponse = await response.text();
+        if (!textResponse) {
+            console.error("Empty API response received.");
+            setRovers([]);
+            return;
+        }
 
-    fetchRovers();
-  }, []);
+        // Parse JSON safely
+        const data = JSON.parse(textResponse);
+        console.log("Parsed Data:", data);
+
+        setRovers(data.rovers || []);
+    } catch (error) {
+        console.error("Failed to fetch rovers:", error);
+        setRovers([]); // Prevent further errors
+    }
+}
 
   // Handle input changes
   const handleChange = (e) => {
