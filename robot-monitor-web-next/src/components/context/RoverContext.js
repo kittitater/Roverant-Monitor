@@ -6,21 +6,23 @@ export const RoverProvider = ({ children }) => {
     const [selectedRover, setSelectedRover] = useState(null);
 
     useEffect(() => {
-        const storedRover = localStorage.getItem("selectedRover");
+        try {
+            const storedRover = localStorage.getItem("selectedRover");
 
-        if (storedRover && storedRover !== "undefined") { // ✅ Prevent JSON.parse("undefined")
-            try {
-                setSelectedRover(JSON.parse(storedRover)); // ✅ Safe parsing
-            } catch (error) {
-                console.error("Error parsing selectedRover from localStorage:", error);
-                localStorage.removeItem("selectedRover"); // ❌ Remove corrupt data
+            if (storedRover && storedRover !== "undefined" && storedRover !== "null") {
+                setSelectedRover(JSON.parse(storedRover)); // ✅ Ensure valid JSON
+            } else {
+                localStorage.removeItem("selectedRover"); // ❌ Remove invalid data
             }
+        } catch (error) {
+            console.error("Error parsing selectedRover from localStorage:", error);
+            localStorage.removeItem("selectedRover"); // ❌ Remove invalid data
         }
     }, []);
 
     const updateRover = (rover) => {
         setSelectedRover(rover);
-        localStorage.setItem("selectedRover", JSON.stringify(rover)); // ✅ Store full object
+        localStorage.setItem("selectedRover", JSON.stringify(rover)); // ✅ Store object safely
     };
 
     return (
