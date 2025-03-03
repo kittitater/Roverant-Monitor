@@ -7,14 +7,20 @@ export const RoverProvider = ({ children }) => {
 
     useEffect(() => {
         const storedRover = localStorage.getItem("selectedRover");
-        if (storedRover) {
-            setSelectedRover(JSON.parse(storedRover)); // ✅ Parse full rover object from localStorage
+
+        if (storedRover && storedRover !== "undefined") { // ✅ Prevent JSON.parse("undefined")
+            try {
+                setSelectedRover(JSON.parse(storedRover)); // ✅ Safe parsing
+            } catch (error) {
+                console.error("Error parsing selectedRover from localStorage:", error);
+                localStorage.removeItem("selectedRover"); // ❌ Remove corrupt data
+            }
         }
     }, []);
 
     const updateRover = (rover) => {
         setSelectedRover(rover);
-        localStorage.setItem("selectedRover", JSON.stringify(rover)); // ✅ Store full object instead of just `rover_id`
+        localStorage.setItem("selectedRover", JSON.stringify(rover)); // ✅ Store full object
     };
 
     return (
