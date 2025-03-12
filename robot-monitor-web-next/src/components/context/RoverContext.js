@@ -3,26 +3,30 @@ import { createContext, useContext, useState, useEffect } from "react";
 const RoverContext = createContext();
 
 export const RoverProvider = ({ children }) => {
-    const [selectedRover, setSelectedRover] = useState(null);
+    const [selectedRover, setSelectedRover] = useState(undefined);
 
     useEffect(() => {
         try {
-            const storedRover = localStorage.getItem("selectedRover");
-
+            const storedRover = localStorage.getItem("roverant_selectedRover");
+            console.log("Raw storedRover:", storedRover);
             if (storedRover && storedRover !== "undefined" && storedRover !== "null") {
-                setSelectedRover(JSON.parse(storedRover)); // ✅ Ensure valid JSON
+                setSelectedRover(JSON.parse(storedRover));
             } else {
-                localStorage.removeItem("selectedRover"); // ❌ Remove invalid data
+                setSelectedRover(undefined);
+                localStorage.removeItem("roverant_selectedRover");
             }
         } catch (error) {
             console.error("Error parsing selectedRover from localStorage:", error);
-            localStorage.removeItem("selectedRover"); // ❌ Remove invalid data
+            setSelectedRover(undefined);
+            localStorage.removeItem("roverant_selectedRover");
         }
     }, []);
 
     const updateRover = (rover) => {
-        setSelectedRover(rover);
-        localStorage.setItem("selectedRover", JSON.stringify(rover)); // ✅ Store object safely
+        const newRover = rover === undefined ? undefined : rover;
+        console.log("Updating selectedRover to:", newRover);
+        setSelectedRover(newRover);
+        localStorage.setItem("roverant_selectedRover", JSON.stringify(newRover !== undefined ? newRover : null));
     };
 
     return (
