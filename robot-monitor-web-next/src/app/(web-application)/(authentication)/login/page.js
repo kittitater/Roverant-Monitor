@@ -85,7 +85,7 @@ export default function SignInPage() {
             Hold On
           </h1>
           <p className="mt-6 text-lg font-medium text-gray-500 sm:text-xl/8">
-            Let us think something for you...
+            Let us thinking something for you...
           </p>
         </div>
       </main>
@@ -94,8 +94,8 @@ export default function SignInPage() {
 
   return (
     <>
-      <div className="flex h-screen flex-1 flex-col justify-center px-4 py-6 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="flex h-screen flex-1 flex-col justify-center px-4 py-6 sm:px-6 lg:px-8 ">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm ">
           <img alt="Your Company" src="/monitor.png" className="mx-auto h-32 w-auto" />
           <h2 className="text-black mt-5 text-center font-semibold text-4xl">Roverant Monitor</h2>
           <h2 className="mt-5 text-center text-xl font-bold tracking-tight text-gray-900">

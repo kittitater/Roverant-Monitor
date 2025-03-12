@@ -3,7 +3,6 @@
 import Layout from "@/components/main/AppLayout";
 import MotorControl from "@/components/live-camera/control";
 import { FaVideoSlash, FaVideo, FaExpand, FaTimes } from "react-icons/fa";
-import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { useRover } from "@/components/context/RoverContext";
 
@@ -18,7 +17,6 @@ export default function LiveCamera() {
   const isDrawing = useRef(false);
   const { selectedRover } = useRover();
 
-  const [openPolicy, setOpenPolicy] = useState(false);
 
   const wsUrl = selectedRover
     ? `wss://api-roverant.mooo.com/ws/client/video?token=${selectedRover.registration_token}&rover_id=${selectedRover.rover_id}`
