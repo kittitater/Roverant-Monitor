@@ -1,525 +1,467 @@
-// "use client";
-
-// export default function MyRover() {
-//   return (
-//         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-//           <section className="bg-white dark:bg-gray-900">
-//             <div className=" px-4 mx-auto max-w-screen-xl text-center lg:px-6">
-//               <div className="mx-auto max-w-screen-sm">
-//                 <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-//                   This is the My Rover Page in the Setting Section
-//                 </h2>
-//                 <p className="mb-8 font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">
-//                   We are under development. Please come back later.
-//                 </p>
-//               </div>
-//               <div className="grid mb-8 lg:mb-12 lg:grid-cols-2">
-//                 <figure className="flex flex-col justify-center items-center p-8 text-center bg-gray-50 border-b border-gray-200 md:p-12 lg:border-r dark:bg-gray-800 dark:border-gray-700">
-//                   <blockquote className="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
-//                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-//                       Speechless with how easy this was to integrate
-//                     </h3>
-//                     <p className="my-4">
-//                       "I recently got my hands on Flowbite Pro, and holy crap,
-//                       I'm speechless with how easy this was to integrate within
-//                       my application. Most templates are a pain, code is
-//                       scattered, and near impossible to theme.
-//                     </p>
-//                     <p className="my-4">
-//                       Flowbite has code in one place and I'm not joking when I
-//                       say it took me a matter of minutes to copy the code,
-//                       customise it and integrate within a Laravel + Vue
-//                       application.
-//                     </p>
-//                     <p className="my-4">
-//                       If you care for your time, I hands down would go with
-//                       this."
-//                     </p>
-//                   </blockquote>
-//                   <figcaption className="flex justify-center items-center space-x-3">
-//                     <img
-//                       className="w-9 h-9 rounded-full"
-//                       src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/karen-nelson.png"
-//                       alt="profile picture"
-//                     />
-//                     <div className="space-y-0.5 font-medium dark:text-white text-left">
-//                       <div>Bonnie Green</div>
-//                       <div className="text-sm font-light text-gray-500 dark:text-gray-400">
-//                         Developer at Open AI
-//                       </div>
-//                     </div>
-//                   </figcaption>
-//                 </figure>
-//                 <figure className="flex flex-col justify-center items-center p-8 text-center bg-gray-50 border-b border-gray-200 md:p-12 dark:bg-gray-800 dark:border-gray-700">
-//                   <blockquote className="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
-//                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-//                       Solid foundation for any project
-//                     </h3>
-//                     <p className="my-4">
-//                       "FlowBite provides a robust set of design tokens and
-//                       components based on the popular Tailwind CSS framework.
-//                       From the most used UI components like forms and navigation
-//                       bars to the whole app screens designed both for desktop
-//                       and mobile, this UI kit provides a solid foundation for
-//                       any project."
-//                     </p>
-//                     <p className="my-4">
-//                       Designing with Figma components that can be easily
-//                       translated to the utility classes of Tailwind CSS is a
-//                       huge timesaver!"
-//                     </p>
-//                   </blockquote>
-//                   <figcaption className="flex justify-center items-center space-x-3">
-//                     <img
-//                       className="w-9 h-9 rounded-full"
-//                       src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png"
-//                       alt="profile picture"
-//                     />
-//                     <div className="space-y-0.5 font-medium dark:text-white text-left">
-//                       <div>Roberta Casas</div>
-//                       <div className="text-sm font-light text-gray-500 dark:text-gray-400">
-//                         Lead designer at Dropbox
-//                       </div>
-//                     </div>
-//                   </figcaption>
-//                 </figure>
-//                 <figure className="flex flex-col justify-center items-center p-8 text-center bg-gray-50 border-b border-gray-200 lg:border-b-0 md:p-12 lg:border-r dark:bg-gray-800 dark:border-gray-700">
-//                   <blockquote className="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
-//                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-//                       Mindblowing workflow and variants
-//                     </h3>
-//                     <p className="my-4">
-//                       "As someone who mainly designs in the browser, I've been a
-//                       casual user of Figma, but as soon as I saw and started
-//                       playing with FlowBite my mind was 🤯.
-//                     </p>
-//                     <p className="my-4">
-//                       Everything is so well structured and simple to use (I've
-//                       learnt so much about Figma by just using the toolkit).
-//                     </p>
-//                     <p className="my-4">
-//                       Aesthetically, the well designed components are beautiful
-//                       and will undoubtedly level up your next application."
-//                     </p>
-//                   </blockquote>
-//                   <figcaption className="flex justify-center items-center space-x-3">
-//                     <img
-//                       className="w-9 h-9 rounded-full"
-//                       src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
-//                       alt="profile picture"
-//                     />
-//                     <div className="space-y-0.5 font-medium dark:text-white text-left">
-//                       <div>Jese Leos</div>
-//                       <div className="text-sm font-light text-gray-500 dark:text-gray-400">
-//                         Software Engineer at Facebook
-//                       </div>
-//                     </div>
-//                   </figcaption>
-//                 </figure>
-//                 <figure className="flex flex-col justify-center items-center p-8 text-center bg-gray-50 border-gray-200 md:p-12 dark:bg-gray-800 dark:border-gray-700">
-//                   <blockquote className="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
-//                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-//                       Efficient Collaborating
-//                     </h3>
-//                     <p className="my-4">
-//                       "This is a very complex and beautiful set of elements.
-//                       Under the hood it comes with the best things from 2
-//                       different worlds: Figma and Tailwind.
-//                     </p>
-//                     <p className="my-4">
-//                       You have many examples that can be used to create a fast
-//                       prototype for your team."
-//                     </p>
-//                   </blockquote>
-//                   <figcaption className="flex justify-center items-center space-x-3">
-//                     <img
-//                       className="w-9 h-9 rounded-full"
-//                       src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png"
-//                       alt="profile picture"
-//                     />
-//                     <div className="space-y-0.5 font-medium dark:text-white text-left">
-//                       <div>Joseph McFall</div>
-//                       <div className="text-sm font-light text-gray-500 dark:text-gray-400">
-//                         CTO at Google
-//                       </div>
-//                     </div>
-//                   </figcaption>
-//                 </figure>
-//               </div>
-//               <div className="text-center">
-//                 <a
-//                   href="#"
-//                   className="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-//                 >
-//                   Show more...
-//                 </a>
-//               </div>
-//             </div>
-//           </section>
-//         </div>
-//   );
-// }
-
-
-// app/rovers/register.js
-
-// "use client";
-
-// import React, { useState } from "react";
-// import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
-// import { useRouter } from "next/navigation";
-
-// export default function RegisterRover() {
-//   const { user, loading } = useAuth();
-//   const router = useRouter();
-
-//   const [roverData, setRoverData] = useState({
-//     name: "",
-//     model: "",
-//     ip_address: ""
-//   });
-//   const [errorMsg, setErrorMsg] = useState("");
-//   const [successMsg, setSuccessMsg] = useState("");
-//   const [configMsg, setConfigMsg] = useState("");
-//   const [errors, setErrors] = useState({});
-
-//   if (loading) {
-//     return <p>Loading...</p>;
-//   }
-
-//   if (!user) {
-//     router.push("/signin");
-//     return null;
-//   }
-
-//   const handleChange = (e) => {
-//     setRoverData({
-//       ...roverData,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   const validate = () => {
-//     const newErrors = {};
-
-//     if (!roverData.name.trim()) {
-//       newErrors.name = "Name is required.";
-//     }
-//     if (!roverData.model.trim()) {
-//       newErrors.model = "Model is required.";
-//     }
-//     if (!roverData.ip_address.trim()) {
-//       newErrors.ip_address = "IP address is required.";
-//     } 
-
-//     return newErrors;
-//   };
-
-//   const handleRegister = async (e) => {
-//     e.preventDefault();
-//     setErrorMsg("");
-//     setSuccessMsg("");
-//     setConfigMsg("");
-
-//     const validationErrors = validate();
-//     if (Object.keys(validationErrors).length > 0) {
-//       setErrors(validationErrors);
-//       return;
-//     }
-
-//     try {
-//       const idToken = await user.getIdToken();
-//       const res = await fetch(`https://api-roverant.mooo.com/rover/registe`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           "Authorization": `Bearer ${idToken}`,
-//         },
-//         body: JSON.stringify(roverData),
-//       });
-
-//       if (!res.ok) {
-//         const errorData = await res.json();
-//         setErrorMsg(errorData.detail || "Failed to register rover.");
-//         return;
-//       }
-
-
-//       setSuccessMsg("Rover registered successfully!");
-//       setRoverData({ name: "", model: "", ip_address: "" });
-//     } catch (error) {
-//       setErrorMsg("An unexpected error occurred.");
-//     }
-//   };
-
-//   return (
-//     <form onSubmit={handleRegister} className="mx-auto max-w-xl p-6 bg-gray-50 rounded-2xl">
-//       <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-
-//         <div className="">
-//           <label className="block text-sm font-semibold text-gray-900">
-//             Rover Name <span className="text-red-500">*</span>
-//           </label>
-//           <div className="mt-2.5">
-//             <input
-//               type="text"
-//               name="name"
-//               value={roverData.name}
-//               onChange={handleChange}
-//               placeholder="Rover Alpha"
-//               className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.name ? 'outline-red-500 outline-2' : 'outline-gray-300 focus:outline-2 focus:outline-black'} placeholder:text-gray-400`}
-//             />
-//             {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
-//           </div>
-//         </div>
-
-//         <div className="">
-//           <label className="block text-sm font-semibold text-gray-900">
-//             Model <span className="text-red-500">*</span>
-//           </label>
-//           <div className="mt-2.5">
-//             <input
-//               type="text"
-//               name="model"
-//               value={roverData.model}
-//               onChange={handleChange}
-//               placeholder="XJ-900"
-//               className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.model ? 'outline-red-500 outline-2' : 'outline-gray-300 focus:outline-2 focus:outline-black'} placeholder:text-gray-400`}
-//             />
-//             {errors.model && <p className="mt-1 text-sm text-red-600">{errors.model}</p>}
-//           </div>
-//         </div>
-
-//         <div className="sm:col-span-2">
-//           <label className="block text-sm font-semibold text-gray-900">
-//             IP Address <span className="text-red-500">*</span>
-//           </label>
-//           <div className="mt-2.5">
-//             <input
-//               type="text"
-//               name="ip_address"
-//               value={roverData.ip_address}
-//               onChange={handleChange}
-//               placeholder="192.168.0.50"
-//               className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.ip_address ? 'outline-red-500 outline-2' : 'outline-gray-300 focus:outline-2 focus:outline-black'} placeholder:text-gray-400`}
-//             />
-//             {errors.ip_address && <p className="mt-1 text-sm text-red-600">{errors.ip_address}</p>}
-//           </div>
-//         </div>
-//       </div>
-//       <button type="submit" className="mt-6 w-full bg-blue-500 text-white py-2 rounded-xl hover:bg-blue-600 transition">Register Rover</button>
-//     </form>
-//   );
-// }
-
-
-
 "use client";
 
-import React, { useState } from "react";
-import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Dialog } from "@headlessui/react";
+import { Table } from "@geist-ui/core";
+import { TrashIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
 
-export default function RegisterRover() {
+export default function MyRoversPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
+  // State for rovers array
+  const [rovers, setRovers] = useState([]);
+  const [roverLoading, setRoverLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Registration form state
   const [roverData, setRoverData] = useState({
     name: "",
     model: "",
-    ip_address: ""
+    ip_address: "",
   });
+  const [errors, setErrors] = useState({});
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [configMsg, setConfigMsg] = useState("");
-  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // Modal state for editing/deleting
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    rover_id: "",
+    name: "",
+    model: "",
+    ip_address: "",
+  });
 
-  if (!user) {
-    router.push("/signin");
-    return null;
-  }
+  // Redirect if not logged in
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/signin");
+    }
+  }, [loading, user, router]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRoverData((prev) => ({ ...prev, [name]: value }));
+  // Fetch real data from your API once user is available
+  useEffect(() => {
+    if (user) {
+      fetchRovers();
+    }
+  }, [user]);
 
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-  };
-
-  const sendRoverConfiguration = async (roverId, token, ipAddress) => {
-    // Build the rover configuration endpoint URL
-    const configUrl = `http://${ipAddress}:8000/api/configure-rover`;
-    console.log("Configuring rover at:", configUrl);
-
+  // ==========================
+  // Fetch Rovers (Real Data)
+  // ==========================
+  async function fetchRovers() {
+    setRoverLoading(true);
+    setError(null);
     try {
-      const res = await fetch(configUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          rover_id: roverId,
-          registration_token: token,
-        }),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        setConfigMsg(`Configuration error: ${errorData.detail || "Failed to configure rover."}`);
-        return;
+      const idToken = await user.getIdToken();
+      const response = await fetch(
+        "https://api-roverant.mooo.com/rover/my-rovers",
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-      const data = await res.json();
-      setConfigMsg(`Configuration successful: ${data.message}`);
-    } catch (error) {
-      console.error("Error configuring rover:", error);
-      setConfigMsg("An unexpected error occurred during rover configuration.");
+      const data = await response.json();
+      // data should be an array of rover objects
+      setRovers(data);
+    } catch (err) {
+      console.error("Failed to fetch rovers:", err);
+      setError(err.message || "Failed to fetch rovers.");
+    } finally {
+      setRoverLoading(false);
     }
-  };
+  }
 
-  const validate = () => {
+  // ==========================
+  // Registration Form
+  // ==========================
+  function handleRegisterChange(e) {
+    setRoverData({ ...roverData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
+  }
+
+  function validateRegister() {
     const newErrors = {};
-
-    if (!roverData.name.trim()) {
-      newErrors.name = "Name is required.";
-    }
-    if (!roverData.model.trim()) {
-      newErrors.model = "Model is required.";
-    }
+    if (!roverData.name.trim()) newErrors.name = "Name is required.";
+    if (!roverData.model.trim()) newErrors.model = "Model is required.";
     if (!roverData.ip_address.trim()) {
       newErrors.ip_address = "IP address is required.";
-    } else if (!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(roverData.ip_address)) {
+    } else if (
+      !/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(roverData.ip_address)
+    ) {
       newErrors.ip_address = "Invalid IP address format.";
     }
-
     return newErrors;
-  };
+  }
 
-  const handleRegister = async (e) => {
+  async function handleRegister(e) {
     e.preventDefault();
     setErrorMsg("");
     setSuccessMsg("");
     setConfigMsg("");
     setIsSubmitting(true);
 
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
+    const newErrors = validateRegister();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       setIsSubmitting(false);
       return;
     }
 
     try {
       const idToken = await user.getIdToken();
-      const res = await fetch(`https://api-roverant.mooo.com/rover/register`, {
+      const res = await fetch("https://api-roverant.mooo.com/rover/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${idToken}`,
+          Authorization: `Bearer ${idToken}`,
         },
         body: JSON.stringify(roverData),
       });
-
       if (!res.ok) {
-        const errorData = await res.json();
-        setErrorMsg(errorData.detail || "Failed to register rover.");
+        const errData = await res.json();
+        setErrorMsg(errData.detail || "Failed to register rover.");
         setIsSubmitting(false);
         return;
       }
-
       const data = await res.json();
       setSuccessMsg("Rover registered successfully!");
 
-      // Now send configuration directly to the rover using its IP address.
-      await sendRoverConfiguration(data.rover_id, data.token, roverData.ip_address);
+      // Optionally configure new rover
+      await configureRover(data.rover_id, data.token, roverData.ip_address);
 
+      // Reset form
       setRoverData({ name: "", model: "", ip_address: "" });
-    } catch (error) {
+      // Refetch
+      fetchRovers();
+    } catch (err) {
+      console.error(err);
       setErrorMsg("An unexpected error occurred.");
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }
+
+  // Optionally configure rover
+  async function configureRover(roverId, token, ipAddress) {
+    const configUrl = `http://${ipAddress}:8000/api/configure-rover`;
+    try {
+      const res = await fetch(configUrl, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rover_id: roverId, registration_token: token }),
+      });
+      if (!res.ok) {
+        const e = await res.json();
+        setConfigMsg(`Configuration error: ${e.detail || "Failed."}`);
+        return;
+      }
+      const configData = await res.json();
+      setConfigMsg(`Configuration successful: ${configData.message}`);
+    } catch (error) {
+      console.error("Error configuring rover:", error);
+      setConfigMsg("An unexpected error occurred during rover configuration.");
+    }
+  }
+
+  // ==========================
+  // Modal Open/Close
+  // ==========================
+  function openModal(rover) {
+    setEditFormData({
+      rover_id: rover.rover_id,
+      name: rover.name,
+      model: rover.model,
+      ip_address: rover.ip_address,
+    });
+    setIsModalOpen(true);
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
+  }
+
+  // Handle input changes in the modal
+  function handleModalChange(e) {
+    setEditFormData({ ...editFormData, [e.target.name]: e.target.value });
+  }
+
+  // ==========================
+  // Save changes (PUT)
+  // ==========================
+  async function handleSave() {
+    try {
+      const { rover_id, name, model, ip_address } = editFormData;
+      const idToken = await user.getIdToken();
+      const res = await fetch(
+        `https://api-roverant.mooo.com/rover/${rover_id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`,
+          },
+          body: JSON.stringify({ name, model, ip_address }),
+        }
+      );
+      if (!res.ok) {
+        const errData = await res.json();
+        alert(errData.detail || "Failed to update rover.");
+        return;
+      }
+      closeModal();
+      fetchRovers();
+    } catch (error) {
+      console.error("Error updating rover:", error);
+    }
+  }
+
+  // ==========================
+  // Delete rover (DELETE)
+  // ==========================
+  async function handleDelete() {
+    if (!confirm("Are you sure you want to delete this rover?")) return;
+    try {
+      const { rover_id } = editFormData;
+      const idToken = await user.getIdToken();
+      const res = await fetch(
+        `https://api-roverant.mooo.com/rover/${rover_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      );
+      if (!res.ok) {
+        const errData = await res.json();
+        alert(errData.detail || "Failed to delete rover.");
+        return;
+      }
+      closeModal();
+      fetchRovers();
+    } catch (error) {
+      console.error("Error deleting rover:", error);
+    }
+  }
+
+  // If user is still loading, or no user
+  if (loading) return <p>Loading...</p>;
+  if (!user) return null;
 
   return (
-    <form onSubmit={handleRegister} className="mx-auto max-w-4xl p-6 bg-gray-50 rounded-2xl">
-      <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3">
-        <div>
-          <label className="block text-sm font-semibold text-gray-900">
-            Rover Name <span className="text-red-500">*</span>
-          </label>
-          <div className="mt-2.5">
+    <div className="mx-auto max-w-4xl space-y-8 p-6">
+      {/* ============ Registration Form ============ */}
+      <form onSubmit={handleRegister} className="p-6 bg-gray-50 rounded-2xl">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3">
+          {/* Name field */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900">
+              Rover Name <span className="text-red-500">*</span>
+            </label>
             <input
               type="text"
               name="name"
               value={roverData.name}
-              onChange={handleChange}
+              onChange={handleRegisterChange}
               placeholder="Roverant Rover 99"
-              className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.name
-                ? 'outline-red-500 outline-2 outline-2-red-500'
-                : 'outline-gray-300 outline-2 focus:outline-2  focus:outline-black'
-                } placeholder:text-gray-400`}
+              className={`mt-2 block w-full rounded-xl px-3.5 py-2 ${
+                errors.name ? "border border-red-500" : "border border-gray-300"
+              }`}
             />
-            {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+            {errors.name && (
+              <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+            )}
           </div>
-        </div>
 
-        <div>
-          <label className="block text-sm font-semibold text-gray-900">
-            Model <span className="text-red-500">*</span>
-          </label>
-          <div className="mt-2.5">
+          {/* Model field */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900">
+              Model <span className="text-red-500">*</span>
+            </label>
             <input
               type="text"
               name="model"
               value={roverData.model}
-              onChange={handleChange}
+              onChange={handleRegisterChange}
               placeholder="RR-99"
-              className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.model
-                ? 'outline-red-500 outline-2 outline-2-red-500'
-                : 'outline-gray-300 outline-2 focus:outline-2  focus:outline-black'
-                } placeholder:text-gray-400`} />
-            {errors.model && <p className="mt-1 text-sm text-red-600">{errors.model}</p>}
+              className={`mt-2 block w-full rounded-xl px-3.5 py-2 ${
+                errors.model
+                  ? "border border-red-500"
+                  : "border border-gray-300"
+              }`}
+            />
+            {errors.model && (
+              <p className="mt-1 text-sm text-red-600">{errors.model}</p>
+            )}
           </div>
-        </div>
 
-        <div >
-          <label className="block text-sm font-semibold text-gray-900">
-            IP Address <span className="text-red-500">*</span>
-          </label>
-          <div className="mt-2.5">
+          {/* IP field */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900">
+              IP Address <span className="text-red-500">*</span>
+            </label>
             <input
               type="text"
               name="ip_address"
               value={roverData.ip_address}
-              onChange={handleChange}
+              onChange={handleRegisterChange}
               placeholder="192.168.1.1"
-              className={`block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 outline ${errors.ip_address
-                ? 'outline-red-500 outline-2 outline-2-red-500'
-                : 'outline-gray-300 outline-2 focus:outline-2  focus:outline-black'
-                } placeholder:text-gray-400`} />
-            {errors.ip_address && <p className="mt-1 text-sm text-red-600">{errors.ip_address}</p>}
+              className={`mt-2 block w-full rounded-xl px-3.5 py-2 ${
+                errors.ip_address
+                  ? "border border-red-500"
+                  : "border border-gray-300"
+              }`}
+            />
+            {errors.ip_address && (
+              <p className="mt-1 text-sm text-red-600">{errors.ip_address}</p>
+            )}
           </div>
         </div>
-      </div>
-      {errorMsg && <p className="mt-4 text-sm text-red-600">{errorMsg}</p>}
-      {successMsg && <p className="mt-4 text-sm text-green-600">{successMsg}</p>}
-      {configMsg && <p className="mt-4 text-sm text-blue-600">{configMsg}</p>}
-      <div className="mt-6">
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={`block w-full rounded-xl bg-black px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-2 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+
+        {/* Messages */}
+        {errorMsg && <p className="mt-4 text-sm text-red-600">{errorMsg}</p>}
+        {successMsg && (
+          <p className="mt-4 text-sm text-green-600">{successMsg}</p>
+        )}
+        {configMsg && <p className="mt-4 text-sm text-blue-600">{configMsg}</p>}
+
+        <div className="mt-6">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`block w-full rounded-xl bg-black px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-white hover:text-black hover:ring-2 hover:ring-black ${
+              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
             }`}
+          >
+            {isSubmitting ? "Registering..." : "Register Rover"}
+          </button>
+        </div>
+      </form>
+
+      {/* Geist UI Table FIXED – entire row clickable */}
+      <div className="bg-white rounded-xl shadow-md p-4">
+        <h2 className="text-xl font-semibold mb-4">Your Rovers</h2>
+        {roverLoading && <p>Loading rovers...</p>}
+        {error && <p className="text-red-600">{error}</p>}
+
+        <Table
+          data={rovers}
+          hover
+          emptyText="No rovers found. Register one above!"
         >
-          {isSubmitting ? 'Registering...' : 'Register Rover'}
-        </button>
+          <Table.Column
+            prop="name"
+            label="Name"
+            render={(value, rowData) => (
+              <div
+                onClick={() => openModal(rowData)}
+                className="cursor-pointer py-2 w-full h-full"
+              >
+                {value}
+              </div>
+            )}
+          />
+          <Table.Column
+            prop="model"
+            label="Model"
+            render={(value, rowData) => (
+              <div
+                onClick={() => openModal(rowData)}
+                className="cursor-pointer py-2 w-full h-full"
+              >
+                {value}
+              </div>
+            )}
+          />
+          <Table.Column
+            prop="ip_address"
+            label="IP Address"
+            render={(value, rowData) => (
+              <div
+                onClick={() => openModal(rowData)}
+                className="cursor-pointer py-2 w-full h-full"
+              >
+                {value}
+              </div>
+            )}
+          />
+        </Table>
       </div>
-    </form>
+
+      {/* ============ Modal ============ */}
+      <Dialog open={isModalOpen} onClose={closeModal} className="relative z-50">
+        {/* Backdrop */}
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        {/* Panel */}
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="mx-auto max-w-md rounded-xl bg-white p-6 shadow-lg">
+            <Dialog.Title className="text-lg font-semibold mb-4">
+              Edit Rover
+            </Dialog.Title>
+
+            {/* Name */}
+            <div className="mb-4">
+              <label className="block text-sm font-semibold">Name</label>
+              <input
+                type="text"
+                name="name"
+                value={editFormData.name}
+                onChange={handleModalChange}
+                className="mt-1 w-full border rounded px-2 py-1"
+              />
+            </div>
+
+            {/* Model */}
+            <div className="mb-4">
+              <label className="block text-sm font-semibold">Model</label>
+              <input
+                type="text"
+                name="model"
+                value={editFormData.model}
+                onChange={handleModalChange}
+                className="mt-1 w-full border rounded px-2 py-1"
+              />
+            </div>
+
+            {/* IP */}
+            <div className="mb-4">
+              <label className="block text-sm font-semibold">IP Address</label>
+              <input
+                type="text"
+                name="ip_address"
+                value={editFormData.ip_address}
+                onChange={handleModalChange}
+                className="mt-1 w-full border rounded px-2 py-1"
+              />
+            </div>
+
+            <div className="flex items-center justify-end space-x-5 mt-3">
+              {/* Delete icon */}
+              <button onClick={handleDelete}>
+                <TrashIcon className="h-6 w-6 text-red-600 hover:text-red-800" />
+              </button>
+              {/* Cancel icon */}
+              <button onClick={closeModal}>
+                <XMarkIcon className="h-6 w-6 text-gray-600 hover:text-black" />
+              </button>
+              {/* Save icon */}
+              <button onClick={handleSave}>
+                <CheckIcon className="h-6 w-6 text-green-600 hover:text-green-800" />
+              </button>
+            </div>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+    </div>
   );
 }
-
