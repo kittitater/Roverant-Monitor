@@ -59,11 +59,14 @@ export default function MyRoversPage() {
     setError(null);
     try {
       const idToken = await user.getIdToken();
-      const response = await fetch("https://api-roverant.mooo.com/rover/my-rovers", {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      });
+      const response = await fetch(
+        "https://api-roverant.mooo.com/rover/my-rovers",
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
@@ -92,7 +95,9 @@ export default function MyRoversPage() {
     if (!roverData.model.trim()) newErrors.model = "Model is required.";
     if (!roverData.ip_address.trim()) {
       newErrors.ip_address = "IP address is required.";
-    } else if (!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(roverData.ip_address)) {
+    } else if (
+      !/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(roverData.ip_address)
+    ) {
       newErrors.ip_address = "Invalid IP address format.";
     }
     return newErrors;
@@ -197,14 +202,17 @@ export default function MyRoversPage() {
     try {
       const { rover_id, name, model, ip_address } = editFormData;
       const idToken = await user.getIdToken();
-      const res = await fetch(`https://api-roverant.mooo.com/rover/${rover_id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`,
-        },
-        body: JSON.stringify({ name, model, ip_address }),
-      });
+      const res = await fetch(
+        `https://api-roverant.mooo.com/rover/${rover_id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`,
+          },
+          body: JSON.stringify({ name, model, ip_address }),
+        }
+      );
       if (!res.ok) {
         const errData = await res.json();
         alert(errData.detail || "Failed to update rover.");
@@ -225,12 +233,15 @@ export default function MyRoversPage() {
     try {
       const { rover_id } = editFormData;
       const idToken = await user.getIdToken();
-      const res = await fetch(`https://api-roverant.mooo.com/rover/${rover_id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      });
+      const res = await fetch(
+        `https://api-roverant.mooo.com/rover/${rover_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      );
       if (!res.ok) {
         const errData = await res.json();
         alert(errData.detail || "Failed to delete rover.");
@@ -267,7 +278,9 @@ export default function MyRoversPage() {
                 errors.name ? "border border-red-500" : "border border-gray-300"
               }`}
             />
-            {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+            {errors.name && (
+              <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+            )}
           </div>
 
           {/* Model field */}
@@ -282,10 +295,14 @@ export default function MyRoversPage() {
               onChange={handleRegisterChange}
               placeholder="RR-99"
               className={`mt-2 block w-full rounded-xl px-3.5 py-2 ${
-                errors.model ? "border border-red-500" : "border border-gray-300"
+                errors.model
+                  ? "border border-red-500"
+                  : "border border-gray-300"
               }`}
             />
-            {errors.model && <p className="mt-1 text-sm text-red-600">{errors.model}</p>}
+            {errors.model && (
+              <p className="mt-1 text-sm text-red-600">{errors.model}</p>
+            )}
           </div>
 
           {/* IP field */}
@@ -300,7 +317,9 @@ export default function MyRoversPage() {
               onChange={handleRegisterChange}
               placeholder="192.168.1.1"
               className={`mt-2 block w-full rounded-xl px-3.5 py-2 ${
-                errors.ip_address ? "border border-red-500" : "border border-gray-300"
+                errors.ip_address
+                  ? "border border-red-500"
+                  : "border border-gray-300"
               }`}
             />
             {errors.ip_address && (
@@ -311,7 +330,9 @@ export default function MyRoversPage() {
 
         {/* Messages */}
         {errorMsg && <p className="mt-4 text-sm text-red-600">{errorMsg}</p>}
-        {successMsg && <p className="mt-4 text-sm text-green-600">{successMsg}</p>}
+        {successMsg && (
+          <p className="mt-4 text-sm text-green-600">{successMsg}</p>
+        )}
         {configMsg && <p className="mt-4 text-sm text-blue-600">{configMsg}</p>}
 
         <div className="mt-6">
@@ -327,54 +348,55 @@ export default function MyRoversPage() {
         </div>
       </form>
 
-{/* Geist UI Table FIXED – entire row clickable */}
-<div className="bg-white rounded-xl shadow-md p-4">
-  <h2 className="text-xl font-semibold mb-4">Your Rovers</h2>
-  {roverLoading && <p>Loading rovers...</p>}
-  {error && <p className="text-red-600">{error}</p>}
+      {/* Geist UI Table FIXED – entire row clickable */}
+      <div className="bg-white rounded-xl shadow-md p-4">
+        <h2 className="text-xl font-semibold mb-4">Your Rovers</h2>
+        {roverLoading && <p>Loading rovers...</p>}
+        {error && <p className="text-red-600">{error}</p>}
 
-  <Table data={rovers} hover emptyText="No rovers found. Register one above!">
-    <Table.Column
-      prop="name"
-      label="Name"
-      render={(value, rowData) => (
-        <div
-          onClick={() => openModal(rowData)}
-          className="cursor-pointer py-2 w-full h-full"
+        <Table
+          data={rovers}
+          hover
+          emptyText="No rovers found. Register one above!"
         >
-          {value}
-        </div>
-      )}
-    />
-    <Table.Column
-      prop="model"
-      label="Model"
-      render={(value, rowData) => (
-        <div
-          onClick={() => openModal(rowData)}
-          className="cursor-pointer py-2 w-full h-full"
-        >
-          {value}
-        </div>
-      )}
-    />
-    <Table.Column
-      prop="ip_address"
-      label="IP Address"
-      render={(value, rowData) => (
-        <div
-          onClick={() => openModal(rowData)}
-          className="cursor-pointer py-2 w-full h-full"
-        >
-          {value}
-        </div>
-      )}
-    />
-  </Table>
-</div>
-
-
-
+          <Table.Column
+            prop="name"
+            label="Name"
+            render={(value, rowData) => (
+              <div
+                onClick={() => openModal(rowData)}
+                className="cursor-pointer py-2 w-full h-full"
+              >
+                {value}
+              </div>
+            )}
+          />
+          <Table.Column
+            prop="model"
+            label="Model"
+            render={(value, rowData) => (
+              <div
+                onClick={() => openModal(rowData)}
+                className="cursor-pointer py-2 w-full h-full"
+              >
+                {value}
+              </div>
+            )}
+          />
+          <Table.Column
+            prop="ip_address"
+            label="IP Address"
+            render={(value, rowData) => (
+              <div
+                onClick={() => openModal(rowData)}
+                className="cursor-pointer py-2 w-full h-full"
+              >
+                {value}
+              </div>
+            )}
+          />
+        </Table>
+      </div>
 
       {/* ============ Modal ============ */}
       <Dialog open={isModalOpen} onClose={closeModal} className="relative z-50">

@@ -64,13 +64,16 @@ export default function Navbar() {
 
       try {
         const idToken = await user.getIdToken();
-        const response = await fetch("https://api-roverant.mooo.com/rover/my-rovers", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          "https://api-roverant.mooo.com/rover/my-rovers",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${idToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -241,7 +244,10 @@ export default function Navbar() {
                         </div>
                       </div>
                       {userNavigation.map((item) => (
-                        <MenuItem key={item.name} className="w-full text-center">
+                        <MenuItem
+                          key={item.name}
+                          className="w-full text-center"
+                        >
                           {item.name === "Log out" ? (
                             <Button
                               onClick={handleLogout}

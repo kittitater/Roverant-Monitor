@@ -11,7 +11,11 @@ export const RoverProvider = ({ children }) => {
     try {
       const storedRover = localStorage.getItem("roverant_selectedRover");
       console.log("Raw storedRover:", storedRover);
-      if (storedRover && storedRover !== "undefined" && storedRover !== "null") {
+      if (
+        storedRover &&
+        storedRover !== "undefined" &&
+        storedRover !== "null"
+      ) {
         setSelectedRover(JSON.parse(storedRover));
       } else {
         setSelectedRover(undefined);
