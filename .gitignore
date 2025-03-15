@@ -4,3 +4,4 @@
 .gitignore
 .gitignore
 node_modules
+.next
