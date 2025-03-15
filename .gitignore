@@ -1,6 +1,6 @@
 
 .DS_Store
 .DS_Store
-robot-monitor-web-next/endpoint.txt
 .gitignore
 .gitignore
+node_modules
