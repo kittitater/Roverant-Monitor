@@ -90,7 +90,6 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
----
 
 ## Evaluation and Testing
 
@@ -99,6 +98,8 @@ uvicorn main:app --reload
 
 
 ## Credits
+
+### Project Founder / Development Team
 
 - **Woradon Samphanphaisarn**
 - **Kittitat Songsakseree**
