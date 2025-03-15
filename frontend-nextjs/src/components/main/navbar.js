@@ -1,10 +1,8 @@
-// navbar.js (unchanged)
+// navbar.js 
 "use client";
 
 import {
   Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
   Menu,
   MenuButton,
   MenuItem,
