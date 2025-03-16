@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Dialog } from "@headlessui/react";
 import { Table } from "@geist-ui/core";
-import { TrashIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+// import { TrashIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
 
 export default function MyRoversPage() {
@@ -261,7 +261,10 @@ export default function MyRoversPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-8 p-6">
       {/* ============ Registration Form ============ */}
-      <form onSubmit={handleRegister} className="p-6 bg-gray-50 rounded-2xl">
+      <form
+        onSubmit={handleRegister}
+        className="p-6 border border-gray-300 rounded-2xl"
+      >
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3">
           {/* Name field */}
           <div>
@@ -274,9 +277,11 @@ export default function MyRoversPage() {
               value={roverData.name}
               onChange={handleRegisterChange}
               placeholder="Roverant Rover 99"
-              className={`mt-2 block w-full rounded-xl px-3.5 py-2 ${
-                errors.name ? "border border-red-500" : "border border-gray-300"
-              }`}
+              className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${
+                errors.name
+                  ? "ring-2  ring-red-500 focus:ring-red-500"
+                  : "ring-2  ring-gray-300  focus:ring-black "
+              } placeholder:text-gray-400`}
             />
             {errors.name && (
               <p className="mt-1 text-sm text-red-600">{errors.name}</p>
@@ -294,11 +299,11 @@ export default function MyRoversPage() {
               value={roverData.model}
               onChange={handleRegisterChange}
               placeholder="RR-99"
-              className={`mt-2 block w-full rounded-xl px-3.5 py-2 ${
-                errors.model
-                  ? "border border-red-500"
-                  : "border border-gray-300"
-              }`}
+              className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${
+                errors.name
+                  ? "ring-2  ring-red-500 focus:ring-red-500"
+                  : "ring-2  ring-gray-300  focus:ring-black "
+              } placeholder:text-gray-400`}
             />
             {errors.model && (
               <p className="mt-1 text-sm text-red-600">{errors.model}</p>
@@ -316,11 +321,11 @@ export default function MyRoversPage() {
               value={roverData.ip_address}
               onChange={handleRegisterChange}
               placeholder="192.168.1.1"
-              className={`mt-2 block w-full rounded-xl px-3.5 py-2 ${
-                errors.ip_address
-                  ? "border border-red-500"
-                  : "border border-gray-300"
-              }`}
+              className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${
+                errors.name
+                  ? "ring-2  ring-red-500 focus:ring-red-500"
+                  : "ring-2  ring-gray-300  focus:ring-black "
+              } placeholder:text-gray-400`}
             />
             {errors.ip_address && (
               <p className="mt-1 text-sm text-red-600">{errors.ip_address}</p>
@@ -349,15 +354,16 @@ export default function MyRoversPage() {
       </form>
 
       {/* Geist UI Table FIXED – entire row clickable */}
-      <div className="bg-white rounded-xl shadow-md p-4">
-        <h2 className="text-xl font-semibold mb-4">Your Rovers</h2>
+      <div className="p-6 border border-gray-300 rounded-2xl">
+        {/* <h2 className="text-xl font-semibold mb-4">My Rover</h2> */}
         {roverLoading && <p>Loading rovers...</p>}
         {error && <p className="text-red-600">{error}</p>}
 
         <Table
           data={rovers}
           hover
-          emptyText="No rovers found. Register one above!"
+          emptyText="You have no rovers yet. Please register a new rover."
+          className="bg-white "
         >
           <Table.Column
             prop="name"
@@ -448,15 +454,57 @@ export default function MyRoversPage() {
             <div className="flex items-center justify-end space-x-5 mt-3">
               {/* Delete icon */}
               <button onClick={handleDelete}>
-                <TrashIcon className="h-6 w-6 text-red-600 hover:text-red-800" />
+                {/* <TrashIcon className="h-6 w-6 text-red-600 hover:text-red-800" /> */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6 text-red-600 hover:text-red-800"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                  />
+                </svg>
               </button>
               {/* Cancel icon */}
               <button onClick={closeModal}>
-                <XMarkIcon className="h-6 w-6 text-gray-600 hover:text-black" />
+                {/* <XMarkIcon className="h-6 w-6 text-gray-600 hover:text-black" /> */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6 text-gray-600 hover:text-black"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
               {/* Save icon */}
               <button onClick={handleSave}>
-                <CheckIcon className="h-6 w-6 text-green-600 hover:text-green-800" />
+                {/* <CheckIcon className="h-6 w-6 text-green-600 hover:text-green-800" /> */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6 text-green-600 hover:text-green-800"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m4.5 12.75 6 6 9-13.5"
+                  />
+                </svg>
               </button>
             </div>
           </Dialog.Panel>
