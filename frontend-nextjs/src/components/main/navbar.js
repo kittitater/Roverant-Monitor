@@ -1,4 +1,4 @@
-// navbar.js 
+// navbar.js
 "use client";
 
 import {
@@ -13,8 +13,8 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { BellIcon } from "@heroicons/react/24/outline";
-import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
+// import { BellIcon } from "@heroicons/react/24/outline";
+// import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 import Link from "next/link";
 import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
@@ -178,7 +178,19 @@ export default function Navbar() {
                       {roverLoading
                         ? "Loading..."
                         : selectedRover?.name || "Select a Rover"}
-                      <ChevronDownIcon className="group pointer-events-none absolute top-1.5 right-1.5 size-6" />
+                      {/* <ChevronDownIcon className="group pointer-events-none absolute top-1.5 right-1.5 size-6" /> */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="group pointer-events-none absolute top-1.5 right-1.5 size-6"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                     </ListboxButton>
                     <ListboxOptions
                       anchor="bottom"
@@ -196,7 +208,20 @@ export default function Navbar() {
                             value={rover}
                             className="group flex items-center gap-2 px-3 py-2 text-sm font-medium data-[focus]:bg-black ring-2 rounded-xl ring-black"
                           >
-                            <CheckIcon className="invisible size-4 fill-black group-data-[selected]:visible group-data-[focus]:fill-white" />
+                            {/* <CheckIcon className="invisible size-4 fill-black group-data-[selected]:visible group-data-[focus]:fill-white" /> */}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              className="invisible size-4 fill-black group-data-[selected]:visible group-data-[focus]:fill-white"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+
                             <div className="text-sm font-medium group-data-[focus]:text-white">
                               {rover.name}
                             </div>
@@ -215,7 +240,21 @@ export default function Navbar() {
                     className="relative rounded-xl ring-black ring-2 bg-white p-1 text-black hover:text-white hover:bg-black"
                   >
                     <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-7 w-7" />
+                    {/* <BellIcon className="h-7 w-7" /> */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="h-7 w-7"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+                      />
+                    </svg>
                   </button>
 
                   <Menu as="div" className="relative">
