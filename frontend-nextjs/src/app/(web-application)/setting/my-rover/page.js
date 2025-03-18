@@ -2,7 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Dialog } from "@headlessui/react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/components/ui/dialog";
 import { Table } from "@geist-ui/core";
 // import { TrashIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
@@ -27,6 +34,7 @@ export default function MyRoversPage() {
   const [successMsg, setSuccessMsg] = useState("");
   const [configMsg, setConfigMsg] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isReconfiguring, setIsReconfiguring] = useState(false);
 
   // Modal state for editing/deleting
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -181,7 +189,6 @@ export default function MyRoversPage() {
       rover_id: rover.rover_id,
       name: rover.name,
       model: rover.model,
-      ip_address: rover.ip_address,
     });
     setIsModalOpen(true);
   }
@@ -300,7 +307,7 @@ export default function MyRoversPage() {
               onChange={handleRegisterChange}
               placeholder="RR-99"
               className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${
-                errors.name
+                errors.model
                   ? "ring-2  ring-red-500 focus:ring-red-500"
                   : "ring-2  ring-gray-300  focus:ring-black "
               } placeholder:text-gray-400`}
@@ -322,7 +329,7 @@ export default function MyRoversPage() {
               onChange={handleRegisterChange}
               placeholder="192.168.1.1"
               className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${
-                errors.name
+                errors.ip_address
                   ? "ring-2  ring-red-500 focus:ring-red-500"
                   : "ring-2  ring-gray-300  focus:ring-black "
               } placeholder:text-gray-400`}
@@ -371,7 +378,7 @@ export default function MyRoversPage() {
             render={(value, rowData) => (
               <div
                 onClick={() => openModal(rowData)}
-                className="cursor-pointer py-2 w-full h-full"
+                className="text-black text-base cursor-pointer py-2 w-32 h-full"
               >
                 {value}
               </div>
@@ -383,19 +390,19 @@ export default function MyRoversPage() {
             render={(value, rowData) => (
               <div
                 onClick={() => openModal(rowData)}
-                className="cursor-pointer py-2 w-full h-full"
+                className="text-black text-base cursor-pointer py-2 w-28 h-full"
               >
                 {value}
               </div>
             )}
           />
           <Table.Column
-            prop="ip_address"
-            label="IP Address"
+            prop="rover_id"
+            label="Rover ID"
             render={(value, rowData) => (
               <div
                 onClick={() => openModal(rowData)}
-                className="cursor-pointer py-2 w-full h-full"
+                className="text-black text-base cursor-pointer py-2 w-auto h-full"
               >
                 {value}
               </div>
@@ -405,110 +412,142 @@ export default function MyRoversPage() {
       </div>
 
       {/* ============ Modal ============ */}
-      <Dialog open={isModalOpen} onClose={closeModal} className="relative z-50">
-        {/* Backdrop */}
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        {/* Panel */}
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-md rounded-xl bg-white p-6 shadow-lg">
-            <Dialog.Title className="text-lg font-semibold mb-4">
-              Edit Rover
-            </Dialog.Title>
-
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogTrigger asChild>
+          <button className="hidden" />
+        </DialogTrigger>
+        <DialogContent className="rounded-2xl p-8">
+          <DialogTitle className="text-3xl">Configure Rover</DialogTitle>
+          {/* <DialogDescription className="text-md ">
+            Modify the rover details below.
+          </DialogDescription> */}
+          <div className="flex w-full space-x-5 mt-5">
             {/* Name */}
-            <div className="mb-4">
-              <label className="block text-sm font-semibold">Name</label>
+            <div>
+              {/* <label className="block text-sm font-semibold">Name</label>
+            <input
+              type="text"
+              name="name"
+              value={editFormData.name}
+              onChange={handleModalChange}
+              className="mt-1 w-full border rounded px-2 py-1"
+            /> */}
+
+              <label className="block text-sm font-semibold text-gray-900">
+                Rover Name <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
                 name="name"
                 value={editFormData.name}
                 onChange={handleModalChange}
-                className="mt-1 w-full border rounded px-2 py-1"
+                placeholder="Roverant Rover 99"
+                className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${
+                  errors.editName
+                    ? "ring-2  ring-red-500 focus:ring-red-500"
+                    : "ring-2  ring-gray-300  focus:ring-black "
+                } placeholder:text-gray-400`}
               />
+              {errors.editName && (
+                <p className="mt-1 text-sm text-red-600">{errors.editName}</p>
+              )}
             </div>
 
             {/* Model */}
-            <div className="mb-4">
-              <label className="block text-sm font-semibold">Model</label>
+            <div>
+              {/* <label className="block text-sm font-semibold">Model</label>
+            <input
+              type="text"
+              name="model"
+              value={editFormData.model}
+              onChange={handleModalChange}
+              className="mt-1 w-full border rounded px-2 py-1"
+            /> */}
+
+              <label className="block text-sm font-semibold text-gray-900">
+                Model <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
                 name="model"
                 value={editFormData.model}
                 onChange={handleModalChange}
-                className="mt-1 w-full border rounded px-2 py-1"
+                placeholder="RR-99"
+                className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${
+                  errors.editName
+                    ? "ring-2  ring-red-500 focus:ring-red-500"
+                    : "ring-2  ring-gray-300  focus:ring-black "
+                } placeholder:text-gray-400`}
               />
+              {errors.editName && (
+                <p className="mt-1 text-sm text-red-600">{errors.editName}</p>
+              )}
             </div>
+          </div>
 
-            {/* IP */}
-            <div className="mb-4">
-              <label className="block text-sm font-semibold">IP Address</label>
+          {/* IP */}
+          <div className="mb-5">
+            {/* <label className="block text-sm font-semibold">IP Address</label>
+            <input
+              type="text"
+              name="ip_address"
+              value={editFormData.ip_address}
+              onChange={handleModalChange}
+              className="mt-1 w-full border rounded px-2 py-1"
+            /> */}
+
+            <label className="block text-sm font-semibold text-gray-900">
+              IP Address
+            </label>
+
+            <div className="flex space-x-5 mt-2">
               <input
                 type="text"
                 name="ip_address"
                 value={editFormData.ip_address}
                 onChange={handleModalChange}
-                className="mt-1 w-full border rounded px-2 py-1"
+                placeholder="192.168.1.1"
+                className={` block rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${
+                  errors.editIp
+                    ? "ring-2  ring-red-500 focus:ring-red-500"
+                    : "ring-2  ring-gray-300  focus:ring-black "
+                } placeholder:text-gray-400`}
               />
-            </div>
+              {errors.editIp && (
+                <p className="mt-1 text-sm text-red-600">{errors.editIp}</p>
+              )}
 
-            <div className="flex items-center justify-end space-x-5 mt-3">
-              {/* Delete icon */}
-              <button onClick={handleDelete}>
-                {/* <TrashIcon className="h-6 w-6 text-red-600 hover:text-red-800" /> */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="h-6 w-6 text-red-600 hover:text-red-800"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                  />
-                </svg>
-              </button>
-              {/* Cancel icon */}
-              <button onClick={closeModal}>
-                {/* <XMarkIcon className="h-6 w-6 text-gray-600 hover:text-black" /> */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="h-6 w-6 text-gray-600 hover:text-black"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-              {/* Save icon */}
-              <button onClick={handleSave}>
-                {/* <CheckIcon className="h-6 w-6 text-green-600 hover:text-green-800" /> */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="h-6 w-6 text-green-600 hover:text-green-800"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m4.5 12.75 6 6 9-13.5"
-                  />
-                </svg>
+              <button
+                type="submit"
+                //onSubmit={handleReconfigure}
+                disabled={isReconfiguring}
+                className={`block w-44 rounded-xl bg-black px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-white hover:text-black hover:ring-2 hover:ring-black ${
+                  isReconfiguring ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                {isReconfiguring ? "Reconfiguring..." : "Reconfigure Rover"}
               </button>
             </div>
-          </Dialog.Panel>
-        </div>
+          </div>
+
+          <div className="flex items-center justify-end space-x-5 mt-3">
+            <button
+              onClick={handleDelete}
+              className="text-red-600 hover:text-red-800"
+            >
+              Delete
+            </button>
+            <DialogClose asChild>
+              <button className="text-gray-600 hover:text-black">Cancel</button>
+            </DialogClose>
+            <button
+              onClick={handleSave}
+              className="text-green-600 hover:text-green-800"
+            >
+              Save
+            </button>
+          </div>
+        </DialogContent>
       </Dialog>
     </div>
   );
