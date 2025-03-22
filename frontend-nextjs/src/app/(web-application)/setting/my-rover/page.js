@@ -266,7 +266,7 @@ export default function MyRoversPage() {
   if (!user) return null;
 
   return (
-    <div className="mx-auto max-w-4xl space-y-8 p-6">
+    <div className="mx-auto max-w-6xl space-y-8 p-6">
       {/* ============ Registration Form ============ */}
       <form
         onSubmit={handleRegister}
@@ -378,7 +378,7 @@ export default function MyRoversPage() {
             render={(value, rowData) => (
               <div
                 onClick={() => openModal(rowData)}
-                className="text-black text-base cursor-pointer py-2 w-32 h-full"
+                className="text-black text-base cursor-pointer py-2 pr-5 w-full h-full"
               >
                 {value}
               </div>
@@ -390,7 +390,7 @@ export default function MyRoversPage() {
             render={(value, rowData) => (
               <div
                 onClick={() => openModal(rowData)}
-                className="text-black text-base cursor-pointer py-2 w-28 h-full"
+                className="text-black text-base cursor-pointer py-2 pr-10 w-full h-full"
               >
                 {value}
               </div>
@@ -402,7 +402,7 @@ export default function MyRoversPage() {
             render={(value, rowData) => (
               <div
                 onClick={() => openModal(rowData)}
-                className="text-black text-base cursor-pointer py-2 w-auto h-full"
+                className="text-black text-base cursor-pointer py-2 w-full h-full"
               >
                 {value}
               </div>
