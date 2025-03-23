@@ -121,7 +121,7 @@ const MotorControl = () => {
         <div className="grid justify-items-center py-0 space-y-1">
             {/* WebSocket connection status */}
             <div className="mb-20 flex items-left flex-row space-x-5">
-                <h1 className="text-lg font-semibold">Motion Control :</h1>
+                <h1 className="text-lg font-semibold">Motion Control Gateway :</h1>
                 <span
                     className={`font-semibold text-lg ${
                         wsStatus === "Connected"

@@ -2,17 +2,37 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Dialog } from "@headlessui/react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
+import { Button } from "@/components/ui/button";
 import { Table } from "@geist-ui/core";
-// import { TrashIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
 
 export default function MyRoversPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  // State for rovers array
+  // State for rovers array and their statuses
   const [rovers, setRovers] = useState([]);
+  const [roverStatuses, setRoverStatuses] = useState({});
   const [roverLoading, setRoverLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -27,9 +47,11 @@ export default function MyRoversPage() {
   const [successMsg, setSuccessMsg] = useState("");
   const [configMsg, setConfigMsg] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isReconfiguring, setIsReconfiguring] = useState(false);
 
   // Modal state for editing/deleting
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [editFormData, setEditFormData] = useState({
     rover_id: "",
     name: "",
@@ -44,16 +66,92 @@ export default function MyRoversPage() {
     }
   }, [loading, user, router]);
 
-  // Fetch real data from your API once user is available
+  // Fetch rovers and setup WebSocket connections
   useEffect(() => {
     if (user) {
       fetchRovers();
     }
   }, [user]);
 
-  // ==========================
-  // Fetch Rovers (Real Data)
-  // ==========================
+  // WebSocket setup for rover statuses
+  useEffect(() => {
+    if (!rovers.length) return;
+
+    const wsConnections = {};
+
+    rovers.forEach((rover) => {
+      // Set status to "checking" when initiating the WebSocket connection
+      setRoverStatuses((prev) => ({
+        ...prev,
+        [rover.rover_id]: { status: "checking", control: false, video: false },
+      }));
+
+      const wsUrl = `wss://api-roverant.mooo.com/ws/status?rover_id=${rover.rover_id}`;
+      const ws = new WebSocket(wsUrl);
+
+      ws.onopen = () => {
+        console.log(`Status WebSocket opened for rover ${rover.rover_id}`);
+        // Connection is established; wait for a message to determine status
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type !== "ping") {
+            setRoverStatuses((prev) => ({
+              ...prev,
+              [rover.rover_id]: {
+                status: data.status,
+                control: data.control,
+                video: data.video,
+              },
+            }));
+          }
+        } catch (error) {
+          console.log(
+            `Error parsing status for rover ${rover.rover_id}:`,
+            error
+          );
+        }
+      };
+
+      ws.onerror = (error) => {
+        console.log(
+          `Status WebSocket error for rover ${rover.rover_id}:`,
+          error
+        );
+        setRoverStatuses((prev) => ({
+          ...prev,
+          [rover.rover_id]: {
+            status: "disconnected",
+            control: false,
+            video: false,
+          },
+        }));
+      };
+
+      ws.onclose = () => {
+        console.log(`Status WebSocket closed for rover ${rover.rover_id}`);
+        setRoverStatuses((prev) => ({
+          ...prev,
+          [rover.rover_id]: {
+            status: "disconnected",
+            control: false,
+            video: false,
+          },
+        }));
+      };
+
+      wsConnections[rover.rover_id] = ws;
+    });
+
+    // Cleanup WebSocket connections on unmount or rover list change
+    return () => {
+      Object.values(wsConnections).forEach((ws) => ws.close());
+    };
+  }, [rovers]);
+
+  // Fetch Rovers
   async function fetchRovers() {
     setRoverLoading(true);
     setError(null);
@@ -71,19 +169,16 @@ export default function MyRoversPage() {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
       const data = await response.json();
-      // data should be an array of rover objects
       setRovers(data);
     } catch (err) {
-      console.error("Failed to fetch rovers:", err);
+      console.log("Failed to fetch rovers:", err);
       setError(err.message || "Failed to fetch rovers.");
     } finally {
       setRoverLoading(false);
     }
   }
 
-  // ==========================
-  // Registration Form
-  // ==========================
+  // Registration Form Handlers
   function handleRegisterChange(e) {
     setRoverData({ ...roverData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: "" });
@@ -135,23 +230,17 @@ export default function MyRoversPage() {
       }
       const data = await res.json();
       setSuccessMsg("Rover registered successfully!");
-
-      // Optionally configure new rover
       await configureRover(data.rover_id, data.token, roverData.ip_address);
-
-      // Reset form
       setRoverData({ name: "", model: "", ip_address: "" });
-      // Refetch
       fetchRovers();
     } catch (err) {
-      console.error(err);
+      console.log(err);
       setErrorMsg("An unexpected error occurred.");
     } finally {
       setIsSubmitting(false);
     }
   }
 
-  // Optionally configure rover
   async function configureRover(roverId, token, ipAddress) {
     const configUrl = `http://${ipAddress}:8000/api/configure-rover`;
     try {
@@ -168,20 +257,18 @@ export default function MyRoversPage() {
       const configData = await res.json();
       setConfigMsg(`Configuration successful: ${configData.message}`);
     } catch (error) {
-      console.error("Error configuring rover:", error);
+      console.log("Error configuring rover:", error);
       setConfigMsg("An unexpected error occurred during rover configuration.");
     }
   }
 
-  // ==========================
-  // Modal Open/Close
-  // ==========================
+  // Modal Handlers
   function openModal(rover) {
     setEditFormData({
       rover_id: rover.rover_id,
       name: rover.name,
       model: rover.model,
-      ip_address: rover.ip_address,
+      ip_address: rover.ip_address || "",
     });
     setIsModalOpen(true);
   }
@@ -190,14 +277,10 @@ export default function MyRoversPage() {
     setIsModalOpen(false);
   }
 
-  // Handle input changes in the modal
   function handleModalChange(e) {
     setEditFormData({ ...editFormData, [e.target.name]: e.target.value });
   }
 
-  // ==========================
-  // Save changes (PUT)
-  // ==========================
   async function handleSave() {
     try {
       const { rover_id, name, model, ip_address } = editFormData;
@@ -221,13 +304,10 @@ export default function MyRoversPage() {
       closeModal();
       fetchRovers();
     } catch (error) {
-      console.error("Error updating rover:", error);
+      console.log("Error updating rover:", error);
     }
   }
 
-  // ==========================
-  // Delete rover (DELETE)
-  // ==========================
   async function handleDelete() {
     if (!confirm("Are you sure you want to delete this rover?")) return;
     try {
@@ -250,23 +330,51 @@ export default function MyRoversPage() {
       closeModal();
       fetchRovers();
     } catch (error) {
-      console.error("Error deleting rover:", error);
+      console.log("Error deleting rover:", error);
     }
   }
 
-  // If user is still loading, or no user
+  // Render status for the table
+  const renderStatus = (value, rowData) => {
+    const status = roverStatuses[rowData.rover_id] || {
+      status: "disconnected", // Default before WebSocket attempt
+      control: false,
+      video: false,
+    };
+    const isConnected = status.control || status.video;
+
+    let displayText;
+    let textColor;
+
+    if (status.status === "checking") {
+      displayText = "Checking..";
+      textColor = "text-gray-500"; // Gray for "checking"
+    } else {
+      displayText = isConnected ? "Available" : "Unavailable";
+      textColor = isConnected ? "text-green-500" : "text-yellow-500";
+    }
+
+    return (
+      <div
+        onClick={() => openModal(rowData)}
+        className={`text-base cursor-pointer py-2 w-full h-full ${textColor}`}
+      >
+        {displayText}
+      </div>
+    );
+  };
+
   if (loading) return <p>Loading...</p>;
   if (!user) return null;
 
   return (
-    <div className="mx-auto max-w-4xl space-y-8 p-6">
-      {/* ============ Registration Form ============ */}
+    <div className="mx-auto max-w-6xl space-y-8 p-6">
+      {/* Registration Form */}
       <form
         onSubmit={handleRegister}
         className="p-6 border border-gray-300 rounded-2xl"
       >
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3">
-          {/* Name field */}
           <div>
             <label className="block text-sm font-semibold text-gray-900">
               Rover Name <span className="text-red-500">*</span>
@@ -277,18 +385,16 @@ export default function MyRoversPage() {
               value={roverData.name}
               onChange={handleRegisterChange}
               placeholder="Roverant Rover 99"
-              className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${
+              className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-black ${
                 errors.name
-                  ? "ring-2  ring-red-500 focus:ring-red-500"
-                  : "ring-2  ring-gray-300  focus:ring-black "
+                  ? "ring-2 ring-red-500 focus:ring-red-500"
+                  : "ring-2 ring-gray-300 focus:ring-black"
               } placeholder:text-gray-400`}
             />
             {errors.name && (
               <p className="mt-1 text-sm text-red-600">{errors.name}</p>
             )}
           </div>
-
-          {/* Model field */}
           <div>
             <label className="block text-sm font-semibold text-gray-900">
               Model <span className="text-red-500">*</span>
@@ -299,18 +405,16 @@ export default function MyRoversPage() {
               value={roverData.model}
               onChange={handleRegisterChange}
               placeholder="RR-99"
-              className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${
-                errors.name
-                  ? "ring-2  ring-red-500 focus:ring-red-500"
-                  : "ring-2  ring-gray-300  focus:ring-black "
+              className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-black ${
+                errors.model
+                  ? "ring-2 ring-red-500 focus:ring-red-500"
+                  : "ring-2 ring-gray-300 focus:ring-black"
               } placeholder:text-gray-400`}
             />
             {errors.model && (
               <p className="mt-1 text-sm text-red-600">{errors.model}</p>
             )}
           </div>
-
-          {/* IP field */}
           <div>
             <label className="block text-sm font-semibold text-gray-900">
               IP Address <span className="text-red-500">*</span>
@@ -321,10 +425,10 @@ export default function MyRoversPage() {
               value={roverData.ip_address}
               onChange={handleRegisterChange}
               placeholder="192.168.1.1"
-              className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2  focus:ring-black  ${
-                errors.name
-                  ? "ring-2  ring-red-500 focus:ring-red-500"
-                  : "ring-2  ring-gray-300  focus:ring-black "
+              className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-black ${
+                errors.ip_address
+                  ? "ring-2 ring-red-500 focus:ring-red-500"
+                  : "ring-2 ring-gray-300 focus:ring-black"
               } placeholder:text-gray-400`}
             />
             {errors.ip_address && (
@@ -332,14 +436,11 @@ export default function MyRoversPage() {
             )}
           </div>
         </div>
-
-        {/* Messages */}
         {errorMsg && <p className="mt-4 text-sm text-red-600">{errorMsg}</p>}
         {successMsg && (
           <p className="mt-4 text-sm text-green-600">{successMsg}</p>
         )}
         {configMsg && <p className="mt-4 text-sm text-blue-600">{configMsg}</p>}
-
         <div className="mt-6">
           <button
             type="submit"
@@ -353,17 +454,17 @@ export default function MyRoversPage() {
         </div>
       </form>
 
-      {/* Geist UI Table FIXED – entire row clickable */}
+      {/* Rovers Table */}
       <div className="p-6 border border-gray-300 rounded-2xl">
-        {/* <h2 className="text-xl font-semibold mb-4">My Rover</h2> */}
-        {roverLoading && <p>Loading rovers...</p>}
+        {roverLoading && (
+          <p className="text-center mb-5 font-semibold">Loading rovers...</p>
+        )}
         {error && <p className="text-red-600">{error}</p>}
-
         <Table
           data={rovers}
           hover
           emptyText="You have no rovers yet. Please register a new rover."
-          className="bg-white "
+          className="bg-white"
         >
           <Table.Column
             prop="name"
@@ -371,7 +472,7 @@ export default function MyRoversPage() {
             render={(value, rowData) => (
               <div
                 onClick={() => openModal(rowData)}
-                className="cursor-pointer py-2 w-full h-full"
+                className="text-black text-base cursor-pointer py-2 pr-5 w-full h-full"
               >
                 {value}
               </div>
@@ -383,133 +484,194 @@ export default function MyRoversPage() {
             render={(value, rowData) => (
               <div
                 onClick={() => openModal(rowData)}
-                className="cursor-pointer py-2 w-full h-full"
+                className="text-black text-base cursor-pointer py-2 pr-10 w-full h-full"
               >
                 {value}
               </div>
             )}
           />
           <Table.Column
-            prop="ip_address"
-            label="IP Address"
+            prop="rover_id"
+            label="Rover ID"
             render={(value, rowData) => (
               <div
                 onClick={() => openModal(rowData)}
-                className="cursor-pointer py-2 w-full h-full"
+                className="text-black text-base cursor-pointer py-2 w-full h-full"
               >
                 {value}
               </div>
             )}
           />
+          <Table.Column
+            prop="status"
+            label="Rover Status"
+            render={renderStatus}
+          />
         </Table>
       </div>
 
-      {/* ============ Modal ============ */}
-      <Dialog open={isModalOpen} onClose={closeModal} className="relative z-50">
-        {/* Backdrop */}
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        {/* Panel */}
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-md rounded-xl bg-white p-6 shadow-lg">
-            <Dialog.Title className="text-lg font-semibold mb-4">
-              Edit Rover
-            </Dialog.Title>
-
-            {/* Name */}
-            <div className="mb-4">
-              <label className="block text-sm font-semibold">Name</label>
+      {/* Modal */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogTrigger asChild>
+          <button className="hidden" />
+        </DialogTrigger>
+        <DialogContent className=" p-8 sm:rounded-2xl max-w-2xl  ">
+          <DialogTitle className="text-3xl">Configure Rover</DialogTitle>
+          <div className="grid grid-cols-3 space-x-5 mt-5">
+            <div className="col-span-2">
+              <label className="block text-sm font-semibold text-gray-900">
+                Rover Name <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
                 name="name"
                 value={editFormData.name}
                 onChange={handleModalChange}
-                className="mt-1 w-full border rounded px-2 py-1"
+                placeholder="Roverant Rover 99"
+                className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-black ${
+                  errors.editName
+                    ? "ring-2 ring-red-500 focus:ring-red-500"
+                    : "ring-2 ring-gray-300 focus:ring-black"
+                } placeholder:text-gray-400`}
               />
+              {errors.editName && (
+                <p className="mt-1 text-sm text-red-600">{errors.editName}</p>
+              )}
             </div>
-
-            {/* Model */}
-            <div className="mb-4">
-              <label className="block text-sm font-semibold">Model</label>
+            <div>
+              <label className="block text-sm font-semibold text-gray-900">
+                Model <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
                 name="model"
                 value={editFormData.model}
                 onChange={handleModalChange}
-                className="mt-1 w-full border rounded px-2 py-1"
+                placeholder="RR-99"
+                className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-black ${
+                  errors.editName
+                    ? "ring-2 ring-red-500 focus:ring-red-500"
+                    : "ring-2 ring-gray-300 focus:ring-black"
+                } placeholder:text-gray-400`}
               />
+              {errors.editName && (
+                <p className="mt-1 text-sm text-red-600">{errors.editName}</p>
+              )}
             </div>
-
-            {/* IP */}
-            <div className="mb-4">
-              <label className="block text-sm font-semibold">IP Address</label>
+          </div>
+          <div className="mb-5">
+            <label className="block text-sm font-semibold text-gray-900">
+              IP Address
+            </label>
+            <div className="flex space-x-5 mt-2">
               <input
                 type="text"
                 name="ip_address"
                 value={editFormData.ip_address}
                 onChange={handleModalChange}
-                className="mt-1 w-full border rounded px-2 py-1"
+                placeholder="192.168.1.1"
+                className={`block rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-black ${
+                  errors.editIp
+                    ? "ring-2 ring-red-500 focus:ring-red-500"
+                    : "ring-2 ring-gray-300 focus:ring-black"
+                } placeholder:text-gray-400`}
               />
-            </div>
-
-            <div className="flex items-center justify-end space-x-5 mt-3">
-              {/* Delete icon */}
-              <button onClick={handleDelete}>
-                {/* <TrashIcon className="h-6 w-6 text-red-600 hover:text-red-800" /> */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="h-6 w-6 text-red-600 hover:text-red-800"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                  />
-                </svg>
-              </button>
-              {/* Cancel icon */}
-              <button onClick={closeModal}>
-                {/* <XMarkIcon className="h-6 w-6 text-gray-600 hover:text-black" /> */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="h-6 w-6 text-gray-600 hover:text-black"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-              {/* Save icon */}
-              <button onClick={handleSave}>
-                {/* <CheckIcon className="h-6 w-6 text-green-600 hover:text-green-800" /> */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="h-6 w-6 text-green-600 hover:text-green-800"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m4.5 12.75 6 6 9-13.5"
-                  />
-                </svg>
+              {errors.editIp && (
+                <p className="mt-1 text-sm text-red-600">{errors.editIp}</p>
+              )}
+              <button
+                type="submit"
+                disabled={isReconfiguring}
+                className={`block w-44 rounded-xl bg-black px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-white hover:text-black hover:ring-2 hover:ring-black ${
+                  isReconfiguring ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                {isReconfiguring ? "Reactivating..." : "Reactivate Rover"}
               </button>
             </div>
-          </Dialog.Panel>
-        </div>
+          </div>
+          <div className="flex items-center justify-between space-x-4 mt-3">
+            <Button
+              onClick={() => setIsAlertModalOpen(true)}
+              className="rounded-xl font-semibold text-white hover:bg-white hover:text-red-500 hover:ring-2 hover:ring-red-500"
+              variant="destructive"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-fit"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Delete
+            </Button>
+            <div className="flex space-x-4">
+              <DialogClose asChild>
+                <Button className="rounded-xl font-semibold bg-white text-black hover:bg-white hover:text-black hover:ring-2 hover:ring-black">
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button
+                onClick={handleSave}
+                className="rounded-xl font-semibold bg-black text-white hover:bg-white hover:text-black hover:ring-2 hover:ring-black"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75"
+                  />
+                </svg>
+                Save
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
       </Dialog>
+
+      {/* Alert Dialog */}
+      <AlertDialog open={isAlertModalOpen} onOpenChange={setIsAlertModalOpen}>
+        <AlertDialogTrigger asChild>
+          <button className="hidden" />
+        </AlertDialogTrigger>
+        <AlertDialogContent className="p-6 sm:rounded-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-2xl">
+              Are you sure to delete this rover?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              rover from your account.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <div className="space-x-4">
+              <AlertDialogCancel className="rounded-xl font-semibold border-0 bg-white text-black hover:bg-white hover:text-black hover:ring-2 hover:ring-black">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDelete}
+                className="rounded-xl font-semibold text-white bg-red-500 hover:bg-white hover:text-red-500 hover:ring-2 hover:ring-red-500"
+                variant="destructive"
+              >
+                Yes, delete this rover
+              </AlertDialogAction>
+            </div>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -102,6 +102,7 @@ export default function Navbar() {
     try {
       await signOut(auth);
       setUser(null);
+      localStorage.removeItem("roverant_selectedRover"); // Clear rover selection
       router.push("/login");
     } catch (error) {
       console.error("Error during logout:", error);
@@ -175,10 +176,7 @@ export default function Navbar() {
                     by="rover_id"
                   >
                     <ListboxButton className="relative block py-2 pr-8 pl-3 text-left text-sm font-medium text-black hover:bg-black hover:text-white rounded-xl ring-black ring-2 bg-white">
-                      {roverLoading
-                        ? "Loading..."
-                        : selectedRover?.name || "Select a Rover"}
-                      {/* <ChevronDownIcon className="group pointer-events-none absolute top-1.5 right-1.5 size-6" /> */}
+                      {selectedRover ? selectedRover.name : "Select a Rover"}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
