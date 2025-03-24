@@ -4,6 +4,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { GalleryVerticalEnd } from "lucide-react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/app/(web-application)/(authentication)/firebase/firebase"; // Import the Firebase auth module
 import { useRouter } from "next/navigation";
@@ -51,7 +52,9 @@ export default function SignInPage() {
       if (!res.ok) {
         const errorData = await res.json();
         console.error("Registration failed:", errorData);
-        throw new Error(`Failed to register user: ${errorData.detail || res.status}`);
+        throw new Error(
+          `Failed to register user: ${errorData.detail || res.status}`
+        );
       }
 
       const data = await res.json();
@@ -80,7 +83,11 @@ export default function SignInPage() {
     return (
       <main className="flex h-screen items-center justify-center bg-white px-6 py-24 sm:py-32 lg:px-8">
         <div className="text-center">
-          <img src="/monitor.png" alt="Loading..." className="w-32 h-32 animate-spin mx-auto" />
+          <img
+            src="/monitor.png"
+            alt="Loading..."
+            className="w-32 h-32 animate-spin mx-auto"
+          />
           <h1 className="mt-10 text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
             Hold On
           </h1>
@@ -94,37 +101,92 @@ export default function SignInPage() {
 
   return (
     <>
-      <div className="flex h-screen flex-1 flex-col justify-center px-4 py-6 sm:px-6 lg:px-8 ">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm ">
-          <img alt="Your Company" src="/monitor.png" className="mx-auto h-32 w-auto" />
-          <h2 className="text-black mt-5 text-center font-semibold text-4xl">Roverant Monitor</h2>
-          <h2 className="mt-5 text-center text-xl font-bold tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
+      <div className="grid min-h-screen lg:grid-cols-3">
+        {/* left Side Image (Visible on large screens) */}
+        <div className="relative hidden bg-muted lg:block col-span-1">
+          <img
+            src="../roverant-rover.jpg"
+            alt="Image"
+            className="absolute inset-0 h-full w-full object-cover opacity-75"
+          />
         </div>
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <div className="flex items-center justify-center gap-x-6">
-            <button
-              onClick={handleGoogleSignIn}
-              className="rounded-xl bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Sign in with Google
-            </button>
-            <Link href="/" className="text-sm font-semibold leading-6 text-gray-900">
-              Home Page <span aria-hidden="true">→</span>
+        {/* right Side Content */}
+        <div className="flex flex-col gap-4 p-6 md:p-10 col-span-2">
+          {/* Logo and Title Section */}
+          <div className="flex justify-center gap-2 md:justify-start">
+            <Link href="/" className="flex items-center gap-4 font-semibold">
+              <div className="flex h-6 w-6 items-center justify-center ">
+                <img
+                  alt="Your Company"
+                  src="/monitor.png"
+                  className="mx-auto h-6 w-auto"
+                />
+              </div>
+              Roverant Monitor
             </Link>
           </div>
-          {errorMsg && <p className="mt-10 text-red-600 text-center">Error: {errorMsg}</p>}
-          <p className="mt-10 text-center text-sm/6 text-gray-500">
-            Problem with Sign In?{" "}
-            <Link href="/#Contact" className="font-semibold text-indigo-600 hover:text-indigo-500">
-              Contact Us
-            </Link>
-          </p>
+
+          {/* Login Form Section */}
+          <div className="flex flex-1 flex-col items-center justify-center">
+            <div className="border-0 border-gray-200 rounded-3xl p-10">
+              <div className="w-full max-w-xs sm:max-w-sm ">
+                <img
+                  alt="Your Company"
+                  src="/monitor.png"
+                  className="mx-auto h-36 w-auto"
+                />
+                <h2 className="mt-10 text-center text-2xl font-semibold tracking-tight text-gray-900">
+                  Welcome to Roverant Monitor
+                </h2>
+                <h2 className="mt-1 text-center text-xl font-semibold tracking-tight text-gray-500">
+                  Sign in to your account
+                </h2>
+
+                <div className="mt-10">
+                  <div className="flex items-center justify-center gap-x-6">
+                    <button
+                      onClick={handleGoogleSignIn}
+                      className="rounded-xl items-center bg-black px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        className="h-4 w-4 inline-block mr-3"
+                      >
+                        <path
+                          d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      Sign in with Google
+                    </button>
+                    <Link
+                      href="/"
+                      className="text-sm font-semibold leading-6 text-gray-900"
+                    >
+                      Home Page <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
+
+                  {errorMsg && (
+                    <p className="mt-10 text-red-600 text-center">
+                      Error: {errorMsg}
+                    </p>
+                  )}
+
+                  <p className="mt-10 text-center text-sm/6 text-gray-500">
+                    Problem with Sign In?{" "}
+                    <Link href="/#Contact" className="font-semibold text-black">
+                      Contact Us
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
   );
 }
-

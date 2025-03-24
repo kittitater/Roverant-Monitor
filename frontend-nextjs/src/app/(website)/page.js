@@ -203,9 +203,9 @@ export default function Home() {
                     <div className="mt-10 flex items-center justify-center gap-x-6">
                       <a
                         href="/dashboard"
-                        className="rounded-xl bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="rounded-xl bg-black px-10 py-3 text-sm font-semibold text-white shadow-2xl shadow-violet-500 hover:shadow-2xl hover:shadow-red-600 transition hover:bg-white hover:text-red-600 hover:ring-red-600 hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
-                        Try an amazing things now!!!
+                        Get Started Now!!!!
                       </a>
                       <Link
                         href="/#About"
