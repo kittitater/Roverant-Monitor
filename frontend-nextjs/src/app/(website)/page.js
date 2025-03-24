@@ -381,8 +381,8 @@ export default function Home() {
               You can either get in touch with us via information or fill in the
               form{" "}
             </p>
-            <div className="mt-16  items-center justify-left space-y-4">
-              <div className="flex items-center gap-x-4">
+            <div className="mt-10 mb-10 sm:mb-0 sm:mt-16  items-center justify-items-center space-y-4">
+              <div className="flex items-center justify-left gap-x-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

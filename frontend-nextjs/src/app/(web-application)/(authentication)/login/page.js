@@ -4,6 +4,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import  Image from "next/image";
 import { GalleryVerticalEnd } from "lucide-react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/app/(web-application)/(authentication)/firebase/firebase"; // Import the Firebase auth module
@@ -83,9 +84,11 @@ export default function SignInPage() {
     return (
       <main className="flex h-screen items-center justify-center bg-white px-6 py-24 sm:py-32 lg:px-8">
         <div className="text-center">
-          <img
+          <Image
             src="/monitor.png"
             alt="Loading..."
+            width={128}
+            height={128}
             className="w-32 h-32 animate-spin mx-auto"
           />
           <h1 className="mt-10 text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
@@ -104,9 +107,11 @@ export default function SignInPage() {
       <div className="grid min-h-screen lg:grid-cols-3">
         {/* left Side Image (Visible on large screens) */}
         <div className="relative hidden bg-muted lg:block col-span-1">
-          <img
-            src="../roverant-rover.jpg"
+          <Image
+            src="/roverant-rover.jpg"
             alt="Image"
+            width={500}
+            height={500}
             className="absolute inset-0 h-full w-full object-cover opacity-75"
           />
         </div>
@@ -117,9 +122,11 @@ export default function SignInPage() {
           <div className="flex justify-center gap-2 md:justify-start">
             <Link href="/" className="flex items-center gap-4 font-semibold">
               <div className="flex h-6 w-6 items-center justify-center ">
-                <img
+                <Image
                   alt="Your Company"
                   src="/monitor.png"
+                  width={24}
+                  height={24}
                   className="mx-auto h-6 w-auto"
                 />
               </div>
@@ -131,9 +138,11 @@ export default function SignInPage() {
           <div className="flex flex-1 flex-col items-center justify-center">
             <div className="border-0 border-gray-200 rounded-3xl p-10">
               <div className="w-full max-w-xs sm:max-w-sm ">
-                <img
+                <Image
                   alt="Your Company"
                   src="/monitor.png"
+                  width={100}
+                  height={100}
                   className="mx-auto h-36 w-auto"
                 />
                 <h2 className="mt-10 text-center text-2xl font-semibold tracking-tight text-gray-900">
