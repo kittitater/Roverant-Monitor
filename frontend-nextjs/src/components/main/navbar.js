@@ -141,11 +141,11 @@ export default function Navbar() {
                 {/* Left Logo + Nav */}
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <Link href="/dashboard">
+                    <a href="/dashboard">
                       <span className="text-black font-semibold text-xl">
                         Roverant Monitor
                       </span>
-                    </Link>
+                    </a>
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
