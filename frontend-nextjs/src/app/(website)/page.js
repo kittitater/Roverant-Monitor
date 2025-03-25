@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Footer from "../../components/main/footer";
 
@@ -171,20 +172,20 @@ export default function Home() {
 
   return (
     <>
-      <div className="overflow-hidden bg-white py-0 sm:py-22">
+      <div className="overflow-hidden bg-black py-0 sm:py-22">
         {/* Greeting */}
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-32 min-h-svh flex items-center justify-center">
           <div className="mx-auto  max-w-2xl  gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
             <div className="grid justify-items-center ">
               <div className="lg:max-w-xl ">
                 <div className="grid justify-items-center">
                   <div className="hidden sm:mb-8 sm:flex sm:justify-left ">
-                    <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                    <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-white ring-1 ring-white hover:ring-gray-300 hover:text-gray-300">
                       Announcing our Project proposal.{" "}
                       <Link
                         href="https://mailkmuttacth-my.sharepoint.com/:b:/g/personal/kittitat_song_kmutt_ac_th/EVFX1ffhVFJHqYvAZC0ModcBbCdn_f80wSfjWVH4OL1UjA?e=PTjsUP"
                         target="_blank"
-                        className="font-semibold text-black"
+                        className="font-semibold text-white hover:text-gray-300"
                       >
                         <span aria-hidden="true" className="absolute inset-0" />
                         Read more <span aria-hidden="true">&rarr;</span>
@@ -192,10 +193,10 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="text-center">
-                    <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                    <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
                       Welcome to the Roverant Monitor
                     </h1>
-                    <p className="mt-6 text-lg leading-8 text-gray-600">
+                    <p className="mt-6 text-lg leading-8 text-white">
                       Our Security Guard Rover Monitoring Web Application.
                       Curious with our project ? Hit the "About Roverant" to get
                       to know our project .
@@ -203,17 +204,33 @@ export default function Home() {
                     <div className="mt-10 flex items-center justify-center gap-x-6">
                       <a
                         href="/dashboard"
-                        className="rounded-xl bg-black px-10 py-3 text-sm font-semibold text-white shadow-2xl shadow-violet-500 hover:shadow-2xl hover:shadow-red-600 transition hover:bg-white hover:text-red-600 hover:ring-red-600 hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="rounded-xl bg-white px-10 py-3 text-sm font-semibold text-black shadow-2xl shadow-white hover:shadow-2xl  hover:shadow-red-600 transition duration-500 hover:bg-white hover:text-red-600 hover:ring-red-600 hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Get Started Now!!!!
                       </a>
                       <Link
                         href="/#About"
-                        className="text-sm font-semibold leading-6 text-gray-900"
+                        className="text-sm font-semibold leading-6 text-white"
                       >
                         About Roverant <span aria-hidden="true">→</span>
                       </Link>
                     </div>
+                  </div>
+                  <div className="absolute bottom-20">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-8 text-white animate-bounce"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5"
+                      />
+                    </svg>
                   </div>
                 </div>
               </div>
@@ -222,7 +239,7 @@ export default function Home() {
         </div>
 
         {/* Meet our innovator */}
-        <div id="Innovator" className="bg-white  sm:py-32 ">
+        <div id="Innovator" className="bg-white py-24 sm:py-32 ">
           <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
             <div className="max-w-2xl">
               <h2 className="text-4xl font-semibold tracking-tight text-gray-900 ">
@@ -250,7 +267,7 @@ export default function Home() {
                       <h3 className="text-base font-semibold leading-7 tracking-tight text-gray-900">
                         {person.name}
                       </h3>
-                      <p className="text-sm font-semibold leading-6 text-indigo-600">
+                      <p className="text-sm font-semibold leading-6 text-gray-400">
                         {person.role}
                       </p>
                     </div>
@@ -281,7 +298,7 @@ export default function Home() {
               <figcaption className="mt-10">
                 <div className="mt-4 flex items-center justify-center space-x-3 text-base">
                   <div className="font-semibold text-xl text-gray-900">
-                    - Roverant Founder -
+                    - Roverant Development Group -
                   </div>
                 </div>
               </figcaption>
@@ -323,14 +340,12 @@ export default function Home() {
               className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20"
             />
           </div>
-          <div className="mx-auto grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2 max-w-7xl px-6 lg:px-24">
+          <div className="mx-auto grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-3 max-w-7xl px-6 lg:px-5">
             {/* <div className="mx-auto grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2"> */}
-            <div className="my-auto max-w-2xl text-left">
-              <h2 className="text-center md:text-left text-4xl sm:text-5xl font-semibold tracking-tight text-white ">
+            <div className="my-auto max-w-2xl text-left md:col-span-2">
+              <h2 className="text-center md:text-left text-4xl sm:text-5xl font-semibold tracking-tight text-white mb-10">
                 About Roverant
               </h2>
-            </div>
-            <div className="mx-auto max-w-2xl text-left">
               <p className=" text-pretty text-lg font-medium text-white ">
                 Roverant is an innovative security solution designed to enhance
                 safety and efficiency in indoor environments. This mobile robot
@@ -352,6 +367,17 @@ export default function Home() {
                 reduce human error, and streamline security operations.
               </p>
             </div>
+
+            <div>
+              <Image
+                src="/roverant-rover.jpg"
+                alt="Image"
+                width={300}
+                height={300}
+                className=" w-auto rounded-2xl"
+              />
+            </div>
+
             {/* </div> */}
           </div>
         </div>
@@ -361,7 +387,7 @@ export default function Home() {
           id="Contact"
           className="isolate grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2 bg-white px-6 py-24 sm:py-32 lg:px-24"
         >
-          <div
+          {/* <div
             aria-hidden="true"
             className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
           >
@@ -372,7 +398,7 @@ export default function Home() {
               }}
               className="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
             />
-          </div>
+          </div> */}
           <div className="mx-auto max-w-2xl text-left">
             <h2 className="text-center md:text-left text-4xl sm:text-5xl font-semibold tracking-tight text-gray-900">
               Contact Roverant
