@@ -253,7 +253,7 @@ export default function LiveCamera() {
 
         {/* Camera + Status */}
         <section className="flex flex-col lg:flex-row lg:space-x-8 justify-center items-center space-y-6 lg:space-y-0">
-          <div className="relative">
+          <div className="">
             <canvas
               onClick={openModal}
               ref={canvasRef}
