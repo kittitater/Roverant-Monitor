@@ -97,9 +97,9 @@ export default function SignInPage() {
 
   return (
     <>
-      <div className="grid min-h-svh lg:grid-cols-3">
+      <div className="grid min-h-svh lg:grid-cols-2">
         {/* left Side Image (Visible on large screens) */}
-        <div className="relative hidden bg-muted lg:block col-span-1">
+        {/* <div className="relative hidden bg-muted lg:block col-span-1">
           <Image
             src="/roverant-rover.jpg"
             alt="Image"
@@ -107,20 +107,20 @@ export default function SignInPage() {
             height={500}
             className="absolute inset-0 h-full w-full object-cover opacity-75"
           />
-        </div>
+        </div> */}
 
         {/* right Side Content */}
         <div className="flex flex-col gap-4 p-6 md:p-10 col-span-2">
           {/* Logo and Title Section */}
           <div className="flex justify-center gap-2 md:justify-start">
-            <Link href="/" className="flex items-center gap-4 font-semibold">
-              <div className="flex h-6 w-6 items-center justify-center ">
+            <a href="/" className="flex items-center gap-4 font-semibold">
+              <div className="flex h-7 w-7 items-center justify-center ">
                 <Image
                   alt="Your Company"
-                  src="/monitor.png"
-                  width={24}
-                  height={24}
-                  className="mx-auto h-6 w-auto"
+                  src="/RM.png"
+                  width={150}
+                  height={150}
+                  className="mx-auto h-auto w-auto "
                 />
               </div>
               <div className="flex items-center">
@@ -131,32 +131,32 @@ export default function SignInPage() {
                   ant Monitor
                 </span>
               </div>
-            </Link>
+            </a>
           </div>
 
           {/* Login Form Section */}
           <div className="flex flex-1 flex-col items-center justify-center">
             <div className="border-0 border-gray-200 rounded-3xl sm:p-10 p-5">
               <div className="w-full max-w-2xl ">
-                {/* <Image
+                <Image
                   alt="Your Company"
-                  src="/monitor.png"
+                  src="/RM.png"
                   width={100}
                   height={100}
                   className="mx-auto h-36 w-auto"
-                /> */}
+                />
                 <div className="flex justify-center">
-                  <h2 className="mt-10 text-center text-4xl sm:text-7xl font-semibold tracking-tight text-white bg-black">
+                  <h2 className="mt-10 text-center text-4xl sm:text-6xl font-semibold tracking-tight text-white bg-black">
                     Rover
                   </h2>
-                  <h2 className="mt-10 text-center text-4xl sm:text-7xl font-semibold tracking-tight text-black">
+                  <h2 className="mt-10 text-center text-4xl sm:text-6xl font-semibold tracking-tight text-black">
                     ant Monitor
                   </h2>
                   {/* <h2 className="mt-10 text-center text-4xl sm:text-7xl font-semibold tracking-tight text-black bg-black animate-pulse duration-200">
                   ..
                   </h2> */}
                 </div>
-                <h2 className="sm:mt-4 mt-2 text-center text-2xl sm:text-3xl font-semibold tracking-tight text-gray-500">
+                <h2 className="sm:mt-4 mt-2 text-center text-2xl sm:text-2xl font-semibold tracking-tight text-gray-500">
                   Sign in to your account
                 </h2>
                 <div className="mt-10">

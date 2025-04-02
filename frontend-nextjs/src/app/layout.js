@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/monitor.png" />
+        <link rel="icon" href="/RM.png" />
       </head> 
       <body>
         <ClientLayout>{children}</ClientLayout>

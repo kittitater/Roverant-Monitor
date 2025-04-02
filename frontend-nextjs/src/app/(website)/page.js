@@ -201,7 +201,7 @@ export default function Home() {
                         Rover
                       </h1>
                       <h1 className="text-4xl font-bold tracking-tight text-white sm:text-8xl ">
-                        ant Monitor..
+                        ant Monitorrr
                       </h1>
                       <h1 className="text-4xl font-bold tracking-tight text-white sm:text-8xl bg-white animate-pulse duration-200"> 
                         .
@@ -364,7 +364,7 @@ export default function Home() {
           </div>
           <div className="mx-auto grid grid-cols-1 gap-x-8 gap-y-20 md:grid-cols-3 max-w-7xl px-6 lg:px-5">
             {/* <div className="mx-auto grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2"> */}
-            <div className="my-auto max-w-2xl text-left md:col-span-2">
+            <div className="my-auto max-w-2xl mx-auto text-left md:col-span-2">
               <h2 className="text-center md:text-left text-4xl sm:text-5xl font-semibold tracking-tight text-white mb-10">
                 About Roverant
               </h2>
