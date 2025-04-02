@@ -378,7 +378,7 @@ export default function Home() {
                 objects, and abnormal activities while providing real-time video
                 feeds and alerts to security personnel via a web application.
               </p>
-              <p className="mt-8 text-pretty text-lg font-medium text-white ">
+              <p className="mt-8 mb-10 text-pretty text-lg font-medium text-white ">
                 The project combines robust hardware, including the NVIDIA
                 Jetson TX2 and LIDAR, with cutting-edge software technologies
                 such as FastAPI and Next.js. The web-based interface enables
@@ -389,10 +389,12 @@ export default function Home() {
                 reduce human error, and streamline security operations.
               </p>
               <Link
-                href="/#About"
-                className="mt-8 text-lg font-semibold leading-6 text-white"
+                href="https://mailkmuttacth-my.sharepoint.com/:b:/g/personal/kittitat_song_kmutt_ac_th/EVFX1ffhVFJHqYvAZC0ModcBbCdn_f80wSfjWVH4OL1UjA?e=PTjsUP"
+                target="_blank"
+                className="text-lg font-bold leading-6 text-white"
               >
-                About Roverant <span aria-hidden="true">→</span>
+                Read more in our project report{" "}
+                <span aria-hidden="true">→</span>
               </Link>
             </div>
 

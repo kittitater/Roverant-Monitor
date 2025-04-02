@@ -34,6 +34,15 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="https://mailkmuttacth-my.sharepoint.com/:b:/g/personal/kittitat_song_kmutt_ac_th/EVFX1ffhVFJHqYvAZC0ModcBbCdn_f80wSfjWVH4OL1UjA?e=PTjsUP"
+                  target="_blank"
+                  className="hover:underline me-4 md:me-6"
+                >
+                  Project Report
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/#Innovator"
                   className="hover:underline me-4 md:me-6"
                 >
