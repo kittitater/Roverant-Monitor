@@ -17,6 +17,7 @@ import {
 // import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "@/app/(web-application)/(authentication)/firebase/firebase";
@@ -139,16 +140,25 @@ export default function Navbar() {
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <a href="/dashboard" ClassName="flex items-center gap-2">
-                      <span className="text-white font-semibold text-xl bg-black">
+                      <div className="flex h-9 w-9 items-center justify-center ">
+                        <Image
+                          alt="Your Company"
+                          src="/RM.png"
+                          width={150}
+                          height={150}
+                          className="mx-auto h-auto w-auto "
+                        />
+                      </div>
+                      {/* <span className="text-white font-semibold text-xl bg-black">
                         Rover
                       </span>
                       <span className="text-black font-semibold text-xl">
                         ant Monitor
-                      </span>
+                      </span> */}
                     </a>
                   </div>
                   <div className="hidden md:block">
-                    <div className="ml-10 flex items-baseline space-x-4">
+                    <div className="ml-8 flex items-baseline space-x-4">
                       {navigation.map((item) => (
                         <Link
                           key={item.name}

@@ -10,6 +10,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/app/(web-application)/(authentication)/firebase/firebase"; // Import the Firebase auth module
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext"; // Import the useAuth hook
+import Footer from "@/components/main/footer";
 
 export default function SignInPage() {
   const [errorMsg, setErrorMsg] = useState("");
@@ -215,7 +216,8 @@ export default function SignInPage() {
             </div>
           </div>
         </div>
-      </div>
+        
+      </div><Footer />
     </>
   );
 }

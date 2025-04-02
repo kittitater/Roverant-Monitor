@@ -203,7 +203,7 @@ export default function Home() {
                       <h1 className="text-4xl font-bold tracking-tight text-white sm:text-8xl ">
                         ant Monitorrr
                       </h1>
-                      <h1 className="text-4xl font-bold tracking-tight text-white sm:text-8xl bg-white animate-pulse duration-200"> 
+                      <h1 className="text-4xl font-bold tracking-tight text-white sm:text-8xl bg-white animate-pulse duration-200">
                         .
                       </h1>
                     </div>
@@ -388,6 +388,12 @@ export default function Home() {
                 co-working spaces, Roverant aims to improve security coverage,
                 reduce human error, and streamline security operations.
               </p>
+              <Link
+                href="/#About"
+                className="mt-8 text-lg font-semibold leading-6 text-white"
+              >
+                About Roverant <span aria-hidden="true">→</span>
+              </Link>
             </div>
 
             <div className="my-auto">
