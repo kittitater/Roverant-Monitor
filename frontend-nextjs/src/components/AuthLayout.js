@@ -2,7 +2,10 @@
 
 import React from "react";
 import { RoverProvider } from "@/components/context/RoverContext";
-import { AuthProvider, useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
+import {
+  AuthProvider,
+  useAuth,
+} from "@/app/(web-application)/(authentication)/context/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
 
 export default function ClientLayout({ children }) {
@@ -24,27 +27,30 @@ function ProtectedComponent({ children }) {
   const publicRoutes = ["/login", "/"]; // Add more if needed
 
   React.useEffect(() => {
-    if (!loading && !user && !publicRoutes.includes(pathname)) {
-      router.push("/login");
+    if (
+      !loading &&
+      !user &&
+      !publicRoutes.includes(pathname) &&
+      pathname !== "/login"
+    ) {
+      router.replace("/login");
     }
   }, [user, loading, router, pathname]);
 
-  if (loading) {
+  if (loading && pathname !== "/") {
     return (
-      <main className="flex h-screen items-center justify-center bg-white px-6 py-24 sm:py-32 lg:px-8">
-        <div className="text-center">
-          <img src="/monitor.png" alt="Loading..." className="w-32 h-32 animate-spin mx-auto" />
-          <h1 className="mt-10 text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
-            Hold On
+      <main className="flex h-screen items-center justify-center bg-black px-6 py-24 sm:py-32 lg:px-8">
+        <div className="text-center flex ">
+          <h1 className="mt-10 text-5xl font-semibold tracking-tight text-black bg-white sm:text-9xl duration-500 animate-bounce">
+            Rover
           </h1>
-          <p className="mt-6 text-lg font-medium text-gray-500 sm:text-xl/8">
-            Let us thinking something for you...
-          </p>
+          <h1 className="mt-10 text-5xl font-semibold tracking-tight text-white sm:text-9xl ">
+            ant Monitor
+          </h1>
         </div>
       </main>
     );
   }
-
 
   if (publicRoutes.includes(pathname)) {
     return <>{children}</>;

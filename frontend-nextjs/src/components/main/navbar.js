@@ -35,6 +35,7 @@ const navigation = [
 ];
 
 const userNavigation = [
+  { name: "Home Page", href: "/" },
   { name: "Setting", href: "/setting/my-profile" },
   { name: "Log out", href: "#" },
 ];
@@ -61,6 +62,7 @@ export default function Navbar() {
       setError(null);
 
       try {
+        console.log("User object:", user); // Debug the user object
         const idToken = await user.getIdToken();
         const response = await fetch(
           "https://api-roverant.mooo.com/rover/my-rovers",
@@ -113,19 +115,14 @@ export default function Navbar() {
 
   if (loading || logoutLoading) {
     return (
-      <main className="flex h-screen items-center justify-center bg-white px-6 py-24 sm:py-32 lg:px-8">
-        <div className="text-center">
-          <img
-            src="/monitor.png"
-            alt="Loading..."
-            className="w-32 h-32 animate-spin mx-auto"
-          />
-          <h1 className="mt-10 text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
-            Hold On
+      <main className="flex h-screen items-center justify-center bg-black px-6 py-24 sm:py-32 lg:px-8">
+        <div className="text-center flex ">
+          <h1 className="mt-10 text-5xl font-semibold tracking-tight text-black bg-white sm:text-9xl duration-500 animate-bounce">
+            Rover
           </h1>
-          <p className="mt-6 text-lg font-medium text-gray-500 sm:text-xl/8">
-            Let us think something for you...
-          </p>
+          <h1 className="mt-10 text-5xl font-semibold tracking-tight text-white sm:text-9xl ">
+            ant Monitor
+          </h1>
         </div>
       </main>
     );
@@ -141,9 +138,12 @@ export default function Navbar() {
                 {/* Left Logo + Nav */}
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <a href="/dashboard">
+                    <a href="/dashboard" ClassName="flex items-center gap-2">
+                      <span className="text-white font-semibold text-xl bg-black">
+                        Rover
+                      </span>
                       <span className="text-black font-semibold text-xl">
-                        Roverant Monitor
+                        ant Monitor
                       </span>
                     </a>
                   </div>

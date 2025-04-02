@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import  Image from "next/image";
+import Image from "next/image";
 import { GalleryVerticalEnd } from "lucide-react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/app/(web-application)/(authentication)/firebase/firebase"; // Import the Firebase auth module
@@ -82,21 +82,14 @@ export default function SignInPage() {
   // Show loading state if authentication is being checked
   if (loading) {
     return (
-      <main className="flex h-screen items-center justify-center bg-white px-6 py-24 sm:py-32 lg:px-8">
-        <div className="text-center">
-          <Image
-            src="/monitor.png"
-            alt="Loading..."
-            width={128}
-            height={128}
-            className="w-32 h-32 animate-spin mx-auto"
-          />
-          <h1 className="mt-10 text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
-            Hold On
+      <main className="flex h-screen items-center justify-center bg-black px-6 py-24 sm:py-32 lg:px-8">
+        <div className="text-center flex ">
+          <h1 className="mt-10 text-5xl font-semibold tracking-tight text-black bg-white sm:text-9xl duration-500 animate-bounce">
+            Rover
           </h1>
-          <p className="mt-6 text-lg font-medium text-gray-500 sm:text-xl/8">
-            Let us thinking something for you...
-          </p>
+          <h1 className="mt-10 text-5xl font-semibold tracking-tight text-white sm:text-9xl ">
+            ant Monitor
+          </h1>
         </div>
       </main>
     );
@@ -104,7 +97,7 @@ export default function SignInPage() {
 
   return (
     <>
-      <div className="grid min-h-screen lg:grid-cols-3">
+      <div className="grid min-h-svh lg:grid-cols-3">
         {/* left Side Image (Visible on large screens) */}
         <div className="relative hidden bg-muted lg:block col-span-1">
           <Image
@@ -130,30 +123,44 @@ export default function SignInPage() {
                   className="mx-auto h-6 w-auto"
                 />
               </div>
-              Roverant Monitor
+              <div className="flex items-center">
+                <span className="text-white font-semibold text-xl bg-black">
+                  Rover
+                </span>
+                <span className="text-black font-semibold text-xl">
+                  ant Monitor
+                </span>
+              </div>
             </Link>
           </div>
 
           {/* Login Form Section */}
           <div className="flex flex-1 flex-col items-center justify-center">
-            <div className="border-0 border-gray-200 rounded-3xl p-10">
-              <div className="w-full max-w-xs sm:max-w-sm ">
-                <Image
+            <div className="border-0 border-gray-200 rounded-3xl sm:p-10 p-5">
+              <div className="w-full max-w-2xl ">
+                {/* <Image
                   alt="Your Company"
                   src="/monitor.png"
                   width={100}
                   height={100}
                   className="mx-auto h-36 w-auto"
-                />
-                <h2 className="mt-10 text-center text-2xl font-semibold tracking-tight text-gray-900">
-                  Welcome to Roverant Monitor
-                </h2>
-                <h2 className="mt-1 text-center text-xl font-semibold tracking-tight text-gray-500">
+                /> */}
+                <div className="flex justify-center">
+                  <h2 className="mt-10 text-center text-4xl sm:text-7xl font-semibold tracking-tight text-white bg-black">
+                    Rover
+                  </h2>
+                  <h2 className="mt-10 text-center text-4xl sm:text-7xl font-semibold tracking-tight text-black">
+                    ant Monitor
+                  </h2>
+                  {/* <h2 className="mt-10 text-center text-4xl sm:text-7xl font-semibold tracking-tight text-black bg-black animate-pulse duration-200">
+                  ..
+                  </h2> */}
+                </div>
+                <h2 className="sm:mt-4 mt-2 text-center text-2xl sm:text-3xl font-semibold tracking-tight text-gray-500">
                   Sign in to your account
                 </h2>
-
                 <div className="mt-10">
-                  <div className="flex items-center justify-center gap-x-6">
+                  <div className="hidden sm:flex items-center justify-center gap-x-6">
                     <button
                       onClick={handleGoogleSignIn}
                       className="rounded-xl items-center bg-black px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -175,6 +182,19 @@ export default function SignInPage() {
                       className="text-sm font-semibold leading-6 text-gray-900"
                     >
                       Home Page <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
+
+                  <div className="sm:hidden flex flex-col items-center justify-center gap-y-5">
+                    <h1 className=" text-center text-sm font-semibold bg-white text-red-500 ring-2 ring-red-500 rounded-xl p-4">
+                      We apologize, the mobile version is currently unavailable.
+                      Please access it on a desktop.
+                    </h1>
+                    <Link
+                      className="mt-5 rounded-xl items-center bg-black px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-black hover:ring-black hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      href="/"
+                    >
+                      Back Home Page
                     </Link>
                   </div>
 

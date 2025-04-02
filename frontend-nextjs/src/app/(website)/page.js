@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Footer from "../../components/main/footer";
+import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
 
 import { useState } from "react";
 import {
@@ -21,17 +22,17 @@ const people = [
   {
     name: "Phithatsanan Lertthanasiriwat", // Home
     role: "Project Founder",
-    imageUrl: "../profile_image/Home.jpg",
+    imageUrl: "/profile_image/Home.jpg",
   },
   {
     name: "Kittitat Songsakseree", // Giang
     role: "Project Founder",
-    imageUrl: "../profile_image/Giang.jpg",
+    imageUrl: "/profile_image/Giang.jpg",
   },
   {
     name: "Woradon Samphanphaisarn", // Pond
     role: "Project Founder",
-    imageUrl: "../profile_image/Pond.jpg",
+    imageUrl: "/profile_image/Pond.jpg",
   },
   {
     name: "Dr.Prapong Prechaprapranwong", // Aj.Prapong
@@ -49,6 +50,8 @@ const people = [
 ];
 
 export default function Home() {
+  const { user, loading, setUser } = useAuth();
+
   const [openPolicy, setOpenPolicy] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -177,7 +180,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-32 min-h-svh flex items-center justify-center">
           <div className="mx-auto  max-w-2xl  gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
             <div className="grid justify-items-center ">
-              <div className="lg:max-w-xl ">
+              <div className="lg:max-w-5xl ">
                 <div className="grid justify-items-center">
                   <div className="hidden sm:mb-8 sm:flex sm:justify-left ">
                     <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-white ring-1 ring-white hover:ring-gray-300 hover:text-gray-300">
@@ -192,22 +195,41 @@ export default function Home() {
                       </Link>
                     </div>
                   </div>
-                  <div className="text-center">
-                    <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-                      Welcome to the Roverant Monitor
-                    </h1>
-                    <p className="mt-6 text-lg leading-8 text-white">
-                      Our Security Guard Rover Monitoring Web Application.
+                  <div className="">
+                    <div className="text-center flex justify-center">
+                      <h1 className="text-4xl font-bold tracking-tight  sm:text-8xl text-black bg-white">
+                        Rover
+                      </h1>
+                      <h1 className="text-4xl font-bold tracking-tight text-white sm:text-8xl ">
+                        ant Monitor..
+                      </h1>
+                      <h1 className="text-4xl font-bold tracking-tight text-white sm:text-8xl bg-white animate-pulse duration-200"> 
+                        .
+                      </h1>
+                    </div>
+                    <p className="mt-6 lg:max-w-xl mx-auto text-lg  text-white text-center">
+                      The Security Guard Rover Monitoring Web Application.
                       Curious with our project ? Hit the "About Roverant" to get
                       to know our project .
                     </p>
                     <div className="mt-10 flex items-center justify-center gap-x-6">
-                      <a
-                        href="/dashboard"
-                        className="rounded-xl bg-white px-10 py-3 text-sm font-semibold text-black shadow-2xl shadow-white hover:shadow-2xl  hover:shadow-red-600 transition duration-500 hover:bg-white hover:text-red-600 hover:ring-red-600 hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >
-                        Get Started Now!!!!
-                      </a>
+                      {user ? (
+                        // If the user is logged in, show "Go to Dashboard"
+                        <Link
+                          href="/dashboard"
+                          className="rounded-xl bg-white px-10 py-3 text-sm font-semibold text-black shadow-2xl shadow-white hover:shadow-2xl hover:shadow-red-600 transition duration-500 hover:bg-white hover:text-red-600 hover:ring-red-600 hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                          Go to Dashboard
+                        </Link>
+                      ) : (
+                        // If not logged in, show "Log in"
+                        <Link
+                          href="/login"
+                          className="rounded-xl bg-white px-10 py-3 text-sm font-semibold text-black shadow-2xl shadow-white hover:shadow-2xl hover:shadow-red-600 transition duration-500 hover:bg-white hover:text-red-600 hover:ring-red-600 hover:ring-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                          Get Started Now !!!
+                        </Link>
+                      )}
                       <Link
                         href="/#About"
                         className="text-sm font-semibold leading-6 text-white"
@@ -216,7 +238,7 @@ export default function Home() {
                       </Link>
                     </div>
                   </div>
-                  <div className="absolute bottom-20">
+                  <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -241,11 +263,11 @@ export default function Home() {
         {/* Meet our innovator */}
         <div id="Innovator" className="bg-white py-24 sm:py-32 ">
           <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
-            <div className="max-w-2xl">
-              <h2 className="text-4xl font-semibold tracking-tight text-gray-900 ">
+            <div className="max-w-2xl justify-center">
+              <h2 className="text-4xl font-semibold text-center sm:text-left tracking-tight text-gray-900 ">
                 Meet our Innovator
               </h2>
-              <p className="mt-6 text-lg leading-8 text-gray-600">
+              <p className="mt-6 text-lg leading-8 mx-auto text-gray-600">
                 Our team is made up of highly skilled and experienced
                 individuals who are passionate about the project. We are
                 committed to providing the best service to our users.
@@ -340,7 +362,7 @@ export default function Home() {
               className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20"
             />
           </div>
-          <div className="mx-auto grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-3 max-w-7xl px-6 lg:px-5">
+          <div className="mx-auto grid grid-cols-1 gap-x-8 gap-y-20 md:grid-cols-3 max-w-7xl px-6 lg:px-5">
             {/* <div className="mx-auto grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2"> */}
             <div className="my-auto max-w-2xl text-left md:col-span-2">
               <h2 className="text-center md:text-left text-4xl sm:text-5xl font-semibold tracking-tight text-white mb-10">
@@ -368,13 +390,13 @@ export default function Home() {
               </p>
             </div>
 
-            <div>
+            <div className="my-auto">
               <Image
                 src="/roverant-rover.jpg"
                 alt="Image"
                 width={300}
                 height={300}
-                className=" w-auto rounded-2xl"
+                className=" w-auto rounded-2xl mx-auto"
               />
             </div>
 
@@ -403,11 +425,11 @@ export default function Home() {
             <h2 className="text-center md:text-left text-4xl sm:text-5xl font-semibold tracking-tight text-gray-900">
               Contact Roverant
             </h2>
-            <p className=" text-center md:text-left mt-6 text-lg text-gray-600">
+            <p className=" text-center sm:text-left mt-6 text-lg text-gray-600">
               You can either get in touch with us via information or fill in the
               form{" "}
             </p>
-            <div className="mt-10 mb-10 sm:mb-0 sm:mt-16 mx-5 sm:mx-0 items-center space-y-4">
+            <div className="mt-10 mb-10 sm:mb-0 sm:mt-16 mx-6 sm:mx-0 items-center space-y-4">
               <div className="flex items-center justify-left gap-x-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
