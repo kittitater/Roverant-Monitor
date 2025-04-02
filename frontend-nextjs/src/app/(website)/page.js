@@ -183,7 +183,7 @@ export default function Home() {
               <div className="lg:max-w-5xl ">
                 <div className="grid justify-items-center">
                   <div className="hidden sm:mb-8 sm:flex sm:justify-left ">
-                    <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-white ring-1 ring-white hover:ring-gray-300 hover:text-gray-300">
+                    {/* <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-white ring-1 ring-white hover:ring-gray-300 hover:text-gray-300">
                       Announcing our Project proposal.{" "}
                       <Link
                         href="https://mailkmuttacth-my.sharepoint.com/:b:/g/personal/kittitat_song_kmutt_ac_th/EVFX1ffhVFJHqYvAZC0ModcBbCdn_f80wSfjWVH4OL1UjA?e=PTjsUP"
@@ -193,7 +193,7 @@ export default function Home() {
                         <span aria-hidden="true" className="absolute inset-0" />
                         Read more <span aria-hidden="true">&rarr;</span>
                       </Link>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="">
                     <div className="text-center flex justify-center">
