@@ -207,10 +207,8 @@ export default function Home() {
                         .
                       </h1>
                     </div>
-                    <p className="mt-6 lg:max-w-xl mx-auto text-lg  text-white text-center">
-                      The Security Guard Rover Monitoring Web Application.
-                      Curious with our project ? Hit the "About Roverant" to get
-                      to know our project .
+                    <p className="mt-6 lg:max-w-4xl mx-auto text-lg  text-white text-center">
+                      The Security Guard Rover Monitoring Web Application enhances security with real-time surveillance and automated patrolling. Click “About Roverant” to learn more or hit “Get Started Now” to try it out!
                     </p>
                     <div className="mt-10 flex items-center justify-center gap-x-6">
                       {user ? (
@@ -238,7 +236,7 @@ export default function Home() {
                       </Link>
                     </div>
                   </div>
-                  <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2">
+                  <div className="absolute bottom-14 left-1/2 transform -translate-x-1/2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

@@ -212,7 +212,7 @@ export default function LiveCamera() {
 
   return (
     <Layout>
-      <div className="pt-[110px] mx-auto max-w-7xl px-4 py-6 space-y-6">
+      <div className="pt-[110px] min-h-svg mx-auto max-w-7xl px-4 py-6 space-y-6">
         <section className="text-center">
           <h1 className="text-3xl font-extrabold">Live Camera</h1>
           <p className="mt-2 text-gray-500">
@@ -257,14 +257,14 @@ export default function LiveCamera() {
             <canvas
               onClick={openModal}
               ref={canvasRef}
-              width={640}
-              height={480}
-              className="rounded-3xl border-2 border-black hover:opacity-80"
+              width={800}
+              height={600}
+              className="rounded-3xl border-2 h-auto border-black hover:opacity-80 "
             />
           </div>
 
           {/* Connection Status */}
-          <div className="flex flex-col items-center bg-white border border-gray-300 rounded-2xl p-4 py-14 w-full max-w-md">
+          <div className="flex flex-col items-center bg-white border border-gray-300 rounded-2xl p-5  w-full max-w-md">
             <h2 className="text-xl text-center font-semibold mb-10">
               Connection Status
             </h2>
@@ -306,8 +306,8 @@ export default function LiveCamera() {
             ref={modalCanvasRef}
             width={1152}
             height={864}
-            className="object-contain rounded-3xl"
-            style={{ maxWidth: "99vw", maxHeight: "95vh" }}
+            className="object-contain max-h-screen"
+            // style={{ maxWidth: "99vw", maxHeight: "100vh" }}
           />
           <div className="absolute top-5 left-5 px-4 py-2 bg-white rounded-lg text-black font-bold">
             Camera:{" "}
