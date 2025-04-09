@@ -306,7 +306,7 @@ export default function LiveCamera() {
             ref={modalCanvasRef}
             width={1152}
             height={864}
-            className="object-contain max-h-screen"
+            className="object-contain min-h-svh max-h-svh"
             // style={{ maxWidth: "99vw", maxHeight: "100vh" }}
           />
           <div className="absolute top-5 left-5 px-4 py-2 bg-white rounded-lg text-black font-bold">
