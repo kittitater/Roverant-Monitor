@@ -19,13 +19,16 @@ export default function SignInPage() {
 
   useEffect(() => {
     console.log("Auth state changed:", { user, loading }); // Debug log
+
     if (!loading && user) {
-      console.log("User is authenticated. Redirecting to /dashboard.");
-      router.push("/dashboard");
+      console.log(
+        "User is authenticated. Redirecting to /dashboard with reload."
+      );
+      window.location.href = "/dashboard"; // Redirect and reload
     } else if (!loading && !user) {
       console.log("No authenticated user. Staying on sign-in page.");
     }
-  }, [user, loading, router]);
+  }, [user, loading]);
 
   async function handleGoogleSignIn() {
     setErrorMsg("");
@@ -216,8 +219,8 @@ export default function SignInPage() {
             </div>
           </div>
         </div>
-        
-      </div><Footer />
+      </div>
+      <Footer />
     </>
   );
 }
