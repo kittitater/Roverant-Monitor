@@ -54,16 +54,15 @@ export default function Navbar() {
 
   const [logoutLoading, setLogoutLoading] = useState(false);
   const [rovers, setRovers] = useState([]);
-  const [roverLoading, setRoverLoading] = useState(true);
+  // Removed unused roverLoading state for clarity
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchRovers = async () => {
-      setRoverLoading(true);
+      // Removed unused setRoverLoading call for clarity
       setError(null);
 
       try {
-        console.log("User object:", user); // Debug the user object
         const idToken = await user.getIdToken();
         const response = await fetch(
           "https://api-roverant.mooo.com/rover/my-rovers",
@@ -92,8 +91,6 @@ export default function Navbar() {
         if (selectedRover === undefined) {
           updateRover(null);
         }
-      } finally {
-        setRoverLoading(false);
       }
     };
 
@@ -182,8 +179,7 @@ export default function Navbar() {
                   <Listbox
                     value={selectedRover}
                     onChange={handleSelectRoverLocal}
-                    disabled={roverLoading}
-                    by="rover_id"
+                    //disabled={roverLoading}
                   >
                     <ListboxButton className="relative block py-2 pr-8 pl-3 text-left text-sm font-medium text-black hover:bg-black hover:text-white rounded-xl ring-black ring-2 bg-white">
                       {selectedRover ? selectedRover.name : "Select a Rover"}
