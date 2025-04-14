@@ -27,12 +27,9 @@ import { useEffect, useState } from "react";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard" },
-  { name: "My Rover", href: "/my-rover" },
-  { name: "Tracking Map", href: "/tracking-map" },
-  { name: "Live Camera", href: "/live-camera" },
-  { name: "Patrol Log", href: "/patrol-log" },
-  { name: "Alert History", href: "/alert-history" },
-  { name: "Summary Report", href: "/summary-report" },
+  { name: "Operation Console", href: "/operation-console" },
+  { name: "History Log", href: "/history-log" },
+  { name: "System Report", href: "/system-report" },
 ];
 
 const userNavigation = [
@@ -127,16 +124,16 @@ export default function Navbar() {
   }
 
   return (
-    <header className="inset-x-0 fixed top-0">
+    <header className="inset-x-0 fixed top-10 z-50 ">
       <Disclosure as="nav" className="bg-white">
         {({ open }) => (
           <>
-            <div className="mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex h-20 items-center justify-between">
+            <div className="mx-auto px-4 sm:px-4 lg:px-6">
+              <div className="flex h-0 items-center justify-between">
                 {/* Left Logo + Nav */}
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <a href="/dashboard" ClassName="flex items-center gap-2">
+                    <a href="/dashboard" className="flex items-center gap-2">
                       <div className="flex h-9 w-9 items-center justify-center ">
                         <Image
                           alt="Your Company"
@@ -163,8 +160,8 @@ export default function Navbar() {
                           className={clsx(
                             pathname.startsWith(item.href)
                               ? "bg-black text-white ring-black ring-2"
-                              : "text-black ring-black ring-2 hover:bg-black hover:text-white",
-                            "rounded-xl px-3 py-2 text-sm font-medium"
+                              : "text-black ring-black ring-2 hover:bg-black bg-white hover:text-white",
+                            "rounded-xl px-3 py-2 text-xs font-medium"
                           )}
                         >
                           {item.name}
@@ -181,13 +178,13 @@ export default function Navbar() {
                     onChange={handleSelectRoverLocal}
                     //disabled={roverLoading}
                   >
-                    <ListboxButton className="relative block py-2 pr-8 pl-3 text-left text-sm font-medium text-black hover:bg-black hover:text-white rounded-xl ring-black ring-2 bg-white">
+                    <ListboxButton className=" flex items-center gap-2 py-1 pl-3 pr-2 text-left text-xs font-medium text-black hover:bg-black hover:text-white rounded-xl ring-black ring-2 bg-white">
                       {selectedRover ? selectedRover.name : "Select a Rover"}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
-                        className="group pointer-events-none absolute top-1.5 right-1.5 size-6"
+                        className="group pointer-events-none size-6 "
                       >
                         <path
                           fillRule="evenodd"
@@ -199,10 +196,10 @@ export default function Navbar() {
                     <ListboxOptions
                       anchor="bottom"
                       transition
-                      className="max-h-40 overflow-y-auto absolute right-0 mt-3 p-2 pr-4 w-fit space-y-2 origin-top-right rounded-2xl bg-white shadow-lg ring-2 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                      className="h-2/5 overflow-y-auto absolute right-0 mt-3 p-2 pr-4 w-fit space-y-2 origin-top-right rounded-2xl bg-white shadow-lg ring-2 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                     >
                       {error ? (
-                        <div className="px-3 py-2 text-sm font-medium text-red-500">
+                        <div className="px-3 py-2 text-xs font-medium text-red-500">
                           {error}
                         </div>
                       ) : rovers.length > 0 ? (
@@ -210,7 +207,7 @@ export default function Navbar() {
                           <ListboxOption
                             key={rover.rover_id}
                             value={rover}
-                            className="group flex items-center gap-2 px-3 py-2 text-sm font-medium data-[focus]:bg-black ring-2 rounded-xl ring-black"
+                            className="group flex items-center gap-2 px-3 py-2 text-xs font-medium data-[focus]:bg-black ring-2 rounded-xl ring-black"
                           >
                             {/* <CheckIcon className="invisible size-4 fill-black group-data-[selected]:visible group-data-[focus]:fill-white" /> */}
                             <svg
@@ -226,13 +223,13 @@ export default function Navbar() {
                               />
                             </svg>
 
-                            <div className="text-sm font-medium group-data-[focus]:text-white">
+                            <div className="text-xs font-medium group-data-[focus]:text-white">
                               {rover.name}
                             </div>
                           </ListboxOption>
                         ))
                       ) : (
-                        <div className="px-3 py-2 text-sm font-medium text-gray-500">
+                        <div className="px-3 py-2 text-xs font-medium text-gray-500">
                           No Rovers Available
                         </div>
                       )}
@@ -251,7 +248,7 @@ export default function Navbar() {
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="h-7 w-7"
+                      className="h-6 w-6"
                     >
                       <path
                         strokeLinecap="round"
@@ -269,7 +266,7 @@ export default function Navbar() {
                           user?.photoURL ||
                           "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg"
                         }
-                        className="h-9 w-9 rounded-xl"
+                        className="h-8 w-8 rounded-xl"
                       />
                     </MenuButton>
                     <MenuItems
@@ -280,7 +277,7 @@ export default function Navbar() {
                         <div className="text-base font-medium leading-none text-black">
                           {user?.displayName || "Name SurName"}
                         </div>
-                        <div className="text-sm font-medium leading-none text-gray-400">
+                        <div className="text-xs font-medium leading-none text-gray-400">
                           {user?.email || "User Email"}
                         </div>
                       </div>
@@ -292,14 +289,14 @@ export default function Navbar() {
                           {item.name === "Log out" ? (
                             <Button
                               onClick={handleLogout}
-                              className="block px-3 py-2 text-sm font-medium ring-2 rounded-xl ring-black text-black hover:bg-black hover:text-white "
+                              className="block px-3 py-2 text-xs font-medium ring-2 rounded-xl ring-black text-black hover:bg-black hover:text-white "
                             >
                               {item.name}
                             </Button>
                           ) : (
                             <Link
                               href={item.href}
-                              className="block px-3 py-2 text-sm font-medium ring-2 rounded-xl ring-black text-black hover:bg-black hover:text-white "
+                              className="block px-3 py-2 text-xs font-medium ring-2 rounded-xl ring-black text-black hover:bg-black hover:text-white "
                             >
                               {item.name}
                             </Link>
