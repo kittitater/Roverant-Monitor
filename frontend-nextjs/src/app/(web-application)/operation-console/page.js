@@ -230,7 +230,7 @@ export default function OperationConsole() {
         </section>
 
         {/* Toggle streaming */}
-        <div className="flex justify-center space-x-4">
+        <div className="flex justify-center space-x-4 border border-gray-300 rounded-2xl p-5">
           <button
             onClick={() => setIsStreaming(!isStreaming)}
             className={`px-4 py-2 rounded-xl font-semibold text-white flex items-center space-x-2 ${
@@ -261,13 +261,13 @@ export default function OperationConsole() {
         </div>
 
         {/* Camera + Status */}
-        <section className="grid grid-cols-5 gap-5 justify-center items-center space-y-6 lg:space-y-0">
+        <section className="grid grid-cols-5 gap-6 justify-center items-center space-y-6 lg:space-y-0">
           <div className="col-span-3">
             <canvas
               onClick={openModal}
               ref={canvasRef}
-              width={800}
-              height={600}
+              width={600}
+              height={450}
               className="min-w-full  rounded-2xl border border-gray-300 hover:opacity-80 "
             />
           </div>
@@ -282,41 +282,39 @@ export default function OperationConsole() {
               </p>
             </div>
           </section>
-
-          
         </section>
 
         {/* Connection Status */}
-          <div className="col-span-5 flex flex-col items-center bg-white border border-gray-300 rounded-2xl p-5  w-full max-w-full">
-            <h2 className="text-xl text-center font-semibold mb-10">
-              Connection Status
-            </h2>
-            <div className=" w-full space-y-4">
-              <div className="flex justify-center flex-row space-x-5">
-                <h1 className="text-lg font-semibold">Rover Status :</h1>
-                <span
-                  className={`font-semibold text-lg ${
-                    status.control ? "text-green-500" : "text-yellow-500"
-                  }`}
-                >
-                  {status.control ? "Available" : "Unavailable"}
-                </span>
-              </div>
-              <div className="flex justify-center flex-row space-x-5">
-                <h1 className="text-lg font-semibold">
-                  Camera Streaming Gateway :
-                </h1>
-                <span
-                  className={`font-semibold text-lg ${getStatusColor(
-                    videoWsStatus
-                  )}`}
-                >
-                  {videoWsStatus}
-                </span>
-              </div>
+        <div className="flex flex-col items-center bg-white border border-gray-300 rounded-2xl p-5 ">
+          <h2 className="text-xl text-center font-semibold mb-10">
+            Connection Status
+          </h2>
+          <div className=" w-full space-y-4">
+            <div className="flex justify-center flex-row space-x-5">
+              <h1 className="text-lg font-semibold">Rover Status :</h1>
+              <span
+                className={`font-semibold text-lg ${
+                  status.control ? "text-green-500" : "text-yellow-500"
+                }`}
+              >
+                {status.control ? "Available" : "Unavailable"}
+              </span>
             </div>
-            <MotorControl />
+            <div className="flex justify-center flex-row space-x-5">
+              <h1 className="text-lg font-semibold">
+                Camera Streaming Gateway :
+              </h1>
+              <span
+                className={`font-semibold text-lg ${getStatusColor(
+                  videoWsStatus
+                )}`}
+              >
+                {videoWsStatus}
+              </span>
+            </div>
           </div>
+          <MotorControl />
+        </div>
       </div>
 
       {/* Full-Screen Modal */}

@@ -23,7 +23,7 @@ export default function SystemReportPage() {
 
   return (
     <Layout>
-      <main className="pt-[110px] min-h-svh mx-auto max-w-7xl px-4 py-6 space-y-6">
+      <main className="pt-[110px] min-h-svh mx-auto px-8 py-6 space-y-6">
         <section className="text-center">
           <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">
             System Report
