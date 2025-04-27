@@ -196,7 +196,7 @@ export default function Navbar() {
                     <ListboxOptions
                       anchor="bottom"
                       transition
-                      className="h-2/5 overflow-y-auto absolute right-0 mt-3 p-2 pr-4 w-fit space-y-2 origin-top-right rounded-2xl bg-white shadow-lg ring-2 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                      className=" absolute right-0 mt-3 p-2 pr-4 w-fit space-y-2 origin-top-right rounded-2xl bg-white shadow-lg ring-2 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                     >
                       {error ? (
                         <div className="px-3 py-2 text-xs font-medium text-red-500">
