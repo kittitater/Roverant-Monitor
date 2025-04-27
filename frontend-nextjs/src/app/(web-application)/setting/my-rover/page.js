@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -53,7 +52,7 @@ export default function MyRoversPage() {
     name: "",
     model: "",
     ip_address: "",
-    registration_token: "", // Added to store the token
+    registration_token: "",
   });
 
   useEffect(() => {
@@ -308,9 +307,9 @@ export default function MyRoversPage() {
       name: rover.name,
       model: rover.model,
       ip_address: rover.ip_address || "",
-      registration_token: rover.registration_token || "", // Ensure this is part of rover data
+      registration_token: rover.registration_token || "",
     });
-    setConfigMsg(""); // Clear previous config message
+    setConfigMsg("");
     setIsModalOpen(true);
   }
 
@@ -320,11 +319,17 @@ export default function MyRoversPage() {
 
   function handleModalChange(e) {
     setEditFormData({ ...editFormData, [e.target.name]: e.target.value });
-    setErrors({
-      ...errors,
-      [`edit${e.target.name.charAt(0).toUpperCase() + e.target.name.slice(1)}`]:
-        "",
-    });
+    // Clear errors based on the field name
+    const fieldName = e.target.name;
+    let errorKey;
+    if (fieldName === "ip_address") {
+      errorKey = "editIp"; // Special case for ip_address to match editIp
+    } else {
+      errorKey = `edit${
+        fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+      }`;
+    }
+    setErrors({ ...errors, [errorKey]: "" });
   }
 
   function validateEdit() {
@@ -412,7 +417,6 @@ export default function MyRoversPage() {
     }
 
     try {
-      // Directly call configureRover with existing rover_id and registration_token
       await configureRover(
         editFormData.rover_id,
         editFormData.registration_token,
