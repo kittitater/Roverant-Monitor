@@ -22,10 +22,10 @@ export default function SettingLayout({ children }) {
     return (
         <>
             <Layout>
-                <main className="pt-[85px]">
-                    <div className="min-h-full py-5 px-8">
-                        <div className="flex mx-auto justify-left divide-x divide-gray-200">
-                            <div className="fixed px-14 py-5 ">
+                <main className="pt-[80px]">
+                    <div className="min-h-full py-5 px-16">
+                        <div className="flex mx-auto justify-left  divide-gray-200">
+                            <div className="fixed py-5">
                                 <h1 className=" text-4xl mb-10 text-left font-semibold">Setting</h1>
                                 <div className=" flex flex-col w-32 items-baseline space-y-3 ">
                                     {navigation.map((item) => (
@@ -43,7 +43,7 @@ export default function SettingLayout({ children }) {
                                     ))}
                                 </div>
                             </div>
-                            <main className="w-full ml-60">{children}</main>
+                            <main className="w-full ml-48">{children}</main>
                         </div>
                     </div>
                 </main>
