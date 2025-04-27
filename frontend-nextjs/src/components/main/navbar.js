@@ -62,7 +62,7 @@ export default function Navbar() {
       try {
         const idToken = await user.getIdToken();
         const response = await fetch(
-          "https://api-roverant.mooo.com/rover/my-rovers",
+          "${process.env.NEXT_PUBLIC_API_URL}/rover/my-rovers",
           {
             method: "GET",
             headers: {

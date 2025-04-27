@@ -3,7 +3,7 @@
 "use client";
 
 import Layout from "@/components/main/AppLayout";
-import MotorControl from "@/components/live-camera/control";
+import MotorControl from "@/components/operation-console/control";
 import {
   FaVideoSlash,
   FaVideo,
@@ -36,11 +36,11 @@ export default function OperationConsole() {
 
   // WebSocket URLs
   const videoWsUrl = selectedRover
-    ? `wss://api-roverant.mooo.com/ws/client/video?token=${selectedRover.registration_token}&rover_id=${selectedRover.rover_id}`
+    ? `${process.env.NEXT_PUBLIC_WS_URL}/ws/client/video?token=${selectedRover.registration_token}&rover_id=${selectedRover.rover_id}`
     : null;
 
   const statusWsUrl = selectedRover
-    ? `wss://api-roverant.mooo.com/ws/status?rover_id=${selectedRover.rover_id}`
+    ? `${process.env.NEXT_PUBLIC_WS_URL}/ws/status?rover_id=${selectedRover.rover_id}`
     : null;
 
   // Video WebSocket Effect
@@ -373,7 +373,7 @@ export default function OperationConsole() {
 //   const { selectedRover } = useRover();
 
 //   const wsUrl = selectedRover
-//     ? `wss://api-roverant.mooo.com/ws/client/video?token=${selectedRover.registration_token}&rover_id=${selectedRover.rover_id}`
+//     ? `${process.env.NEXT_PUBLIC_WS_URL}/ws/client/video?token=${selectedRover.registration_token}&rover_id=${selectedRover.rover_id}`
 //     : null;
 
 //   useEffect(() => {
