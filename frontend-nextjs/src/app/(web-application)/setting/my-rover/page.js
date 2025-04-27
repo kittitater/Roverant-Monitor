@@ -297,7 +297,7 @@ export default function MyRoversPage() {
       setConfigMsg(`Configuration successful: ${configData.message}`);
     } catch (error) {
       console.error("Error configuring rover:", error);
-      setConfigMsg("An unexpected error occurred during rover configuration.");
+      setConfigMsg(`Activation of the rover failed on this IP address. [${ipAddress} ]`);
     }
   }
 
@@ -538,7 +538,7 @@ export default function MyRoversPage() {
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-900">
-              IP Address <span className="text-red-500">*</span>
+              Rover Activation IP Address <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -680,7 +680,7 @@ export default function MyRoversPage() {
           </div>
           <div className="mb-5">
             <label className="block text-sm font-semibold text-gray-900">
-              IP Address
+            Rover Reactivation IP Address
             </label>
             <div className="flex space-x-5 mt-2">
               <input
