@@ -242,12 +242,12 @@ export default function OperationConsole() {
             {isStreaming ? (
               <>
                 <FaVideoSlash />
-                <span>Stop Streaming</span>
+                <span>Off Video Streaming</span>
               </>
             ) : (
               <>
                 <FaVideo />
-                <span>Start Streaming</span>
+                <span>On Video Streaming</span>
               </>
             )}
           </button>
@@ -256,7 +256,7 @@ export default function OperationConsole() {
             className="px-4 py-2 rounded-xl font-semibold text-white flex items-center space-x-2 bg-gray-700 hover:bg-gray-800"
           >
             <FaExpand />
-            <span>Focus</span>
+            <span>Fullscreen Video</span>
           </button>
         </div>
 
@@ -274,8 +274,8 @@ export default function OperationConsole() {
 
           {/* Map Placeholder */}
           <section className="col-span-2 bg-white dark:bg-gray-900 p-4 border border-gray-300 rounded-2xl  flex items-center justify-center min-h-full">
-            <div className="text-center text-gray-500 dark:text-gray-400">
-              <FaMapMarkedAlt className="text-5xl mb-2" />
+            <div className="text-center text-gray-500 dark:text-gray-400 flex flex-col before:justify-center  items-center space-y-5">
+              <FaMapMarkedAlt className="text-7xl mb-2" />
               <p>
                 [ Map Placeholder ] Current Position: ({currentLocation.lat},{" "}
                 {currentLocation.lng})
