@@ -88,7 +88,7 @@ import {
 
 export default function MyRoverPage() {
   // Mock details
-  const [battery, setBattery] = useState(78);
+  const [battery, setBattery] = useState(99.99);
   const [speed, setSpeed] = useState(3.2);
   const [orientation, setOrientation] = useState(45);
   const [temperature, setTemperature] = useState(26.5);
