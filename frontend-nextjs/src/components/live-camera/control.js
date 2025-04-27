@@ -174,7 +174,6 @@ const MotorControl = () => {
             return;
         }
 
-        // Close the existing WebSocket connection before opening a new one
         if (motorSocket.current) {
             motorSocket.current.close();
         }
@@ -184,26 +183,17 @@ const MotorControl = () => {
 
         motorSocket.current = new WebSocket(wsUrl);
 
-        // WebSocket event handlers
-        motorSocket.current.onopen = () => {
-            setWsStatus("Connected");
-        };
-
-        motorSocket.current.onmessage = (event) => {
-            console.log("Message from server:", event.data);
-        };
-
+        motorSocket.current.onopen = () => setWsStatus("Connected");
+        motorSocket.current.onmessage = (event) => console.log("Message from server:", event.data);
         motorSocket.current.onerror = (error) => {
             console.log("WebSocket error:", error);
             setWsStatus("Error");
         };
-
         motorSocket.current.onclose = () => {
             console.log("WebSocket connection closed.");
             setWsStatus("Unavailable");
         };
 
-        // Clean up WebSocket connection when component unmounts or rover changes
         return () => {
             if (motorSocket.current) {
                 motorSocket.current.close();
@@ -211,13 +201,8 @@ const MotorControl = () => {
         };
     }, [selectedRover]);
 
-    // Function to send commands to the server
     const sendCommand = (command) => {
-        // Avoid sending the same command repeatedly
-        if (lastCommandRef.current === command) {
-            return;
-        }
-
+        if (lastCommandRef.current === command) return;
         if (motorSocket.current && motorSocket.current.readyState === WebSocket.OPEN) {
             motorSocket.current.send(command);
             console.log(`Sent command: ${command}`);
@@ -227,60 +212,36 @@ const MotorControl = () => {
         }
     };
 
-    // Determine the command based on pressed keys
     const getCommandFromKeys = () => {
         const keys = pressedKeysRef.current;
 
-        if (keys.size === 0) {
-            return "stop";
-        }
+        if (keys.size === 0) return "stop";
 
-        // Emergency stop takes precedence
-        if (keys.has(" ")) {
-            return "emergency_stop";
-        }
+        if (keys.has(" ")) return "emergency_stop";
 
-        // W, S, A, D, Q, E combinations
         if (keys.has("w")) {
-            if (keys.has("a") || keys.has("q")) {
-                return "w+a"; // Forward turn left
-            } else if (keys.has("d") || keys.has("e")) {
-                return "w+d"; // Forward turn right
-            } else {
-                return "w"; // Forward
-            }
-        } else if (keys.has("s")) {
-            if (keys.has("a") || keys.has("q")) {
-                return "s+a"; // Reverse turn left
-            } else if (keys.has("d") || keys.has("e")) {
-                return "s+d"; // Reverse turn right
-            } else {
-                return "s"; // Reverse
-            }
-        } else if (keys.has("a") || keys.has("q")) {
-            return "a"; // Rotate left
-        } else if (keys.has("d") || keys.has("e")) {
-            return "d"; // Rotate right
+            if (keys.has("a") || keys.has("q")) return "w+a";
+            if (keys.has("d") || keys.has("e")) return "w+d";
+            return "w";
         }
+        if (keys.has("s")) {
+            if (keys.has("a") || keys.has("q")) return "s+a";
+            if (keys.has("d") || keys.has("e")) return "s+d";
+            return "s";
+        }
+        if (keys.has("a") || keys.has("q")) return "a";
+        if (keys.has("d") || keys.has("e")) return "d";
 
-        return "stop"; // Default to stop if no valid combination
+        return "stop";
     };
 
-    // Keyboard event handlers
     const handleKeyDown = (event) => {
         const key = event.key.toLowerCase();
         if (["w", "s", "a", "d", "q", "e", " "].includes(key)) {
-            event.preventDefault(); // Prevent scrolling or other default behavior
-            console.log(`Key down: ${key}`);
-
-            // Add key to pressedKeysRef if not already present
+            event.preventDefault();
             if (!pressedKeysRef.current.has(key)) {
                 pressedKeysRef.current.add(key);
-                isKeyHeldRef.current = true;
-
-                // Send the command
-                const command = getCommandFromKeys();
-                sendCommand(command);
+                sendCommand(getCommandFromKeys());
             }
         }
     };
@@ -289,28 +250,18 @@ const MotorControl = () => {
         const key = event.key.toLowerCase();
         if (["w", "s", "a", "d", "q", "e", " "].includes(key)) {
             event.preventDefault();
-            console.log(`Key up: ${key}`);
-
-            // Remove key from pressedKeysRef
             pressedKeysRef.current.delete(key);
-
-            // Update key held status
-            isKeyHeldRef.current = pressedKeysRef.current.size > 0;
-
-            // Send the updated command
-            const command = getCommandFromKeys();
-            sendCommand(command);
+            sendCommand(getCommandFromKeys());
         }
     };
 
     useEffect(() => {
         window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keyup", handleKeyUp);
-
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
-            sendCommand("stop"); // Ensure motors stop when component unmounts
+            sendCommand("stop");
         };
     }, []);
 
