@@ -3,12 +3,21 @@
 "use client";
 
 import Layout from "@/components/main/AppLayout";
-import MotorControl from "@/components/live-camera/control";
-import { FaVideoSlash, FaVideo, FaExpand, FaTimes } from "react-icons/fa";
+import MotorControl from "@/components/operation-console/control";
+import {
+  FaVideoSlash,
+  FaVideo,
+  FaExpand,
+  FaTimes,
+  FaMapMarkedAlt,
+} from "react-icons/fa";
 import React, { useEffect, useRef, useState } from "react";
 import { useRover } from "@/components/context/RoverContext";
 
-export default function LiveCamera() {
+export default function OperationConsole() {
+  // Mock location data
+  const [currentLocation] = useState({ lat: 13.73, lng: 100.51 }); // e.g., Bangkok
+
   const canvasRef = useRef(null);
   const modalCanvasRef = useRef(null);
   const videoSocketRef = useRef(null); // For video WebSocket
@@ -27,11 +36,11 @@ export default function LiveCamera() {
 
   // WebSocket URLs
   const videoWsUrl = selectedRover
-    ? `wss://api-roverant.mooo.com/ws/client/video?token=${selectedRover.registration_token}&rover_id=${selectedRover.rover_id}`
+    ? `${process.env.NEXT_PUBLIC_WS_URL}/ws/client/video?token=${selectedRover.registration_token}&rover_id=${selectedRover.rover_id}`
     : null;
 
   const statusWsUrl = selectedRover
-    ? `wss://api-roverant.mooo.com/ws/status?rover_id=${selectedRover.rover_id}`
+    ? `${process.env.NEXT_PUBLIC_WS_URL}/ws/status?rover_id=${selectedRover.rover_id}`
     : null;
 
   // Video WebSocket Effect
@@ -212,16 +221,16 @@ export default function LiveCamera() {
 
   return (
     <Layout>
-      <div className="pt-[110px] min-h-svg mx-auto max-w-7xl px-4 py-6 space-y-6">
+      <div className="pt-[110px] min-h-svg mx-auto max-w-screen px-8 py-6 space-y-6">
         <section className="text-center">
-          <h1 className="text-3xl font-extrabold">Live Camera</h1>
+          <h1 className="text-3xl font-extrabold">Operation Console</h1>
           <p className="mt-2 text-gray-500">
-            Streaming from: <strong>{selectedRover?.name}</strong>
+            Live Streaming from : <strong>{selectedRover?.name}</strong>
           </p>
         </section>
 
         {/* Toggle streaming */}
-        <div className="flex justify-center space-x-4">
+        <div className="flex justify-center space-x-4 border border-gray-300 rounded-2xl p-5">
           <button
             onClick={() => setIsStreaming(!isStreaming)}
             className={`px-4 py-2 rounded-xl font-semibold text-white flex items-center space-x-2 ${
@@ -233,12 +242,12 @@ export default function LiveCamera() {
             {isStreaming ? (
               <>
                 <FaVideoSlash />
-                <span>Stop Streaming</span>
+                <span>Off Video Streaming</span>
               </>
             ) : (
               <>
                 <FaVideo />
-                <span>Start Streaming</span>
+                <span>On Video Streaming</span>
               </>
             )}
           </button>
@@ -247,52 +256,65 @@ export default function LiveCamera() {
             className="px-4 py-2 rounded-xl font-semibold text-white flex items-center space-x-2 bg-gray-700 hover:bg-gray-800"
           >
             <FaExpand />
-            <span>Focus</span>
+            <span>Fullscreen Video</span>
           </button>
         </div>
 
         {/* Camera + Status */}
-        <section className="flex flex-col lg:flex-row lg:space-x-8 justify-center items-center space-y-6 lg:space-y-0">
-          <div className="">
+        <section className="grid grid-cols-5 gap-6 justify-center items-center space-y-6 lg:space-y-0">
+          <div className="col-span-3">
             <canvas
               onClick={openModal}
               ref={canvasRef}
-              width={800}
-              height={600}
-              className="rounded-3xl border-2 h-auto border-black hover:opacity-80 "
+              width={600}
+              height={450}
+              className="min-w-full  rounded-2xl border border-gray-300 hover:opacity-80 "
             />
           </div>
 
-          {/* Connection Status */}
-          <div className="flex flex-col items-center bg-white border border-gray-300 rounded-2xl p-5  w-full max-w-md">
-            <h2 className="text-xl text-center font-semibold mb-10">
-              Connection Status
-            </h2>
-            <div className=" w-full space-y-4">
-              <div className="flex justify-center flex-row space-x-5">
-                <h1 className="text-lg font-semibold">Rover Status :</h1>
-                <span
-                  className={`font-semibold text-lg ${
-                    status.control ? "text-green-500" : "text-yellow-500"
-                  }`}
-                >
-                  {status.control ? "Available" : "Unavailable"}
-                </span>
-              </div>
-              <div className="flex justify-center flex-row space-x-5">
-                <h1 className="text-lg font-semibold">Camera Streaming Gateway :</h1>
-                <span
-                  className={`font-semibold text-lg ${getStatusColor(
-                    videoWsStatus
-                  )}`}
-                >
-                  {videoWsStatus}
-                </span>
-              </div>
+          {/* Map Placeholder */}
+          <section className="col-span-2 bg-white dark:bg-gray-900 p-4 border border-gray-300 rounded-2xl  flex items-center justify-center min-h-full">
+            <div className="text-center text-gray-500 dark:text-gray-400 flex flex-col before:justify-center  items-center space-y-5">
+              <FaMapMarkedAlt className="text-7xl mb-2" />
+              <p>
+                [ Map Placeholder ] Current Position: ({currentLocation.lat},{" "}
+                {currentLocation.lng})
+              </p>
             </div>
-            <MotorControl />
-          </div>
+          </section>
         </section>
+
+        {/* Connection Status */}
+        <div className="flex flex-col items-center bg-white border border-gray-300 rounded-2xl p-5 ">
+          <h2 className="text-xl text-center font-semibold mb-10">
+            Connection Status
+          </h2>
+          <div className=" w-full space-y-4">
+            <div className="flex justify-center flex-row space-x-5">
+              <h1 className="text-lg font-semibold">Rover Status :</h1>
+              <span
+                className={`font-semibold text-lg ${
+                  status.control ? "text-green-500" : "text-yellow-500"
+                }`}
+              >
+                {status.control ? "Available" : "Unavailable"}
+              </span>
+            </div>
+            <div className="flex justify-center flex-row space-x-5">
+              <h1 className="text-lg font-semibold">
+                Camera Streaming Gateway :
+              </h1>
+              <span
+                className={`font-semibold text-lg ${getStatusColor(
+                  videoWsStatus
+                )}`}
+              >
+                {videoWsStatus}
+              </span>
+            </div>
+          </div>
+          <MotorControl />
+        </div>
       </div>
 
       {/* Full-Screen Modal */}
@@ -351,7 +373,7 @@ export default function LiveCamera() {
 //   const { selectedRover } = useRover();
 
 //   const wsUrl = selectedRover
-//     ? `wss://api-roverant.mooo.com/ws/client/video?token=${selectedRover.registration_token}&rover_id=${selectedRover.rover_id}`
+//     ? `${process.env.NEXT_PUBLIC_WS_URL}/ws/client/video?token=${selectedRover.registration_token}&rover_id=${selectedRover.rover_id}`
 //     : null;
 
 //   useEffect(() => {

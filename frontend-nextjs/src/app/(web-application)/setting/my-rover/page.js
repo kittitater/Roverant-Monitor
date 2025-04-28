@@ -7,7 +7,6 @@ import {
   DialogTrigger,
   DialogContent,
   DialogTitle,
-  DialogDescription,
   DialogClose,
 } from "@/components/ui/dialog";
 import {
@@ -21,7 +20,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
 import { Button } from "@/components/ui/button";
 import { Table } from "@geist-ui/core";
 import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
@@ -30,13 +28,11 @@ export default function MyRoversPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  // State for rovers array and their statuses
   const [rovers, setRovers] = useState([]);
   const [roverStatuses, setRoverStatuses] = useState({});
   const [roverLoading, setRoverLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Registration form state
   const [roverData, setRoverData] = useState({
     name: "",
     model: "",
@@ -49,7 +45,6 @@ export default function MyRoversPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isReconfiguring, setIsReconfiguring] = useState(false);
 
-  // Modal state for editing/deleting
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [editFormData, setEditFormData] = useState({
@@ -57,41 +52,44 @@ export default function MyRoversPage() {
     name: "",
     model: "",
     ip_address: "",
+    registration_token: "",
   });
 
-  // Redirect if not logged in
   useEffect(() => {
     if (!loading && !user) {
       router.push("/signin");
     }
   }, [loading, user, router]);
 
-  // Fetch rovers and setup WebSocket connections
   useEffect(() => {
     if (user) {
       fetchRovers();
     }
   }, [user]);
 
-  // WebSocket setup for rover statuses
   useEffect(() => {
     if (!rovers.length) return;
 
     const wsConnections = {};
+    const reconnectTimeouts = {};
+    const maxReconnectAttempts = 5;
+    const baseReconnectDelay = 3000;
 
-    rovers.forEach((rover) => {
-      // Set status to "checking" when initiating the WebSocket connection
-      setRoverStatuses((prev) => ({
-        ...prev,
-        [rover.rover_id]: { status: "checking", control: false, video: false },
-      }));
-
-      const wsUrl = `wss://api-roverant.mooo.com/ws/status?rover_id=${rover.rover_id}`;
+    const connectWebSocket = (rover, attempt = 1) => {
+      const wsUrl = `${process.env.NEXT_PUBLIC_WS_URL}/ws/status?rover_id=${rover.rover_id}`;
       const ws = new WebSocket(wsUrl);
 
       ws.onopen = () => {
         console.log(`Status WebSocket opened for rover ${rover.rover_id}`);
-        // Connection is established; wait for a message to determine status
+        setRoverStatuses((prev) => ({
+          ...prev,
+          [rover.rover_id]: {
+            status: "checking",
+            control: false,
+            video: false,
+          },
+        }));
+        reconnectTimeouts[rover.rover_id] = null;
       };
 
       ws.onmessage = (event) => {
@@ -108,7 +106,7 @@ export default function MyRoversPage() {
             }));
           }
         } catch (error) {
-          console.log(
+          console.error(
             `Error parsing status for rover ${rover.rover_id}:`,
             error
           );
@@ -140,25 +138,56 @@ export default function MyRoversPage() {
             video: false,
           },
         }));
+
+        if (attempt <= maxReconnectAttempts) {
+          const delay = baseReconnectDelay * Math.pow(2, attempt - 1);
+          console.log(
+            `Reconnecting to rover ${rover.rover_id} in ${delay}ms (attempt ${attempt})`
+          );
+          reconnectTimeouts[rover.rover_id] = setTimeout(() => {
+            connectWebSocket(rover, attempt + 1);
+          }, delay);
+        } else {
+          console.log(
+            `Max reconnect attempts reached for rover ${rover.rover_id}`
+          );
+        }
       };
 
       wsConnections[rover.rover_id] = ws;
+    };
+
+    rovers.forEach((rover) => {
+      setRoverStatuses((prev) => ({
+        ...prev,
+        [rover.rover_id]: { status: "checking", control: false, video: false },
+      }));
+      connectWebSocket(rover);
     });
 
-    // Cleanup WebSocket connections on unmount or rover list change
     return () => {
-      Object.values(wsConnections).forEach((ws) => ws.close());
+      Object.keys(wsConnections).forEach((roverId) => {
+        wsConnections[roverId].close();
+        if (reconnectTimeouts[roverId]) {
+          clearTimeout(reconnectTimeouts[roverId]);
+        }
+      });
     };
-  }, [rovers]);
+  }, [rovers.map((r) => r.rover_id).join(",")]);
 
-  // Fetch Rovers
   async function fetchRovers() {
+    if (!user) {
+      setError("User not authenticated.");
+      setRoverLoading(false);
+      return;
+    }
     setRoverLoading(true);
     setError(null);
     try {
       const idToken = await user.getIdToken();
+      if (!idToken) throw new Error("Authentication token not available.");
       const response = await fetch(
-        "https://api-roverant.mooo.com/rover/my-rovers",
+        `${process.env.NEXT_PUBLIC_API_URL}/rover/my-rovers`,
         {
           headers: {
             Authorization: `Bearer ${idToken}`,
@@ -171,14 +200,13 @@ export default function MyRoversPage() {
       const data = await response.json();
       setRovers(data);
     } catch (err) {
-      console.log("Failed to fetch rovers:", err);
+      console.error("Failed to fetch rovers:", err);
       setError(err.message || "Failed to fetch rovers.");
     } finally {
       setRoverLoading(false);
     }
   }
 
-  // Registration Form Handlers
   function handleRegisterChange(e) {
     setRoverData({ ...roverData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: "" });
@@ -190,10 +218,18 @@ export default function MyRoversPage() {
     if (!roverData.model.trim()) newErrors.model = "Model is required.";
     if (!roverData.ip_address.trim()) {
       newErrors.ip_address = "IP address is required.";
-    } else if (
-      !/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(roverData.ip_address)
-    ) {
-      newErrors.ip_address = "Invalid IP address format.";
+    } else {
+      const ipValid = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.test(
+        roverData.ip_address
+      );
+      if (!ipValid) {
+        newErrors.ip_address = "Invalid IP address format.";
+      } else {
+        const octets = roverData.ip_address.split(".").map(Number);
+        if (!octets.every((octet) => octet >= 0 && octet <= 255)) {
+          newErrors.ip_address = "Each IP octet must be between 0 and 255.";
+        }
+      }
     }
     return newErrors;
   }
@@ -214,14 +250,17 @@ export default function MyRoversPage() {
 
     try {
       const idToken = await user.getIdToken();
-      const res = await fetch("https://api-roverant.mooo.com/rover/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`,
-        },
-        body: JSON.stringify(roverData),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/rover/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`,
+          },
+          body: JSON.stringify(roverData),
+        }
+      );
       if (!res.ok) {
         const errData = await res.json();
         setErrorMsg(errData.detail || "Failed to register rover.");
@@ -234,7 +273,7 @@ export default function MyRoversPage() {
       setRoverData({ name: "", model: "", ip_address: "" });
       fetchRovers();
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setErrorMsg("An unexpected error occurred.");
     } finally {
       setIsSubmitting(false);
@@ -242,7 +281,7 @@ export default function MyRoversPage() {
   }
 
   async function configureRover(roverId, token, ipAddress) {
-    const configUrl = `http://${ipAddress}:8000/api/configure-rover`;
+    const configUrl = `http://${ipAddress}:${process.env.NEXT_PUBLIC_ROVER_CONFIG_PORT}/api/configure-rover`;
     try {
       const res = await fetch(configUrl, {
         method: "PUT",
@@ -257,19 +296,20 @@ export default function MyRoversPage() {
       const configData = await res.json();
       setConfigMsg(`Configuration successful: ${configData.message}`);
     } catch (error) {
-      console.log("Error configuring rover:", error);
-      setConfigMsg("An unexpected error occurred during rover configuration.");
+      console.error("Error configuring rover:", error);
+      setConfigMsg(`Activation of the rover failed on this IP address. [${ipAddress} ]`);
     }
   }
 
-  // Modal Handlers
   function openModal(rover) {
     setEditFormData({
       rover_id: rover.rover_id,
       name: rover.name,
       model: rover.model,
       ip_address: rover.ip_address || "",
+      registration_token: rover.registration_token || "",
     });
+    setConfigMsg("");
     setIsModalOpen(true);
   }
 
@@ -279,14 +319,51 @@ export default function MyRoversPage() {
 
   function handleModalChange(e) {
     setEditFormData({ ...editFormData, [e.target.name]: e.target.value });
+    // Clear errors based on the field name
+    const fieldName = e.target.name;
+    let errorKey;
+    if (fieldName === "ip_address") {
+      errorKey = "editIp"; // Special case for ip_address to match editIp
+    } else {
+      errorKey = `edit${
+        fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+      }`;
+    }
+    setErrors({ ...errors, [errorKey]: "" });
+  }
+
+  function validateEdit() {
+    const newErrors = {};
+    if (!editFormData.name.trim()) newErrors.editName = "Name is required.";
+    if (!editFormData.model.trim()) newErrors.editModel = "Model is required.";
+    if (editFormData.ip_address) {
+      const ipValid = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.test(
+        editFormData.ip_address
+      );
+      if (!ipValid) {
+        newErrors.editIp = "Invalid IP address format.";
+      } else {
+        const octets = editFormData.ip_address.split(".").map(Number);
+        if (!octets.every((octet) => octet >= 0 && octet <= 255)) {
+          newErrors.editIp = "Each IP octet must be between 0 and 255.";
+        }
+      }
+    }
+    return newErrors;
   }
 
   async function handleSave() {
+    const newErrors = validateEdit();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     try {
       const { rover_id, name, model, ip_address } = editFormData;
       const idToken = await user.getIdToken();
       const res = await fetch(
-        `https://api-roverant.mooo.com/rover/${rover_id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/rover/${rover_id}`,
         {
           method: "PUT",
           headers: {
@@ -298,23 +375,67 @@ export default function MyRoversPage() {
       );
       if (!res.ok) {
         const errData = await res.json();
-        alert(errData.detail || "Failed to update rover.");
+        setErrorMsg(errData.detail || "Failed to update rover.");
         return;
       }
       closeModal();
       fetchRovers();
     } catch (error) {
-      console.log("Error updating rover:", error);
+      console.error("Error updating rover:", error);
+      setErrorMsg("An unexpected error occurred.");
+    }
+  }
+
+  async function handleReactivate() {
+    setIsReconfiguring(true);
+    setConfigMsg("");
+
+    // Validate IP address
+    if (!editFormData.ip_address.trim()) {
+      setErrors({ ...errors, editIp: "IP address is required." });
+      setIsReconfiguring(false);
+      return;
+    }
+
+    const ipValid = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.test(
+      editFormData.ip_address
+    );
+    if (!ipValid) {
+      setErrors({ ...errors, editIp: "Invalid IP address format." });
+      setIsReconfiguring(false);
+      return;
+    }
+
+    const octets = editFormData.ip_address.split(".").map(Number);
+    if (!octets.every((octet) => octet >= 0 && octet <= 255)) {
+      setErrors({
+        ...errors,
+        editIp: "Each IP octet must be between 0 and 255.",
+      });
+      setIsReconfiguring(false);
+      return;
+    }
+
+    try {
+      await configureRover(
+        editFormData.rover_id,
+        editFormData.registration_token,
+        editFormData.ip_address
+      );
+    } catch (error) {
+      console.error("Error reactivating rover:", error);
+      setConfigMsg("An unexpected error occurred during reactivation.");
+    } finally {
+      setIsReconfiguring(false);
     }
   }
 
   async function handleDelete() {
-    if (!confirm("Are you sure you want to delete this rover?")) return;
     try {
       const { rover_id } = editFormData;
       const idToken = await user.getIdToken();
       const res = await fetch(
-        `https://api-roverant.mooo.com/rover/${rover_id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/rover/${rover_id}`,
         {
           method: "DELETE",
           headers: {
@@ -324,20 +445,21 @@ export default function MyRoversPage() {
       );
       if (!res.ok) {
         const errData = await res.json();
-        alert(errData.detail || "Failed to delete rover.");
+        setErrorMsg(errData.detail || "Failed to delete rover.");
         return;
       }
       closeModal();
+      setIsAlertModalOpen(false);
       fetchRovers();
     } catch (error) {
-      console.log("Error deleting rover:", error);
+      console.error("Error deleting rover:", error);
+      setErrorMsg("An unexpected error occurred.");
     }
   }
 
-  // Render status for the table
   const renderStatus = (value, rowData) => {
     const status = roverStatuses[rowData.rover_id] || {
-      status: "disconnected", // Default before WebSocket attempt
+      status: "disconnected",
       control: false,
       video: false,
     };
@@ -347,8 +469,8 @@ export default function MyRoversPage() {
     let textColor;
 
     if (status.status === "checking") {
-      displayText = "Checking..";
-      textColor = "text-gray-500"; // Gray for "checking"
+      displayText = "Checking...";
+      textColor = "text-gray-500";
     } else {
       displayText = isConnected ? "Available" : "Unavailable";
       textColor = isConnected ? "text-green-500" : "text-yellow-500";
@@ -368,8 +490,7 @@ export default function MyRoversPage() {
   if (!user) return null;
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8 p-6">
-      {/* Registration Form */}
+    <div className="mx-auto min-h-svh min-w-full space-y-8">
       <form
         onSubmit={handleRegister}
         className="p-6 border border-gray-300 rounded-2xl"
@@ -417,7 +538,7 @@ export default function MyRoversPage() {
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-900">
-              IP Address <span className="text-red-500">*</span>
+              Rover Activation IP Address <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -454,7 +575,6 @@ export default function MyRoversPage() {
         </div>
       </form>
 
-      {/* Rovers Table */}
       <div className="p-6 border border-gray-300 rounded-2xl">
         {roverLoading && (
           <p className="text-center mb-5 font-semibold">Loading rovers...</p>
@@ -510,12 +630,11 @@ export default function MyRoversPage() {
         </Table>
       </div>
 
-      {/* Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogTrigger asChild>
           <button className="hidden" />
         </DialogTrigger>
-        <DialogContent className=" p-8 sm:rounded-2xl max-w-2xl  ">
+        <DialogContent className="p-8 sm:rounded-2xl max-w-2xl">
           <DialogTitle className="text-3xl">Configure Rover</DialogTitle>
           <div className="grid grid-cols-3 space-x-5 mt-5">
             <div className="col-span-2">
@@ -549,19 +668,19 @@ export default function MyRoversPage() {
                 onChange={handleModalChange}
                 placeholder="RR-99"
                 className={`mt-2 block w-full rounded-xl bg-white px-3.5 py-2 text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-black ${
-                  errors.editName
+                  errors.editModel
                     ? "ring-2 ring-red-500 focus:ring-red-500"
                     : "ring-2 ring-gray-300 focus:ring-black"
                 } placeholder:text-gray-400`}
               />
-              {errors.editName && (
-                <p className="mt-1 text-sm text-red-600">{errors.editName}</p>
+              {errors.editModel && (
+                <p className="mt-1 text-sm text-red-600">{errors.editModel}</p>
               )}
             </div>
           </div>
           <div className="mb-5">
             <label className="block text-sm font-semibold text-gray-900">
-              IP Address
+            Rover Reactivation IP Address
             </label>
             <div className="flex space-x-5 mt-2">
               <input
@@ -576,11 +695,9 @@ export default function MyRoversPage() {
                     : "ring-2 ring-gray-300 focus:ring-black"
                 } placeholder:text-gray-400`}
               />
-              {errors.editIp && (
-                <p className="mt-1 text-sm text-red-600">{errors.editIp}</p>
-              )}
               <button
-                type="submit"
+                type="button"
+                onClick={handleReactivate}
                 disabled={isReconfiguring}
                 className={`block w-44 rounded-xl bg-black px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-white hover:text-black hover:ring-2 hover:ring-black ${
                   isReconfiguring ? "opacity-50 cursor-not-allowed" : ""
@@ -589,7 +706,13 @@ export default function MyRoversPage() {
                 {isReconfiguring ? "Reactivating..." : "Reactivate Rover"}
               </button>
             </div>
+            {errors.editIp && (
+              <p className="mt-1 text-sm text-red-600">{errors.editIp}</p>
+            )}
           </div>
+          {configMsg && (
+            <p className="mb-4 text-sm text-blue-600">{configMsg}</p>
+          )}
           <div className="flex items-center justify-between space-x-4 mt-3">
             <Button
               onClick={() => setIsAlertModalOpen(true)}
@@ -604,7 +727,7 @@ export default function MyRoversPage() {
               >
                 <path
                   fillRule="evenodd"
-                  d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
+                  d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 1 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
                   clipRule="evenodd"
                 />
               </svg>
@@ -641,7 +764,6 @@ export default function MyRoversPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Alert Dialog */}
       <AlertDialog open={isAlertModalOpen} onOpenChange={setIsAlertModalOpen}>
         <AlertDialogTrigger asChild>
           <button className="hidden" />

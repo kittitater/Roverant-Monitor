@@ -3,7 +3,7 @@
 import React from "react";
 import Layout from "@/components/main/AppLayout";
 
-export default function SummaryReportPage() {
+export default function SystemReportPage() {
   // Mock summary stats
   const summary = {
     totalPatrols: 10,
@@ -23,10 +23,10 @@ export default function SummaryReportPage() {
 
   return (
     <Layout>
-      <main className="pt-[110px] min-h-svh mx-auto max-w-7xl px-4 py-6 space-y-6">
+      <main className="pt-[110px] min-h-svh mx-auto px-8 py-6 space-y-6">
         <section className="text-center">
           <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">
-            Summary Report
+            System Report
           </h1>
           <p className="mt-2 text-gray-500 dark:text-gray-400">
             High-level final overview with key metrics.
