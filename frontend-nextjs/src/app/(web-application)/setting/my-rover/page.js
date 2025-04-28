@@ -76,7 +76,7 @@ export default function MyRoversPage() {
     const baseReconnectDelay = 3000;
 
     const connectWebSocket = (rover, attempt = 1) => {
-      const wsUrl = `${process.env.NEXT_PUBLIC_WS_URL}/rover/status?rover_id=${rover.rover_id}`;
+      const wsUrl = `${process.env.NEXT_PUBLIC_WS_URL}/ws/status?rover_id=${rover.rover_id}`;
       const ws = new WebSocket(wsUrl);
 
       ws.onopen = () => {
