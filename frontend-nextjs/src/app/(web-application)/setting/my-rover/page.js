@@ -281,7 +281,7 @@ export default function MyRoversPage() {
   }
 
   async function configureRover(roverId, token, ipAddress) {
-    const configUrl = `https://${ipAddress}:${process.env.NEXT_PUBLIC_ROVER_CONFIG_PORT}/api/configure-rover`;
+    const configUrl = `https://${ipAddress}/api/configure-rover`;
     try {
       const res = await fetch(configUrl, {
         method: "PUT",
