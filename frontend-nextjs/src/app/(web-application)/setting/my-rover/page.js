@@ -801,9 +801,6 @@
 
 
 
-
-
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -865,6 +862,8 @@ export default function MyRoversPage() {
   const [shareEmail, setShareEmail] = useState("");
   const [shareError, setShareError] = useState("");
   const [shareSuccess, setShareSuccess] = useState("");
+  const [sharedUsers, setSharedUsers] = useState([]);
+  const [sharedUsersLoading, setSharedUsersLoading] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -1018,6 +1017,32 @@ export default function MyRoversPage() {
     }
   }
 
+  async function fetchSharedUsers(rover_id) {
+    setSharedUsersLoading(true);
+    try {
+      const idToken = await user.getIdToken();
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/rover/${rover_id}/shared-users`,
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+      const data = await response.json();
+      console.log("Fetched shared users:", data);
+      setSharedUsers(data);
+    } catch (err) {
+      console.error("Failed to fetch shared users:", err);
+      setShareError(err.message || "Failed to fetch shared users.");
+    } finally {
+      setSharedUsersLoading(false);
+    }
+  }
+
   function handleRegisterChange(e) {
     setRoverData({ ...roverData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: "" });
@@ -1062,7 +1087,7 @@ export default function MyRoversPage() {
     try {
       const idToken = await user.getIdToken();
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/register`,
+        `${process.env.NEXT_PUBLIC_API_URL}/rover/register`,
         {
           method: "POST",
           headers: {
@@ -1125,6 +1150,10 @@ export default function MyRoversPage() {
     setShareEmail("");
     setShareError("");
     setShareSuccess("");
+    setSharedUsers([]);
+    if (rover.is_owner) {
+      fetchSharedUsers(rover.rover_id);
+    }
     setIsModalOpen(true);
   }
 
@@ -1180,7 +1209,7 @@ export default function MyRoversPage() {
       const { rover_id, name, model, ip_address } = editFormData;
       const idToken = await user.getIdToken();
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/${rover_id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/rover/${rover_id}`,
         {
           method: "PUT",
           headers: {
@@ -1256,7 +1285,7 @@ export default function MyRoversPage() {
       const { rover_id } = editFormData;
       const idToken = await user.getIdToken();
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/${rover_id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/rover/${rover_id}`,
         {
           method: "DELETE",
           headers: {
@@ -1306,6 +1335,7 @@ export default function MyRoversPage() {
       const data = await res.json();
       setShareSuccess(data.message);
       setShareEmail("");
+      fetchSharedUsers(editFormData.rover_id);
     } catch (error) {
       console.error("Error sharing rover:", error);
       setShareError("An unexpected error occurred.");
@@ -1340,8 +1370,39 @@ export default function MyRoversPage() {
       const data = await res.json();
       setShareSuccess(data.message);
       setShareEmail("");
+      fetchSharedUsers(editFormData.rover_id);
     } catch (error) {
       console.error("Error unsharing rover:", error);
+      setShareError("An unexpected error occurred.");
+    }
+  }
+
+  async function handleRemoveShare(email) {
+    setShareError("");
+    setShareSuccess("");
+    try {
+      const idToken = await user.getIdToken();
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/rover/${editFormData.rover_id}/unshare`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`,
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+      if (!res.ok) {
+        const errData = await res.json();
+        setShareError(errData.detail || "Failed to unshare rover.");
+        return;
+      }
+      const data = await res.json();
+      setShareSuccess(data.message);
+      fetchSharedUsers(editFormData.rover_id);
+    } catch (error) {
+      console.error("Error removing share:", error);
       setShareError("An unexpected error occurred.");
     }
   }
@@ -1525,7 +1586,7 @@ export default function MyRoversPage() {
         <DialogTrigger asChild>
           <button className="hidden" />
         </DialogTrigger>
-        <DialogContent className="p-8 sm:rounded-2xl max-w-2xl">
+        <DialogContent className="p-8 sm:rounded-2xl max-w-4xl">
           <DialogTitle className="text-3xl">Configure Rover</DialogTitle>
           <div className="grid grid-cols-3 space-x-5 mt-5">
             <div className="col-span-2">
@@ -1637,6 +1698,44 @@ export default function MyRoversPage() {
               {shareSuccess && (
                 <p className="mt-1 text-sm text-green-600">{shareSuccess}</p>
               )}
+              <div className="mt-4">
+                <label className="block text-sm font-semibold text-gray-900">
+                  Shared With
+                </label>
+                {sharedUsersLoading ? (
+                  <p className="mt-2 text-sm text-gray-600">Loading shared users...</p>
+                ) : sharedUsers.length === 0 ? (
+                  <p className="mt-2 text-sm text-gray-600">No users have access to this rover.</p>
+                ) : (
+                  <div className="mt-2 bg-white border border-gray-300 rounded-xl overflow-hidden">
+                    <table className="w-full text-left">
+                      <thead>
+                        <tr className="bg-gray-100">
+                          <th className="px-4 py-2 text-sm font-semibold text-gray-900">Username</th>
+                          <th className="px-4 py-2 text-sm font-semibold text-gray-900">Email</th>
+                          <th className="px-4 py-2 text-sm font-semibold text-gray-900">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {sharedUsers.map((user) => (
+                          <tr key={user.user_id} className="border-t hover:bg-gray-50">
+                            <td className="px-4 py-2 text-sm">{user.username || "N/A"}</td>
+                            <td className="px-4 py-2 text-sm">{user.email || "N/A"}</td>
+                            <td className="px-4 py-2 text-sm">
+                              <button
+                                onClick={() => handleRemoveShare(user.email)}
+                                className="rounded-xl bg-red-500 px-3 py-1 text-sm font-semibold text-white hover:bg-white hover:text-red-500 hover:ring-2 hover:ring-red-500"
+                              >
+                                Remove Share
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
             </div>
           )}
           {configMsg && (
