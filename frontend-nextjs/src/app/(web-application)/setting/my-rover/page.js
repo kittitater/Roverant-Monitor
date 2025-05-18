@@ -1684,13 +1684,13 @@ export default function MyRoversPage() {
                 >
                   Share
                 </button>
-                <button
+                {/* <button
                   type="button"
                   onClick={handleUnshare}
                   className="block w-32 rounded-xl bg-red-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-white hover:text-red-500 hover:ring-2 hover:ring-red-500"
                 >
                   Unshare
-                </button>
+                </button> */}
               </div>
               {shareError && (
                 <p className="mt-1 text-sm text-red-600">{shareError}</p>
