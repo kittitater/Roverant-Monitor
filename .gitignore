@@ -7,4 +7,3 @@ node_modules
 .next
 .next
 .vscode/settings.json
-frontend-nextjs/.env.local
