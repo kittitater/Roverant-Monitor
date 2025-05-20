@@ -16,15 +16,16 @@ export default function OperationConsole() {
   /* ───────── STATE ───────── */
   const [currentLocation] = useState({ lat: 13.73, lng: 100.51 });
   const [isStreaming, setIsStreaming] = useState(true);
-  const [fullscreenCam, setFullscreenCam] = useState(null);   // null | "video" | "thermal"
+  const [fullscreenCam, setFullscreenCam] = useState(null); // null | "video" | "thermal"
   const isModalOpen = fullscreenCam !== null;
+  const [controlWsStatus, setControlWsStatus] = useState("Connecting…"); // New control WebSocket status
 
   /* keep the *live* value for the draw loop */
   const fullscreenRef = useRef(fullscreenCam);
   useEffect(() => { fullscreenRef.current = fullscreenCam; }, [fullscreenCam]);
 
   /* connection indicators */
-  const [videoWsStatus, setVideoWsStatus]     = useState("Connecting…");
+  const [videoWsStatus, setVideoWsStatus] = useState("Connecting…");
   const [thermalWsStatus, setThermalWsStatus] = useState("Connecting…");
   const [status, setStatus] = useState({
     status: "disconnected",
@@ -34,18 +35,19 @@ export default function OperationConsole() {
   });
 
   /* refs */
-  const canvasRef        = useRef(null);
+  const canvasRef = useRef(null);
   const thermalCanvasRef = useRef(null);
-  const modalCanvasRef   = useRef(null);
-  const modalThermalRef  = useRef(null);
+  const modalCanvasRef = useRef(null);
+  const modalThermalRef = useRef(null);
 
-  const videoSockRef   = useRef(null);
+  const videoSockRef = useRef(null);
   const thermalSockRef = useRef(null);
-  const statusSockRef  = useRef(null);
+  const statusSockRef = useRef(null);
+  const controlSockRef = useRef(null); // New control WebSocket ref
 
-  const pendingVideo   = useRef(null);
+  const pendingVideo = useRef(null);
   const pendingThermal = useRef(null);
-  const drawingVideo   = useRef(false);
+  const drawingVideo = useRef(false);
   const drawingThermal = useRef(false);
 
   const { selectedRover } = useRover();
@@ -59,6 +61,9 @@ export default function OperationConsole() {
   const statusWsUrl = selectedRover
     ? `${process.env.NEXT_PUBLIC_WS_URL}/ws/status?rover_id=${selectedRover.rover_id}`
     : null;
+  const controlWsUrl = selectedRover
+    ? `${process.env.NEXT_PUBLIC_WS_URL}/ws/client/control?token=${selectedRover.registration_token}&rover_id=${selectedRover.rover_id}`
+    : null;
 
   /* ───────── VIDEO SOCKET ───────── */
   useEffect(() => {
@@ -70,7 +75,7 @@ export default function OperationConsole() {
 
     setVideoWsStatus("Connecting…");
     const canvas = canvasRef.current;
-    const ctx    = canvas?.getContext("2d");
+    const ctx = canvas?.getContext("2d");
     if (!ctx) { setVideoWsStatus("Error"); return; }
 
     const sock = new WebSocket(videoWsUrl);
@@ -100,12 +105,12 @@ export default function OperationConsole() {
     };
     requestAnimationFrame(draw);
 
-    sock.onopen    = () => setVideoWsStatus("Connected");
-    sock.onclose   = () => setVideoWsStatus("Disconnected");
-    sock.onerror   = () => setVideoWsStatus("Error");
+    sock.onopen = () => setVideoWsStatus("Connected");
+    sock.onclose = () => setVideoWsStatus("Disconnected");
+    sock.onerror = () => setVideoWsStatus("Error");
     sock.onmessage = async (e) => {
       if (e.data instanceof Blob) {
-        const ab  = await e.data.arrayBuffer();
+        const ab = await e.data.arrayBuffer();
         const bmp = await createImageBitmap(new Blob([ab], { type: "image/jpeg" }));
         pendingVideo.current = bmp;
       }
@@ -124,7 +129,7 @@ export default function OperationConsole() {
 
     setThermalWsStatus("Connecting…");
     const canvas = thermalCanvasRef.current;
-    const ctx    = canvas?.getContext("2d");
+    const ctx = canvas?.getContext("2d");
     if (!ctx) { setThermalWsStatus("Error"); return; }
 
     const sock = new WebSocket(thermalWsUrl);
@@ -154,12 +159,12 @@ export default function OperationConsole() {
     };
     requestAnimationFrame(draw);
 
-    sock.onopen    = () => setThermalWsStatus("Connected");
-    sock.onclose   = () => setThermalWsStatus("Disconnected");
-    sock.onerror   = () => setThermalWsStatus("Error");
+    sock.onopen = () => setThermalWsStatus("Connected");
+    sock.onclose = () => setThermalWsStatus("Disconnected");
+    sock.onerror = () => setThermalWsStatus("Error");
     sock.onmessage = async (e) => {
       if (e.data instanceof Blob) {
-        const ab  = await e.data.arrayBuffer();
+        const ab = await e.data.arrayBuffer();
         const bmp = await createImageBitmap(new Blob([ab], { type: "image/jpeg" }));
         pendingThermal.current = bmp;
       }
@@ -167,6 +172,33 @@ export default function OperationConsole() {
 
     return () => sock.close();
   }, [thermalWsUrl, isStreaming]);
+
+  /* ───────── CONTROL SOCKET ───────── */
+  useEffect(() => {
+    if (!controlWsUrl) {
+      setControlWsStatus("No rover selected");
+      controlSockRef.current?.close();
+      return;
+    }
+
+    setControlWsStatus("Connecting…");
+    const sock = new WebSocket(controlWsUrl);
+    controlSockRef.current = sock;
+
+    sock.onopen = () => setControlWsStatus("Connected");
+    sock.onclose = () => setControlWsStatus("Disconnected");
+    sock.onerror = () => setControlWsStatus("Error");
+    sock.onmessage = (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        setControlWsStatus(`Command received: ${data.data}`);
+      } catch (error) {
+        setControlWsStatus(`Error parsing message: ${error}`);
+      }
+    };
+
+    return () => sock.close();
+  }, [controlWsUrl]);
 
   /* ───────── STATUS SOCKET ───────── */
   useEffect(() => {
@@ -184,17 +216,17 @@ export default function OperationConsole() {
   }, [statusWsUrl]);
 
   /* ───────── HELPERS ───────── */
-  const openModal  = (cam) => setFullscreenCam(cam);
-  const closeModal = ()  => setFullscreenCam(null);
+  const openModal = (cam) => setFullscreenCam(cam);
+  const closeModal = () => setFullscreenCam(null);
 
   const getStatusColor = (t) => {
     switch (t) {
       case "Connected": return "text-green-500";
-      case "Error":     return "text-red-500";
+      case "Error": return "text-red-500";
       case "Disconnected":
       case "Streaming off":
       case "No rover selected": return "text-yellow-500";
-      default:          return "text-yellow-500";
+      default: return "text-yellow-500";
     }
   };
 
@@ -204,6 +236,14 @@ export default function OperationConsole() {
     return () => window.removeEventListener("keydown", h);
   }, []);
 
+  const sendCommand = (command) => {
+    if (controlSockRef.current && controlSockRef.current.readyState === WebSocket.OPEN) {
+      controlSockRef.current.send(JSON.stringify({ type: "control_command", data: command }));
+      setControlWsStatus(`Sent command: ${command}`);
+    } else {
+      setControlWsStatus("Control WebSocket not connected");
+    }
+  };
 
   /* ───────── RENDER ───────── */
   return (
@@ -314,8 +354,13 @@ export default function OperationConsole() {
               statusText={thermalWsStatus}
               color={getStatusColor(thermalWsStatus)}
             />
+            <StatusCard
+              title="Control"
+              statusText={controlWsStatus}
+              color={getStatusColor(controlWsStatus)}
+            />
           </div>
-          <MotorControl className="w-full" />
+          <MotorControl className="w-full" sendCommand={sendCommand} />
         </div>
       </div>
 
