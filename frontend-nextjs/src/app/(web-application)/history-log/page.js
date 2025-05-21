@@ -1,34 +1,59 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "@/components/main/AppLayout";
+import { useAuth } from "@/app/(web-application)/(authentication)/context/AuthContext";
+import { useRover } from "@/components/context/RoverContext";
 
 export default function HistoryLogPage() {
-  // Mock alerts
-  const alerts = [
-    {
-      id: 1,
-      date: "2025-01-20 10:15",
-      type: "Motion Detected",
-      severity: "High",
-      description: "Unidentified movement in Sector 2",
-    },
-    {
-      id: 2,
-      date: "2025-01-21 11:00",
-      type: "Temperature High",
-      severity: "Medium",
-      description: "Temperature reached 40°C near Battery Compartment",
-    },
-    {
-      id: 3,
-      date: "2025-01-22 09:30",
-      type: "Battery Low",
-      severity: "Low",
-      description: "Battery dropped below 20%",
-    },
-  ];
+  const { user } = useAuth();
+  const { selectedRover } = useRover();
+  const [alerts, setAlerts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Fetch alerts from the database
+  useEffect(() => {
+    const fetchAlerts = async () => {
+      if (!selectedRover || !user) {
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const idToken = await user.getIdToken();
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/rover/${selectedRover.rover_id}/alerts?limit=100&offset=0`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${idToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        setAlerts(data.alerts || []);
+      } catch (err) {
+        console.error("Failed to fetch alerts:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAlerts();
+  }, [selectedRover, user]);
+
+  // Mock logs (unchanged)
   const logs = [
     {
       id: 1,
@@ -60,9 +85,22 @@ export default function HistoryLogPage() {
     },
   ];
 
+  // Function to map alert type to severity (since severity isn't in the backend schema)
+  const getSeverity = (type) => {
+    switch (type.toLowerCase()) {
+      case "error":
+      case "warning":
+        return "High";
+      case "temperature high":
+        return "Medium";
+      default:
+        return "Low";
+    }
+  };
+
   return (
     <Layout>
-      <main className="pt-[110px] min-h-svh mx-auto  px-8 py-6 space-y-6">
+      <main className="pt-[110px] min-h-svh mx-auto px-8 py-6 space-y-6">
         <section className="text-center">
           <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">
             Alert Log
@@ -84,30 +122,56 @@ export default function HistoryLogPage() {
                   <th className="px-3 py-2 text-left font-medium">Type</th>
                   <th className="px-3 py-2 text-left font-medium">Severity</th>
                   <th className="px-3 py-2 text-left font-medium">Description</th>
+                  <th className="px-3 py-2 text-left font-medium">Status</th>
                 </tr>
               </thead>
               <tbody>
-                {alerts.map((alert) => (
-                  <tr
-                    key={alert.id}
-                    className="border-b last:border-0 border-gray-200 dark:border-gray-700"
-                  >
-                    <td className="px-3 py-2">{alert.date}</td>
-                    <td className="px-3 py-2">{alert.type}</td>
-                    <td
-                      className={
-                        alert.severity === "High"
-                          ? "text-red-500"
-                          : alert.severity === "Medium"
-                          ? "text-yellow-500"
-                          : "text-green-500"
-                      }
-                    >
-                      {alert.severity}
+                {loading ? (
+                  <tr>
+                    <td colSpan="5" className="px-3 py-2 text-center text-gray-500">
+                      Loading alerts...
                     </td>
-                    <td className="px-3 py-2">{alert.description}</td>
                   </tr>
-                ))}
+                ) : error ? (
+                  <tr>
+                    <td colSpan="5" className="px-3 py-2 text-center text-red-500">
+                      Error: {error}
+                    </td>
+                  </tr>
+                ) : alerts.length > 0 ? (
+                  alerts.map((alert) => (
+                    <tr
+                      key={alert.alert_id}
+                      className="border-b last:border-0 border-gray-200 dark:border-gray-700"
+                    >
+                      <td className="px-3 py-2">
+                        {new Date(alert.timestamp).toLocaleString()}
+                      </td>
+                      <td className="px-3 py-2">{alert.type}</td>
+                      <td
+                        className={
+                          getSeverity(alert.type) === "High"
+                            ? "text-red-500"
+                            : getSeverity(alert.type) === "Medium"
+                            ? "text-yellow-500"
+                            : "text-green-500"
+                        }
+                      >
+                        {getSeverity(alert.type)}
+                      </td>
+                      <td className="px-3 py-2">{alert.description}</td>
+                      <td className="px-3 py-2">
+                        {alert.resolved ? "Resolved" : "Unresolved"}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="px-3 py-2 text-center text-gray-500">
+                      No alerts available.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

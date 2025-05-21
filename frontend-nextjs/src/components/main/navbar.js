@@ -1,4 +1,3 @@
-// navbar.js
 "use client";
 
 import {
@@ -13,8 +12,6 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-// import { BellIcon } from "@heroicons/react/24/outline";
-// import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
@@ -24,6 +21,14 @@ import { auth } from "@/app/(web-application)/(authentication)/firebase/firebase
 import { useRouter, usePathname } from "next/navigation";
 import { useRover } from "@/components/context/RoverContext";
 import { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard" },
@@ -42,7 +47,6 @@ export default function Navbar() {
   const { user, loading, setUser } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
-
   const { selectedRover, updateRover } = useRover();
 
   const handleSelectRoverLocal = (rover) => {
@@ -51,14 +55,15 @@ export default function Navbar() {
 
   const [logoutLoading, setLogoutLoading] = useState(false);
   const [rovers, setRovers] = useState([]);
-  // Removed unused roverLoading state for clarity
   const [error, setError] = useState(null);
+  const [alerts, setAlerts] = useState([]);
+  const [newAlert, setNewAlert] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Fetch rovers
   useEffect(() => {
     const fetchRovers = async () => {
-      // Removed unused setRoverLoading call for clarity
       setError(null);
-
       try {
         const idToken = await user.getIdToken();
         const response = await fetch(
@@ -91,15 +96,74 @@ export default function Navbar() {
       }
     };
 
-    fetchRovers();
+    if (user) {
+      fetchRovers();
+    }
   }, [pathname, selectedRover, updateRover, user]);
+
+  // WebSocket connection for real-time alerts
+  useEffect(() => {
+    if (!selectedRover || !user) return;
+
+    let ws;
+    const connectWebSocket = async () => {
+      try {
+        const idToken = await user.getIdToken();
+        const wsUrl = `${process.env.NEXT_PUBLIC_WS_URL}/ws/alerts?rover_id=${selectedRover.rover_id}&token=${idToken}`;
+        ws = new WebSocket(wsUrl);
+
+        ws.onopen = () => {
+          console.log("WebSocket connected for alerts");
+        };
+
+        ws.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          if (data.alerts && data.alerts.length > 0) {
+            setAlerts((prevAlerts) => {
+              const newAlerts = data.alerts.filter(
+                (newAlert) =>
+                  !prevAlerts.some(
+                    (prevAlert) => prevAlert.alert_id === newAlert.alert_id
+                  )
+              );
+              if (newAlerts.length > 0) {
+                setNewAlert(newAlerts[0]); // Show the latest new alert in the modal
+                setIsModalOpen(true); // Open the modal
+              }
+              return [...newAlerts, ...prevAlerts].sort(
+                (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+              );
+            });
+          }
+        };
+
+        ws.onclose = () => {
+          console.log("WebSocket disconnected");
+        };
+
+        ws.onerror = (error) => {
+          console.error("WebSocket error:", error);
+        };
+      } catch (error) {
+        console.error("Error establishing WebSocket connection:", error);
+      }
+    };
+
+    connectWebSocket();
+
+    return () => {
+      if (ws) {
+        ws.close();
+      }
+    };
+  }, [selectedRover, user]);
 
   const handleLogout = async () => {
     setLogoutLoading(true);
     try {
       await signOut(auth);
       setUser(null);
-      localStorage.removeItem("roverant_selectedRover"); // Clear rover selection
+      localStorage.removeItem("roverant_selectedRover");
       router.push("/login");
     } catch (error) {
       console.error("Error during logout:", error);
@@ -111,11 +175,11 @@ export default function Navbar() {
   if (loading || logoutLoading) {
     return (
       <main className="flex h-screen items-center justify-center bg-black px-6 py-24 sm:py-32 lg:px-8">
-        <div className="text-center flex ">
+        <div className="text-center flex">
           <h1 className="mt-10 text-5xl font-semibold tracking-tight text-black bg-white sm:text-9xl duration-500 animate-bounce">
             Rover
           </h1>
-          <h1 className="mt-10 text-5xl font-semibold tracking-tight text-white sm:text-9xl ">
+          <h1 className="mt-10 text-5xl font-semibold tracking-tight text-white sm:text-9xl">
             ant Monitor
           </h1>
         </div>
@@ -124,7 +188,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="inset-x-0 fixed top-10 z-50 ">
+    <header className="inset-x-0 fixed top-10 z-50">
       <Disclosure as="nav" className="bg-white">
         {({ open }) => (
           <>
@@ -134,21 +198,15 @@ export default function Navbar() {
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <a href="/dashboard" className="flex items-center gap-2">
-                      <div className="flex h-9 w-9 items-center justify-center ">
+                      <div className="flex h-9 w-9 items-center justify-center">
                         <Image
                           alt="Your Company"
                           src="/RM.png"
                           width={150}
                           height={150}
-                          className="mx-auto h-auto w-auto "
+                          className="mx-auto h-auto w-auto"
                         />
                       </div>
-                      {/* <span className="text-white font-semibold text-xl bg-black">
-                        Rover
-                      </span>
-                      <span className="text-black font-semibold text-xl">
-                        ant Monitor
-                      </span> */}
                     </a>
                   </div>
                   <div className="hidden md:block">
@@ -176,15 +234,14 @@ export default function Navbar() {
                   <Listbox
                     value={selectedRover}
                     onChange={handleSelectRoverLocal}
-                    //disabled={roverLoading}
                   >
-                    <ListboxButton className=" flex items-center gap-2 py-1 pl-3 pr-2 text-left text-xs font-medium text-black hover:bg-black hover:text-white rounded-xl ring-black ring-2 bg-white">
+                    <ListboxButton className="flex items-center gap-2 py-1 pl-3 pr-2 text-left text-xs font-medium text-black hover:bg-black hover:text-white rounded-xl ring-black ring-2 bg-white">
                       {selectedRover ? selectedRover.name : "Select a Rover"}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
-                        className="group pointer-events-none size-6 "
+                        className="group pointer-events-none size-6"
                       >
                         <path
                           fillRule="evenodd"
@@ -196,7 +253,7 @@ export default function Navbar() {
                     <ListboxOptions
                       anchor="bottom"
                       transition
-                      className=" absolute right-0 mt-3 p-2 pr-4 w-fit space-y-2 origin-top-right rounded-2xl bg-white shadow-lg ring-2 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                      className="absolute right-0 mt-3 p-2 pr-4 w-fit space-y-2 origin-top-right rounded-2xl bg-white shadow-lg ring-2 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                     >
                       {error ? (
                         <div className="px-3 py-2 text-xs font-medium text-red-500">
@@ -209,7 +266,6 @@ export default function Navbar() {
                             value={rover}
                             className="group flex items-center gap-2 px-3 py-2 text-xs font-medium data-[focus]:bg-black ring-2 rounded-xl ring-black"
                           >
-                            {/* <CheckIcon className="invisible size-4 fill-black group-data-[selected]:visible group-data-[focus]:fill-white" /> */}
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 24 24"
@@ -222,7 +278,6 @@ export default function Navbar() {
                                 clipRule="evenodd"
                               />
                             </svg>
-
                             <div className="text-xs font-medium group-data-[focus]:text-white">
                               {rover.name}
                             </div>
@@ -241,7 +296,6 @@ export default function Navbar() {
                     className="relative rounded-xl ring-black ring-2 bg-white p-1 text-black hover:text-white hover:bg-black"
                   >
                     <span className="sr-only">View notifications</span>
-                    {/* <BellIcon className="h-7 w-7" /> */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -256,6 +310,11 @@ export default function Navbar() {
                         d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
                       />
                     </svg>
+                    {alerts.length > 0 && (
+                      <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                        {alerts.length}
+                      </span>
+                    )}
                   </button>
 
                   <Menu as="div" className="relative">
@@ -282,21 +341,18 @@ export default function Navbar() {
                         </div>
                       </div>
                       {userNavigation.map((item) => (
-                        <MenuItem
-                          key={item.name}
-                          className="w-full text-center"
-                        >
+                        <MenuItem key={item.name} className="w-full text-center">
                           {item.name === "Log out" ? (
                             <Button
                               onClick={handleLogout}
-                              className="block px-3 py-2 text-xs font-medium ring-2 rounded-xl ring-black text-black hover:bg-black hover:text-white "
+                              className="block px-3 py-2 text-xs font-medium ring-2 rounded-xl ring-black text-black hover:bg-black hover:text-white"
                             >
                               {item.name}
                             </Button>
                           ) : (
                             <Link
                               href={item.href}
-                              className="block px-3 py-2 text-xs font-medium ring-2 rounded-xl ring-black text-black hover:bg-black hover:text-white "
+                              className="block px-3 py-2 text-xs font-medium ring-2 rounded-xl ring-black text-black hover:bg-black hover:text-white"
                             >
                               {item.name}
                             </Link>
@@ -311,6 +367,40 @@ export default function Navbar() {
           </>
         )}
       </Disclosure>
+
+      {/* Dialog for new alerts */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>New Alert Received</DialogTitle>
+            <DialogDescription>
+              {newAlert ? (
+                <div>
+                  <p>
+                    <strong>Type:</strong> {newAlert.type}
+                  </p>
+                  <p>
+                    <strong>Description:</strong> {newAlert.description}
+                  </p>
+                  <p>
+                    <strong>Time:</strong>{" "}
+                    {new Date(newAlert.timestamp).toLocaleString()}
+                  </p>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    {newAlert.resolved ? "Resolved" : "Unresolved"}
+                  </p>
+                </div>
+              ) : (
+                "No new alert details available."
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end">
+            <Button onClick={() => setIsModalOpen(false)}>Close</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </header>
   );
 }
